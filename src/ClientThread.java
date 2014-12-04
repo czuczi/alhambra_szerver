@@ -30,7 +30,7 @@ public class ClientThread extends Thread{
 		}
 	}
 	
-	public void recieveMessage(){
+	public void recieveMessage(BufferedReader bf){
 		try {
 			interaction = bf.readLine();
 			
@@ -59,12 +59,12 @@ public class ClientThread extends Thread{
 		
 		while(true)
 		{
-			recieveMessage();
+			recieveMessage(bf);
 			String[] elements = interaction.split(";");
 			requestName = elements[0];
 			switch (requestName) {
-			case "asd":
-				System.out.println("OK");
+			case "login":
+				System.out.println(elements[1]);
 				break;
 
 			default:
