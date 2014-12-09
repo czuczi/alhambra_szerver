@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Server {
 	
+	public static Controller controller = new Controller();
 	
 	public static void main(String[] args) {
 		
@@ -20,9 +21,10 @@ public class Server {
 			e1.printStackTrace();
 		}
 			
+		
+		
 		while(true)
 		{
-
 			try {
 				actSocket = serverSocket.accept();
 				new ClientThread(actSocket).start();

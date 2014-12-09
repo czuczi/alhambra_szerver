@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class ClientThread extends Thread{
@@ -16,7 +18,6 @@ public class ClientThread extends Thread{
 	private String requestName;
 
 	public ClientThread(Socket mySocket) {
-		super();
 		this.mySocket = mySocket;
 	}
 	
@@ -25,26 +26,31 @@ public class ClientThread extends Thread{
 			os.writeBytes(message);
 			os.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void recieveMessage(BufferedReader bf){
+	public boolean recieveMessage(BufferedReader bf){
 		try {
 			interaction = bf.readLine();
+			return true;
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				mySocket.close();
+				is.close();
+				bf.close();
+				os.close();
+				return false;
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
-		
+		return false;
 	}
 
 	@Override
 	public void run() {
-		
-
-		
 		try 
 			{
 				is = mySocket.getInputStream();
@@ -53,25 +59,31 @@ public class ClientThread extends Thread{
 			} 
 		catch (IOException e) 
 			{
-	
 				e.printStackTrace();
 			}
 		
 		while(true)
 		{
-			recieveMessage(bf);
+			if(!recieveMessage(bf))
+				break;
 			String[] elements = interaction.split(";");
 			requestName = elements[0];
 			switch (requestName) {
 			case "login":
-				System.out.println(elements[1]);
+				if(Server.controller.login(elements[1])) {
+					sendMessage("showRoomManagerPage\n");
+				}
+				else {
+					sendMessage("showLoginPage\n");
+					System.out.println(elements[1]);
+				}
 				break;
 
 			default:
 				break;
 			}
 		}
-		
+
 	}
 	
 }
