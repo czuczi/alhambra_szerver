@@ -5,16 +5,23 @@ public class BuildingDeck {
 	
 	private List<BuildingCard> deck;
 
+	
+	//ötletek?
 	public void createBuildingDeck() {
 		
 	}
 	
 	public BuildingCard removeBuildingCard() {
-		return null;
+			
+		return deck.remove(0);
 	}
 	
 	public boolean canRemoveBuildingCard() {
-		return false;
+		
+		if(deck.size() > 0)
+			return true;
+		else
+			return false;
 	}
 	
 	public List<BuildingCard> getDeck() {

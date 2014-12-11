@@ -4,22 +4,53 @@ import java.util.Map;
 
 public class BuildingMarket {
 	
-	private Map<BuildingCard,String> buildingMarket;
+	private Map<String,BuildingCard> buildingMarket;
 
 	public BuildingMarket() {
 		this.buildingMarket = new HashMap<>();
-	}
-
-	public Map<BuildingCard, String> getBuildingMarket() {
-		return buildingMarket;
-	}
-	
-	public BuildingCard removeBuldingCard(){
-		return null;
+		buildingMarket.put("Denar", null);
+		buildingMarket.put("Dirham", null);
+		buildingMarket.put("Dukat", null);
+		buildingMarket.put("Gulden", null);
 	}
 	
-	public void refillBuildingCard(){
+	//sdd 
+	public void removeBuldingCard(BuildingCard bc){
 		
+		for(String k : buildingMarket.keySet())
+		{
+			
+			if(buildingMarket.get(k).equals(bc))
+			{
+				String key = k;
+				buildingMarket.remove(k);
+				buildingMarket.put(key, null);
+				
+			}
+		}
+		
+	}
+	
+	
+	//elfogyott a lap vagy csak simán nem vett épületlapot a falsra?
+	//nem jó még
+	public boolean refillBuildingCard(BuildingDeck bd){
+		
+		for(String k : buildingMarket.keySet())
+		{
+			if(buildingMarket.get(k) == null && bd.canRemoveBuildingCard())
+			{
+				buildingMarket.put(k, bd.removeBuildingCard());
+				
+			}
+			
+		}
+		
+		return false;
+	}
+	
+	public Map<String, BuildingCard> getBuildingMarket() {
+		return buildingMarket;
 	}
 
 }
