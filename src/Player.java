@@ -26,16 +26,30 @@ public class Player {
 				return false;
 			}
 		}
-		room = new Room(name, max);
+		room = new Room(roomName, max);
 		room.getPlayerList().add(this);
 		Server.controller.getRoomList().add(room);
 		return true;
 	}
 	
-	public boolean joinRoom(){
-		
+	public boolean joinRoom(String playerName, String RoomName){
+		for (Room aktRoom : Server.controller.getRoomList()) {
+			if(aktRoom.getName().equals(RoomName)) {
+				if(aktRoom.getPlayerList().size() == aktRoom.getMaxNumber()) {
+					return false;
+				} else {
+					for (Player player : Server.controller.getPlayerList()) {
+						if(player.getName().equals(playerName)) {
+							aktRoom.getPlayerList().add(player);
+							room = aktRoom;
+							return true;
+						}
+					}
+				}
+				break;
+			}
+		}
 		return false;
-		
 	}
 	
 	public void leaveRoom(){
