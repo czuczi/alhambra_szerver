@@ -24,6 +24,10 @@ public class ClientThread extends Thread {
 		this.mySocket = mySocket;
 	}
 
+	public String getNickName() {
+		return nickName;
+	}
+
 	public void sendMessage(String message) {
 		try {
 			os.writeBytes(message+"\n");
@@ -107,7 +111,7 @@ public class ClientThread extends Thread {
 				}
 				break;
 				
-			case "connectRoom":
+			case "joinRoom":
 				isSuccess = false;
 				for(Player aktPlayer : Server.controller.getPlayerList()){
 					if(aktPlayer.getName().equals(nickName)){
@@ -116,6 +120,17 @@ public class ClientThread extends Thread {
 				}
 				if(isSuccess){
 					sendMessage("showRoomPage;"+elements[1]);
+					for(Player aktPlayer : Server.controller.getPlayerList()){
+						if(aktPlayer.getName().equals(nickName)){
+							for(Player player : aktPlayer.getRoom().getPlayerList()) {
+								for (ClientThread clientThread : Server.clientThreadList) {
+									if(clientThread.getNickName().equals(player.getName())) {
+										clientThread.sendMessage("showGameTablePage;" + elements[1]);
+									}
+								}
+							}
+						}
+					}
 				} else{
 					sendMessage("showRoomManagerPage;"+elements[1] + ";joinRoom");
 				}

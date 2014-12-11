@@ -6,6 +6,8 @@ public class Controller {
 
 	private List<Player> playerList;
 	private List<Room> roomList;
+	private List<Game> gameList;
+	
 	public Controller() {
 		playerList = new LinkedList<>();
 		roomList = new LinkedList<>();
@@ -17,6 +19,10 @@ public class Controller {
 	
 	public List<Room> getRoomList() {
 		return roomList;
+	}
+	
+	public List<Game> getGameList() {
+		return gameList;
 	}
 	
 	public boolean login(String playerName){
