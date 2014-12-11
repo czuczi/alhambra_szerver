@@ -75,7 +75,7 @@ public class ClientThread extends Thread {
 					System.out.println("login success");
 					nickName = elements[2].toString();
 					
-					String roomNamesList = "";										//SZOBA LISTA
+					String roomNamesList = "";	//szoba lista
 					for(Room room : Server.controller.getRoomList()){
 						roomNamesList += ";"+room.getName();
 					}
@@ -87,21 +87,27 @@ public class ClientThread extends Thread {
 				}
 				break;
 				
-			case "logout":
+			case "logout":																		//LOGOUT
 				System.out.println("logout success");
 				Server.controller.logout(nickName);
 				sendMessage("showLoginPage;" + elements[1]);
 				break;
 				
-			case "newRoom":
+			case "newRoom":																		//NEW ROOM
 				boolean isSuccess = false;
+				Player player = null;
 				for(Player aktPlayer : Server.controller.getPlayerList()){
 					if(aktPlayer.getName().equals(nickName)){
 						isSuccess = aktPlayer.createRoom(elements[2], Integer.parseInt(elements[3]));
+						player = aktPlayer;
 					}
 				}
 				if(isSuccess){
-					sendMessage("showRoomPage;"+elements[1]);
+					String playerNamesInRoom = "";
+					for(Player aktPlayer : player.getRoom().getPlayerList()){
+						playerNamesInRoom += ";"+aktPlayer.getName();
+					}
+					sendMessage("showRoomPage;"+elements[1]+playerNamesInRoom);
 				} else{
 					sendMessage("showRoomManagerPage;"+elements[1]+";newRoom");
 				}
@@ -109,13 +115,19 @@ public class ClientThread extends Thread {
 				
 			case "connectRoom":
 				isSuccess = false;
+				player = null;
 				for(Player aktPlayer : Server.controller.getPlayerList()){
 					if(aktPlayer.getName().equals(nickName)){
 						isSuccess = aktPlayer.joinRoom(nickName, elements[2]);
+						player = aktPlayer;
 					}
 				}
 				if(isSuccess){
-					sendMessage("showRoomPage;"+elements[1]);
+					String playerNamesInRoom = "";
+					for(Player aktPlayer : player.getRoom().getPlayerList()){
+						playerNamesInRoom += ";"+aktPlayer.getName();
+					}
+					sendMessage("showRoomPage;"+elements[1]+playerNamesInRoom);
 				} else{
 					sendMessage("showRoomManagerPage;"+elements[1] + ";joinRoom");
 				}
