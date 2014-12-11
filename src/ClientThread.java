@@ -66,7 +66,7 @@ public class ClientThread extends Thread {
 			if(!recieveMessage(bf)){
 				break;
 			}
-			String[] elements = elements = interaction.split(";");
+			String[] elements = interaction.split(";");
 			requestName = elements[0];
 			switch (requestName) {
 			
@@ -77,12 +77,10 @@ public class ClientThread extends Thread {
 					
 					String roomNamesList = "";										//SZOBA LISTA
 					for(Room room : Server.controller.getRoomList()){
-						roomNamesList += room.getName()+";";
+						roomNamesList += ";"+room.getName();
 					}
-					if(roomNamesList.length() > 0){
-						roomNamesList = roomNamesList.substring(0, roomNamesList.length()-1);
-					}
-					sendMessage("showRoomManagerPage;" + elements[1] +";"+roomNamesList);
+					
+					sendMessage("showRoomManagerPage;" + elements[1] +roomNamesList);
 				} else {																		//LOGIN KÉRELEM. SIKERTELEN
 					sendMessage("showLoginPage;" + elements[1]);
 					System.out.println("login failed");

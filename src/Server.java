@@ -16,7 +16,7 @@ public class Server {
 		Socket actSocket = null;
 		
 		try {
-			serverSocket = new ServerSocket(9993);
+			serverSocket = new ServerSocket(9992);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
