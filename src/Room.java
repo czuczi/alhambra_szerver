@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -11,6 +12,7 @@ public class Room {
 	public Room(String name, int maxNumber) {
 		this.name = name;
 		this.maxNumber = maxNumber;
+		this.playerList = new LinkedList<>();
 	}
 	public String getName() {
 		return name;

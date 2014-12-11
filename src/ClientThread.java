@@ -7,34 +7,36 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.sound.midi.Receiver;
 
-public class ClientThread extends Thread{
-	
+public class ClientThread extends Thread {
+
 	private Socket mySocket;
 	private InputStream is = null;
 	private BufferedReader bf = null;
 	private DataOutputStream os = null;
-	private String interaction;
+	private String interaction = "";
 	private String requestName;
+
+	private String nickName;
 
 	public ClientThread(Socket mySocket) {
 		this.mySocket = mySocket;
 	}
-	
-	public void sendMessage(String message){
+
+	public void sendMessage(String message) {
 		try {
-			os.writeBytes(message);
+			os.writeBytes(message+"\n");
 			os.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public boolean recieveMessage(BufferedReader bf){
+
+	public boolean recieveMessage(BufferedReader bf) {
 		try {
 			interaction = bf.readLine();
 			return true;
-			
 		} catch (IOException e) {
 			try {
 				mySocket.close();
@@ -51,39 +53,67 @@ public class ClientThread extends Thread{
 
 	@Override
 	public void run() {
-		try 
-			{
-				is = mySocket.getInputStream();
-				bf = new BufferedReader(new InputStreamReader(is));
-				os = new DataOutputStream(mySocket.getOutputStream());
-			} 
-		catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
 		
-		while(true)
-		{
-			if(!recieveMessage(bf))
+		try {
+			is = mySocket.getInputStream();
+			bf = new BufferedReader(new InputStreamReader(is));
+			os = new DataOutputStream(mySocket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		while (true) {
+			if(!recieveMessage(bf)){
 				break;
-			String[] elements = interaction.split(";");
+			}
+			String[] elements = elements = interaction.split(";");
 			requestName = elements[0];
 			switch (requestName) {
+			
 			case "login":
-				if(Server.controller.login(elements[1])) {
-					sendMessage("showRoomManagerPage\n");
-				}
-				else {
-					sendMessage("showLoginPage\n");
-					System.out.println(elements[1]);
+				if (Server.controller.login(elements[2])) {										//LOGIN KÉRELEM. SIKERES
+					System.out.println("login success");
+					nickName = elements[2];
+					
+					String roomNamesList = "";										//SZOBA LISTA
+					for(Room room : Server.controller.getRoomList()){
+						roomNamesList += room.getName()+";";
+					}
+					if(roomNamesList.length() > 0){
+						roomNamesList = roomNamesList.substring(0, roomNamesList.length()-1);
+					}
+					sendMessage("showRoomManagerPage;" + elements[1] +";"+roomNamesList);
+				} else {																		//LOGIN KÉRELEM. SIKERTELEN
+					sendMessage("showLoginPage;" + elements[1]);
+					System.out.println("login failed");
 				}
 				break;
-
+				
+			case "logout":
+				System.out.println("logout success");
+				Server.controller.logout(nickName);
+				sendMessage("showLoginPage;" + elements[1]);
+				break;
+				
+			case "newRoom":
+				boolean isSuccess = false;
+				for(Player aktPlayer : Server.controller.getPlayerList()){
+					if(aktPlayer.getName().equals(nickName)){
+						isSuccess = aktPlayer.createRoom(elements[2], Integer.parseInt(elements[3]));
+					}
+				}
+				if(isSuccess){
+					sendMessage("showRoomPage;"+elements[1]);
+				} else{
+					sendMessage("showRoomManagerPage;"+elements[1]);
+				}
+				break;
+				
 			default:
 				break;
 			}
 		}
 
 	}
-	
+
 }

@@ -19,10 +19,17 @@ public class Player {
 		moneyCards = new LinkedList<>();
 	}
 	
-	public boolean createRoom(){
-		
-		return false;
-		
+	public boolean createRoom(String roomName, int max){
+		System.out.println(roomName +"\t\t"+ Server.controller.getRoomList().size());
+		for(Room aktRoom : Server.controller.getRoomList()){
+			if(aktRoom.getName().equals(roomName)){
+				return false;
+			}
+		}
+		room = new Room(name, max);
+		room.getPlayerList().add(this);
+		Server.controller.getRoomList().add(room);
+		return true;
 	}
 	
 	public boolean joinRoom(){

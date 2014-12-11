@@ -34,8 +34,12 @@ public class Controller {
 		}
 	}
 	
-	public void logout(){
-		
+	public void logout(String playerName){
+		for(Player player : playerList){
+			if(player.getName().equals(playerName)){
+				playerList.remove(player);
+			}
+		}
 	}
 	
 }
