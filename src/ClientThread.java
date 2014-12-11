@@ -73,7 +73,7 @@ public class ClientThread extends Thread {
 			case "login":
 				if (Server.controller.login(elements[2])) {										//LOGIN KÉRELEM. SIKERES
 					System.out.println("login success");
-					nickName = elements[2];
+					nickName = elements[2].toString();
 					
 					String roomNamesList = "";										//SZOBA LISTA
 					for(Room room : Server.controller.getRoomList()){
@@ -105,7 +105,21 @@ public class ClientThread extends Thread {
 				if(isSuccess){
 					sendMessage("showRoomPage;"+elements[1]);
 				} else{
-					sendMessage("showRoomManagerPage;"+elements[1]);
+					sendMessage("showRoomManagerPage;"+elements[1]+";newRoom");
+				}
+				break;
+				
+			case "connectRoom":
+				isSuccess = false;
+				for(Player aktPlayer : Server.controller.getPlayerList()){
+					if(aktPlayer.getName().equals(nickName)){
+						isSuccess = aktPlayer.joinRoom(nickName, elements[2]);
+					}
+				}
+				if(isSuccess){
+					sendMessage("showRoomPage;"+elements[1]);
+				} else{
+					sendMessage("showRoomManagerPage;"+elements[1] + ";joinRoom");
 				}
 				break;
 				
