@@ -1,6 +1,7 @@
 
 public class BuildingArea {
 	private BuildingCard [][] buildingArea;
+	private int bejarhatoOldalakSzama = 0;
 
 	public BuildingArea() {
 		this.buildingArea = new BuildingCard [5][5];
@@ -18,6 +19,7 @@ public class BuildingArea {
 	public boolean canAddBuildingCard(BuildingCard buildingCard, int a, int b){
 		int kozeppontX = 0;
 		int kozeppontY = 0;
+		bejarhatoOldalakSzama = 0;
 		
 		if(buildingArea[a][b] == null){		// üres a mező
 			for(int i=0; i<buildingArea.length; i++){		//kezdőmező pozíciója
@@ -112,7 +114,7 @@ public class BuildingArea {
 								if(!isToptNeighbourWallOk(buildingCard, a, b)){		//lehelyezendő lap fölött van szomszéd és jó a fal
 									return false;
 								} else{
-									if(!isRighttNeighbourWallOk(buildingCard, a, b)){		//lehelyezendő lap jobb oldalán van szomszéd
+									if(!isRighttNeighbourWallOk(buildingCard, a, b)){		//lehelyezendő lap jobb oldalán van szomszéd és jó a fal
 										return false;
 									} else{
 										if(!isLeftNeighbourWallOk(buildingCard, a, b)){
@@ -121,7 +123,11 @@ public class BuildingArea {
 											if(!isBottomtNeighbourWallOk(buildingCard, a, b)){
 												return false;
 											} else{
-												return true;
+												if(bejarhatoOldalakSzama != 0){			//van olyan szoszédja amelyen át elérhető a start mezőről
+													return true;
+												} else{
+													return false;
+												}
 											}
 										}
 									}
@@ -163,6 +169,9 @@ public class BuildingArea {
 	public boolean isLeftNeighbourWallOk(BuildingCard buildingCard, int a, int b){
 		if(buildingArea[a][b-1] != null){				//van baloldali szomszéd
 			if((buildingArea[a][b-1].isRight_wall() && buildingCard.isLeft_wall()) || (!buildingArea[a][b-1].isRight_wall() && !buildingCard.isLeft_wall())){		//fal-fal  vagy  üres-üres
+				if(!buildingArea[a][b-1].isRight_wall() && !buildingCard.isLeft_wall()){	//balról elérhető a startmezőről
+					bejarhatoOldalakSzama++;
+				}
 				return true;
 			}else{
 				return false;					
@@ -175,6 +184,9 @@ public class BuildingArea {
 	public boolean isToptNeighbourWallOk(BuildingCard buildingCard, int a, int b){
 		if(buildingArea[a-1][b] != null){				//van felső szomszéd
 			if((buildingArea[a-1][b].isBottom_wall() && buildingCard.isTop_wall()) || (!buildingArea[a-1][b].isBottom_wall() && !buildingCard.isTop_wall())){		//fal-fal  vagy  üres-üres
+				if(!buildingArea[a-1][b].isBottom_wall() && !buildingCard.isTop_wall()){	//fentről elérhető a startmezőről(nincs fal)
+					bejarhatoOldalakSzama++;
+				}
 				return true;
 			}else{
 				return false;					
@@ -187,6 +199,9 @@ public class BuildingArea {
 	public boolean isRighttNeighbourWallOk(BuildingCard buildingCard, int a, int b){
 		if(buildingArea[a][b+1] != null){				//van jobb szomszéd
 			if((buildingArea[a][b+1].isLeft_wall() && buildingCard.isRight_wall()) || (!buildingArea[a][b+1].isLeft_wall() && !buildingCard.isRight_wall())){		//fal-fal  vagy  üres-üres
+				if(!buildingArea[a][b+1].isLeft_wall() && !buildingCard.isRight_wall()){	//jobbról elérhető az startmezőről
+					bejarhatoOldalakSzama++;
+				}
 				return true;
 			}else{
 				return false;					
@@ -199,6 +214,9 @@ public class BuildingArea {
 	public boolean isBottomtNeighbourWallOk(BuildingCard buildingCard, int a, int b){
 		if(buildingArea[a+1][b] != null){				//van alsó szomszéd
 			if((buildingArea[a+1][b].isTop_wall() && buildingCard.isBottom_wall()) || (!buildingArea[a+1][b].isTop_wall() && !buildingCard.isBottom_wall())){		//fal-fal  vagy  üres-üres
+				if(!buildingArea[a+1][b].isTop_wall() && !buildingCard.isBottom_wall()){	//lentről elérhető a startmezőről
+					bejarhatoOldalakSzama++;
+				}
 				return true;
 			}else{
 				return false;					
