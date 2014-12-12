@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -5,14 +6,12 @@ public class MoneyPickerView {
 	
 	private List<MoneyCard> moneyCards;
 	
-	//biztos vissza kell adni az mc-t?
-	
-	public MoneyCard removeMoneyCard(MoneyCard mc) {
-		
-		MoneyCard money = mc;
-		moneyCards.remove(money);
-		
-		return money;
+	public MoneyPickerView() {
+		moneyCards = new LinkedList<>();
+	}
+
+	public void removeMoneyCard(MoneyCard mc) {
+		moneyCards.remove(mc);
 	}
 	
 	public boolean refillMoney(MoneyDeck deck) {

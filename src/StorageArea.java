@@ -14,12 +14,12 @@ public class StorageArea {
 		return buildingCardList;
 	}
 
-	public void addBuildingCard(){
-		
+	public void addBuildingCard(BuildingCard buildingCard){
+		buildingCardList.add(buildingCard);
 	}
 	
-	public void removeBuildingCard(){
-		
+	public void removeBuildingCard(BuildingCard buildingCard){
+		buildingCardList.remove(buildingCard);
 	}
 	
 }

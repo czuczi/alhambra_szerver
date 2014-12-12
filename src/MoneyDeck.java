@@ -6,7 +6,7 @@ public class MoneyDeck {
 	
 	private List<MoneyCard> deck;
 
-	public void createMoneygDeck() {
+	public void createMoneyDeck() {
 		
 		for(int j = 0; j < 3; j++)
 		{
@@ -45,11 +45,7 @@ public class MoneyDeck {
 	}
 	
 	public boolean canRemoveMoneyCard(int darabszam) {
-		
-		if(deck.size() >= darabszam)
-			return true;
-		else
-			return false;
+		return deck.size() >= darabszam;
 	}
 	
 	public List<MoneyCard> getDeck() {
