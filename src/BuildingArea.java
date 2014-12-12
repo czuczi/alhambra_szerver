@@ -3,21 +3,139 @@ public class BuildingArea {
 	private BuildingCard [][] buildingArea;
 
 	public BuildingArea() {
-		this.buildingArea = new BuildingCard [4][4];
+		this.buildingArea = new BuildingCard [5][5];
 	}
 
-	public void addBuildingCard(){
+	public void addBuildingCard(BuildingCard buildingCard, int a, int b){
 		
+		this.buildingArea[a][b] = buildingCard;
 	}
 	
-	public void removeBuildingCard(){
-		
+	public void removeBuildingCard(int a, int b){
+		this.buildingArea[a][b] = null;
 	}
 	
-	public boolean canAddBuildingCard(){
+	public boolean canAddBuildingCard(BuildingCard buildingCard, int a, int b){
+		int kozeppontX = 0;
+		int kozeppontY = 0;
 		
-		return false;
-		
+		if(buildingArea[a][b] == null){		// üres a mező
+			for(int i=0; i<buildingArea.length; i++){		//kezdőmező pozíciója
+				for(int j=0; j<buildingArea[i].length; j++){
+					if(buildingArea[i][j].getType().equals("STARTAREA")){
+						kozeppontX = i;
+						kozeppontY = j;
+						break;
+					}
+				}
+				if(kozeppontX != 0 && kozeppontY != 0){
+					break;
+				}
+			}
+			if(a == kozeppontX-1 && b == kozeppontY){		//kezdőmező fölé tesszük
+				if(!buildingCard.isBottom_wall()){			//nincs lent fal
+					if(!isLeftNeighbourWallOk(buildingCard, a, b)){
+						return false;
+					} else{
+						if(!isToptNeighbourWallOk(buildingCard, a, b)){
+							return false;
+						} else{
+							if(!isRighttNeighbourWallOk(buildingCard, a, b)){
+								return false;
+							} else{
+								return true;
+							}
+						}
+					}
+				} else{
+					return false;							//útban van a fal
+				}
+			} else{
+				if(a == kozeppontX && b == kozeppontY+1){		//kezdőmező jobb oldalára tesszük
+					if(!buildingCard.isLeft_wall()){			//elhelyezendő kártyán nincs bal oldalon fal
+						if(!isToptNeighbourWallOk(buildingCard, a, b)){
+							return false;
+						} else{
+							if(!isRighttNeighbourWallOk(buildingCard, a, b)){
+								return false;
+							} else{
+								if(!isBottomtNeighbourWallOk(buildingCard, a, b)){
+									return false;
+								} else{
+									return true;
+								}
+							}
+						}
+					} else{
+						return false;
+					}
+				} else{
+					if(a == kozeppontX+1 && b == kozeppontY){		//kezdőmező alá tesszük
+						if(!buildingCard.isTop_wall()){				//elhelyezendő kártyán nincs fent fal
+							if(!isLeftNeighbourWallOk(buildingCard, a, b)){
+								return false;
+							} else{
+								if(!isBottomtNeighbourWallOk(buildingCard, a, b)){
+									return false;
+								} else{
+									if(!isRighttNeighbourWallOk(buildingCard, a, b)){
+										return false;
+									} else{
+										return true;
+									}
+								}
+							}
+						} else{
+							return false;
+						}
+					} else{
+						if(a == kozeppontX && b == kozeppontY-1){		//kezdőmező bal oldalára tesszük
+							if(!buildingCard.isRight_wall()){			//elhelyezendő kártyán nincs jobb oldalon fal
+								if(!isBottomtNeighbourWallOk(buildingCard, a, b)){
+									return false;
+								} else{
+									if(!isLeftNeighbourWallOk(buildingCard, a, b)){
+										return false;
+									} else{
+										if(!isToptNeighbourWallOk(buildingCard, a, b)){
+											return false;
+										} else{
+											return true;
+										}
+									}
+								}
+							} else{
+								return false;
+							}
+						} else{					//TETSZŐLEGES HELYRE TESSZÜK
+							if(buildingArea[a][b-1] != null || buildingArea[a][b+1] != null || buildingArea[a-1][b] != null || buildingArea[a+1][b] != null){  //van legalább egy szomszéd
+								if(!isToptNeighbourWallOk(buildingCard, a, b)){		//lehelyezendő lap fölött van szomszéd és jó a fal
+									return false;
+								} else{
+									if(!isRighttNeighbourWallOk(buildingCard, a, b)){		//lehelyezendő lap jobb oldalán van szomszéd
+										return false;
+									} else{
+										if(!isLeftNeighbourWallOk(buildingCard, a, b)){
+											return false;
+										} else{
+											if(!isBottomtNeighbourWallOk(buildingCard, a, b)){
+												return false;
+											} else{
+												return true;
+											}
+										}
+									}
+								}
+							} else{
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}else{
+			return false;
+		}	
 	}
 	
 	public boolean canRemoveBuildingCard(){
@@ -41,6 +159,59 @@ public class BuildingArea {
 	public void extendAreaRight(){
 		
 	}
+	
+	public boolean isLeftNeighbourWallOk(BuildingCard buildingCard, int a, int b){
+		if(buildingArea[a][b-1] != null){				//van baloldali szomszéd
+			if((buildingArea[a][b-1].isRight_wall() && buildingCard.isLeft_wall()) || (!buildingArea[a][b-1].isRight_wall() && !buildingCard.isLeft_wall())){		//fal-fal  vagy  üres-üres
+				return true;
+			}else{
+				return false;					
+			}
+		}else{
+			return true;
+		}
+	}
+	
+	public boolean isToptNeighbourWallOk(BuildingCard buildingCard, int a, int b){
+		if(buildingArea[a-1][b] != null){				//van felső szomszéd
+			if((buildingArea[a-1][b].isBottom_wall() && buildingCard.isTop_wall()) || (!buildingArea[a-1][b].isBottom_wall() && !buildingCard.isTop_wall())){		//fal-fal  vagy  üres-üres
+				return true;
+			}else{
+				return false;					
+			}
+		}else{
+			return true;
+		}
+	}
+	
+	public boolean isRighttNeighbourWallOk(BuildingCard buildingCard, int a, int b){
+		if(buildingArea[a][b+1] != null){				//van jobb szomszéd
+			if((buildingArea[a][b+1].isLeft_wall() && buildingCard.isRight_wall()) || (!buildingArea[a][b+1].isLeft_wall() && !buildingCard.isRight_wall())){		//fal-fal  vagy  üres-üres
+				return true;
+			}else{
+				return false;					
+			}
+		}else{
+			return true;
+		}
+	}
+	
+	public boolean isBottomtNeighbourWallOk(BuildingCard buildingCard, int a, int b){
+		if(buildingArea[a+1][b] != null){				//van alsó szomszéd
+			if((buildingArea[a+1][b].isTop_wall() && buildingCard.isBottom_wall()) || (!buildingArea[a+1][b].isTop_wall() && !buildingCard.isBottom_wall())){		//fal-fal  vagy  üres-üres
+				return true;
+			}else{
+				return false;					
+			}
+		}else{
+			return true;
+		}
+	}
+	
+	
+	
+	
+	
 	
 	public BuildingCard[][] getBuildingArea() {
 		return buildingArea;
