@@ -111,12 +111,6 @@ public class ClientThread extends Thread {
 					for (ClientThread clientThread : Server.clientThreadList) {
 						clientThread.sendMessage("refreshRoomList;" + elements[2]);
 					}
-					try {
-						sleep(200);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 					String playerNamesInRoom = "";
 					for(Player aktPlayer : player.getRoom().getPlayerList()){
 						playerNamesInRoom += ";"+aktPlayer.getName();
