@@ -48,6 +48,7 @@ public class ClientThread extends Thread {
 				is.close();
 				bf.close();
 				os.close();
+				Server.controller.logout(nickName);
 				return false;
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -86,14 +87,7 @@ public class ClientThread extends Thread {
 							player = aktPlayer;
 						}
 					}
-
-					String roomNamesList = ""; // szoba lista
-					for (Room room : Server.controller.getRoomList()) {
-						roomNamesList += ";" + room.getName();
-					}
-
-					sendMessage("showRoomManagerPage;" + elements[1]
-							+ roomNamesList);
+					sendMessage("showRoomManagerPage;" + elements[1]+ getAllRoomNames());
 				} else { 																	// LOGIN KÉRELEM. SIKERTELEN
 					sendMessage("showLoginPage;" + elements[1]);
 					System.out.println("login failed");
@@ -113,7 +107,11 @@ public class ClientThread extends Thread {
 						isSuccess = aktPlayer.createRoom(elements[2], Integer.parseInt(elements[3]));
 					}
 				}
-				if (isSuccess) {
+				if(isSuccess){
+					for (ClientThread clientThread : Server.clientThreadList) {
+						clientThread.sendMessage("refreshRoomList" + getAllRoomNames());
+					}
+					
 					String playerNamesInRoom = "";
 					for (Player aktPlayer : player.getRoom().getPlayerList()) {
 						playerNamesInRoom += ";" + aktPlayer.getName();
@@ -166,11 +164,10 @@ public class ClientThread extends Thread {
 				Room tmpRoom = player.getRoom();
 				player.leaveRoom();
 				
-				String roomNamesList = ""; // szoba lista
-				for (Room room : Server.controller.getRoomList()) {
-					roomNamesList += ";" + room.getName();
+				for (ClientThread clientThread : Server.clientThreadList) {
+					clientThread.sendMessage("refreshRoomList" + getAllRoomNames());
 				}
-				sendMessage("showRoomManagerPage;" + elements[1] + roomNamesList);
+				sendMessage("showRoomManagerPage;" + elements[1]);
 				
 				String playerNamesInRoom = "";
 				for (Player aktPlayer : tmpRoom.getPlayerList()) {
@@ -201,5 +198,13 @@ public class ClientThread extends Thread {
 				}
 			}
 		}
+	}
+	
+	public String getAllRoomNames(){
+		String roomNamesList = ""; // szoba lista
+		for (Room room : Server.controller.getRoomList()) {
+			roomNamesList += ";" + room.getName();
+		}
+		return roomNamesList;
 	}
 }

@@ -17,7 +17,8 @@ public class Server {
 		Socket actSocket = null;
 		
 		try {
-			serverSocket = new ServerSocket(9993);
+			serverSocket = new ServerSocket(9999);
+			serverSocket.setReuseAddress(true);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
