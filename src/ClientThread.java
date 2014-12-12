@@ -47,6 +47,7 @@ public class ClientThread extends Thread {
 				is.close();
 				bf.close();
 				os.close();
+				Server.controller.logout(nickName);
 				return false;
 			} catch (IOException e1) {
 				e1.printStackTrace();
