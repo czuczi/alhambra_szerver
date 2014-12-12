@@ -20,6 +20,7 @@ public class BuildingArea {
 		int kozeppontX = 0;
 		int kozeppontY = 0;
 		bejarhatoOldalakSzama = 0;
+		boolean lyuk = false;
 		
 		if(buildingArea[a][b] == null){		// üres a mező
 			for(int i=0; i<buildingArea.length; i++){		//kezdőmező pozíciója
@@ -110,7 +111,71 @@ public class BuildingArea {
 								return false;
 							}
 						} else{					//TETSZŐLEGES HELYRE TESSZÜK
-							if(buildingArea[a][b-1] != null || buildingArea[a][b+1] != null || buildingArea[a-1][b] != null || buildingArea[a+1][b] != null){  //van legalább egy szomszéd
+							if((b > 0 && buildingArea[a][b-1] != null) || (b < buildingArea[a].length - 1 && buildingArea[a][b+1] != null) || (a > 0 && buildingArea[a-1][b] != null) || (a < buildingArea.length - 1 && buildingArea[a+1][b] != null)){  //van legalább egy szomszéd
+								
+								
+								//a sarokban elhelyezésnél nincs lyuk
+								if(a == 0 && b == 0) {
+									lyuk = false;
+								}
+								
+								else if(a == 0 && b == buildingArea[a].length - 1) {
+									lyuk = false;
+								}
+								
+								else if(a == buildingArea.length && b == 0) {
+									lyuk = false;
+								}
+								
+								else if(a == buildingArea.length && b == buildingArea[a].length - 1) {
+									lyuk = false;
+								}
+								
+								else if(a == 0 && !(b == 0 || b == buildingArea[a].length - 1)) { //0. sorban helyezzük el
+									if(buildingArea[a+1][b] == null) {
+										if((buildingArea[a][b-1] != null || buildingArea[a+1][b-1] != null) && (buildingArea[a][b+1] != null || buildingArea[a+1][b+1] != null)) {
+											lyuk = true;
+										}
+									}
+								}
+								
+								else if(a == buildingArea.length - 1 && !(b == 0 || b == buildingArea[a].length - 1)) { //utolsó sorban helyezzük el
+									if(buildingArea[a-1][b] == null) {
+										if((buildingArea[a][b-1] != null || buildingArea[a-1][b-1] != null) && (buildingArea[a][b+1] != null || buildingArea[a-1][b+1] != null)) {
+											lyuk = true;
+										}
+									}
+								}
+								
+								else if(b == 0 && !(a == 0 || a == buildingArea.length - 1)) { //0. oszlopban helyezzük el
+									if(buildingArea[a][b+1] == null) {
+										if((buildingArea[a-1][b] != null || buildingArea[a-1][b+1] != null) && (buildingArea[a+1][b] != null || buildingArea[a+1][b+1] != null)) {
+											lyuk = true;
+										}
+									}
+								}
+								
+								else if(b == buildingArea[a].length - 1 && !(a == 0 || a == buildingArea.length - 1)) { //utolsó oszlopban helyezzük el
+									if(buildingArea[a][b-1] == null) {
+										if((buildingArea[a-1][b] != null || buildingArea[a-1][b-1] != null) && (buildingArea[a+1][b] != null || buildingArea[a+1][b-1] != null)) {
+											lyuk = true;
+										}
+									}
+								}
+								
+								else {
+									if(buildingArea[a+1][b] == null && buildingArea[a-1][b] == null) {
+										if((buildingArea[a-1][b-1] != null || buildingArea[a][b-1] != null || buildingArea[a+1][b-1] != null) && (buildingArea[a-1][b+1] != null || buildingArea[a][b+1] != null || buildingArea[a+1][b+1] != null)) {
+											lyuk = true;
+										}
+									}
+									if(buildingArea[a][b+1] == null && buildingArea[a][b-1] == null) {
+										if((buildingArea[a-1][b-1] != null || buildingArea[a-1][b] != null || buildingArea[a-1][b+1] != null) && (buildingArea[a+1][b-1] != null || buildingArea[a+1][b] != null || buildingArea[a+1][b+1] != null)) {
+											lyuk = true;
+										}
+									}
+								}
+								
 								if(!isToptNeighbourWallOk(buildingCard, a, b)){		//lehelyezendő lap fölött van szomszéd és jó a fal
 									return false;
 								} else{
@@ -124,7 +189,7 @@ public class BuildingArea {
 												return false;
 											} else{
 												if(bejarhatoOldalakSzama != 0){			//van olyan szoszédja amelyen át elérhető a start mezőről
-													return true;
+													return true && !lyuk;
 												} else{
 													return false;
 												}
