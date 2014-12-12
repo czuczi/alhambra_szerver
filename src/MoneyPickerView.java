@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -5,10 +6,12 @@ public class MoneyPickerView {
 	
 	private List<MoneyCard> moneyCards;
 	
+	public MoneyPickerView() {
+		moneyCards = new LinkedList<>();
+	}
+
 	public void removeMoneyCard(MoneyCard mc) {
-		
-		MoneyCard money = mc;
-		moneyCards.remove(money);
+		moneyCards.remove(mc);
 	}
 	
 	public boolean refillMoney(MoneyDeck deck) {
