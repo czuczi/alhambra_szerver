@@ -19,6 +19,7 @@ public class ClientThread extends Thread {
 	private String requestName;
 
 	private String nickName;
+	private Player player;
 
 	public ClientThread(Socket mySocket) {
 		this.mySocket = mySocket;
@@ -30,7 +31,7 @@ public class ClientThread extends Thread {
 
 	public void sendMessage(String message) {
 		try {
-			os.writeBytes(message+"\n");
+			os.writeBytes(message + "\n");
 			os.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -57,7 +58,7 @@ public class ClientThread extends Thread {
 
 	@Override
 	public void run() {
-		
+
 		try {
 			is = mySocket.getInputStream();
 			bf = new BufferedReader(new InputStreamReader(is));
@@ -67,99 +68,123 @@ public class ClientThread extends Thread {
 		}
 
 		while (true) {
-			if(!recieveMessage(bf)){
+			if (!recieveMessage(bf)) {
 				break;
 			}
 			String[] elements = interaction.split(";");
 			requestName = elements[0];
 			switch (requestName) {
-			
+
 			case "login":
-				if (Server.controller.login(elements[2])) {										//LOGIN KÉRELEM. SIKERES
+				if (Server.controller.login(elements[2])) { 								// LOGIN KÉRELEM.SIKERES
 					System.out.println("login success");
 					nickName = elements[2].toString();
-					
-					String roomNamesList = "";	//szoba lista
-					for(Room room : Server.controller.getRoomList()){
-						roomNamesList += ";"+room.getName();
+
+					player = null;
+					for (Player aktPlayer : Server.controller.getPlayerList()) {
+						if (aktPlayer.getName().equals(nickName)) {
+							player = aktPlayer;
+						}
 					}
-					
-					sendMessage("showRoomManagerPage;" + elements[1] +roomNamesList);
-				} else {																		//LOGIN KÉRELEM. SIKERTELEN
+
+					String roomNamesList = ""; // szoba lista
+					for (Room room : Server.controller.getRoomList()) {
+						roomNamesList += ";" + room.getName();
+					}
+
+					sendMessage("showRoomManagerPage;" + elements[1]
+							+ roomNamesList);
+				} else { 																	// LOGIN KÉRELEM. SIKERTELEN
 					sendMessage("showLoginPage;" + elements[1]);
 					System.out.println("login failed");
 				}
 				break;
-				
-			case "logout":																		//LOGOUT
+
+			case "logout": 																	// LOGOUT
 				System.out.println("logout success");
 				Server.controller.logout(nickName);
 				sendMessage("showLoginPage;" + elements[1]);
 				break;
-				
-			case "newRoom":																		//NEW ROOM
+
+			case "newRoom": 																// NEW ROOM
 				boolean isSuccess = false;
-				Player player = null;
-				for(Player aktPlayer : Server.controller.getPlayerList()){
-					if(aktPlayer.getName().equals(nickName)){
+				for (Player aktPlayer : Server.controller.getPlayerList()) {
+					if (aktPlayer.getName().equals(nickName)) {
 						isSuccess = aktPlayer.createRoom(elements[2], Integer.parseInt(elements[3]));
-						player = aktPlayer;
 					}
 				}
-				if(isSuccess){
+				if (isSuccess) {
 					String playerNamesInRoom = "";
-					for(Player aktPlayer : player.getRoom().getPlayerList()){
-						playerNamesInRoom += ";"+aktPlayer.getName();
+					for (Player aktPlayer : player.getRoom().getPlayerList()) {
+						playerNamesInRoom += ";" + aktPlayer.getName();
 					}
-					sendMessage("showRoomPage;"+elements[1]+playerNamesInRoom);
-				} else{
-					sendMessage("showRoomManagerPage;"+elements[1]+";newRoom");
+					sendMessage("showRoomPage;" + elements[1]+ playerNamesInRoom);
+				} else {
+					sendMessage("showRoomManagerPage;" + elements[1]+ ";newRoom");
 				}
 				break;
-				
+
 			case "joinRoom":
 				isSuccess = false;
-				player = null;
-				for(Player aktPlayer : Server.controller.getPlayerList()){
-					if(aktPlayer.getName().equals(nickName)){
+				for (Player aktPlayer : Server.controller.getPlayerList()) {
+					if (aktPlayer.getName().equals(nickName)) {
 						isSuccess = aktPlayer.joinRoom(nickName, elements[2]);
-						player = aktPlayer;
 					}
 				}
-				if(isSuccess){
+				if (isSuccess) {
 					String playerNamesInRoom = "";
-					for(Player aktPlayer : player.getRoom().getPlayerList()){
-						playerNamesInRoom += ";"+aktPlayer.getName();
+					for (Player aktPlayer : player.getRoom().getPlayerList()) {
+						playerNamesInRoom += ";" + aktPlayer.getName();
 					}
 
-					for(Player aktPlayer : Server.controller.getPlayerList()){
-						if(aktPlayer.getName().equals(nickName)){
-							for(Player playerInRoom : aktPlayer.getRoom().getPlayerList()) {
-								for (ClientThread clientThread : Server.clientThreadList) {
-									if(clientThread.getNickName().equals(playerInRoom.getName())) {
-										if(clientThread.getNickName().equals(nickName)){
-											clientThread.sendMessage("showRoomPage;"+elements[1]+playerNamesInRoom);
-										} else{
-											clientThread.sendMessage("showRoomPage;RoomPage"+playerNamesInRoom);
-										}
-										try {
-											this.sleep(200);
-										} catch (InterruptedException e) {
-											e.printStackTrace();
-										}
-										if(playerInRoom.getRoom().getMaxNumber() == playerInRoom.getRoom().getPlayerList().size()){
-											clientThread.sendMessage("showGameTablePage;" + elements[1]);
-										}
-									}
+					for (Player playerInRoom : player.getRoom().getPlayerList()) {
+						for (ClientThread clientThread : Server.clientThreadList) {
+							if (clientThread.getNickName().equals(playerInRoom.getName())) {
+								if (clientThread.getNickName().equals(nickName)) {
+									clientThread.sendMessage("showRoomPage;"+ elements[1] + playerNamesInRoom);
+								} else {
+									clientThread.sendMessage("showRoomPage;RoomPage"+ playerNamesInRoom);
+								}
+								try {
+									this.sleep(200);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								if (playerInRoom.getRoom().getMaxNumber() == playerInRoom.getRoom().getPlayerList().size()) {
+									clientThread.sendMessage("showGameTablePage;"+ elements[1]);
 								}
 							}
 						}
 					}
-				} else{
-					sendMessage("showRoomManagerPage;"+elements[1] + ";joinRoom");
+
+				} else {
+					sendMessage("showRoomManagerPage;" + elements[1]+ ";joinRoom");
 				}
 				break;
+
+			case "leaveRoom":																			//SZOBA ELHAGYÁS KÉRELEM
+				Room tmpRoom = player.getRoom();
+				player.leaveRoom();
 				
+				String roomNamesList = ""; // szoba lista
+				for (Room room : Server.controller.getRoomList()) {
+					roomNamesList += ";" + room.getName();
+				}
+				sendMessage("showRoomManagerPage;" + elements[1] + roomNamesList);
+				
+				String playerNamesInRoom = "";
+				for (Player aktPlayer : tmpRoom.getPlayerList()) {
+					playerNamesInRoom += ";" + aktPlayer.getName();
+				}
+				for(Player aktPlayer : tmpRoom.getPlayerList()){
+					for(ClientThread clientThread : Server.clientThreadList){
+						if(aktPlayer.getName().equals(clientThread.getNickName())){
+							clientThread.sendMessage("showRoomPage;" + elements[1] + playerNamesInRoom);
+						}
+					}
+				}
+				break;
+
 			default:
 				break;
 			}
@@ -167,4 +192,14 @@ public class ClientThread extends Thread {
 
 	}
 
+	public void broadcastForAllPlayersInRoom(String message) {
+		
+		for (Player playerInRoom : player.getRoom().getPlayerList()) {
+			for (ClientThread clientThread : Server.clientThreadList) {
+				if (clientThread.getNickName().equals(playerInRoom.getName())) {
+					clientThread.sendMessage(message);
+				}
+			}
+		}
+	}
 }

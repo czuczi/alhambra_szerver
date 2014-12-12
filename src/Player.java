@@ -53,7 +53,15 @@ public class Player {
 	}
 	
 	public void leaveRoom(){
-		
+		this.room.getPlayerList().remove(this);
+		if(this.room.getPlayerList().isEmpty()){
+			for(Room aktRoom : Server.controller.getRoomList()){
+				if(aktRoom.getName().equals(this.getRoom().getName())){
+					Server.controller.getRoomList().remove(aktRoom);
+				}
+			}
+		}
+		this.room = null;
 	}
 	
 	public MoneyCard pickMoneyCard(){
