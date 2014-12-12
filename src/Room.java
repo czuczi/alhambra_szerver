@@ -34,6 +34,10 @@ public class Room {
 	}
 	
 	public void startGame() {
-		//létrehozol egy game-et, meghívjuk a metódusait
+		Game game = new Game(this);
+		game.initGameAttributes();
+		game.giveMoneyToPlayer();
+		
+		Server.controller.getGameList().add(game);
 	}
 }

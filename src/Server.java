@@ -9,6 +9,7 @@ import java.util.List;
 public class Server {
 	
 	public static Controller controller = new Controller();
+	public static List<ClientThread> clientThreadList = new LinkedList<>();
 	
 	public static void main(String[] args) {
 		
@@ -16,7 +17,7 @@ public class Server {
 		Socket actSocket = null;
 		
 		try {
-			serverSocket = new ServerSocket(9992);
+			serverSocket = new ServerSocket(9993);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -27,8 +28,9 @@ public class Server {
 		{
 			try {
 				actSocket = serverSocket.accept();
-				new ClientThread(actSocket).start();
-					
+				ClientThread clientThread = new ClientThread(actSocket);
+				clientThread.start();
+				clientThreadList.add(clientThread);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} 

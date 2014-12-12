@@ -24,6 +24,10 @@ public class ClientThread extends Thread {
 		this.mySocket = mySocket;
 	}
 
+	public String getNickName() {
+		return nickName;
+	}
+
 	public void sendMessage(String message) {
 		try {
 			os.writeBytes(message+"\n");
@@ -113,7 +117,7 @@ public class ClientThread extends Thread {
 				}
 				break;
 				
-			case "connectRoom":
+			case "joinRoom":
 				isSuccess = false;
 				player = null;
 				for(Player aktPlayer : Server.controller.getPlayerList()){
@@ -127,7 +131,30 @@ public class ClientThread extends Thread {
 					for(Player aktPlayer : player.getRoom().getPlayerList()){
 						playerNamesInRoom += ";"+aktPlayer.getName();
 					}
-					sendMessage("showRoomPage;"+elements[1]+playerNamesInRoom);
+
+					for(Player aktPlayer : Server.controller.getPlayerList()){
+						if(aktPlayer.getName().equals(nickName)){
+							for(Player playerInRoom : aktPlayer.getRoom().getPlayerList()) {
+								for (ClientThread clientThread : Server.clientThreadList) {
+									if(clientThread.getNickName().equals(playerInRoom.getName())) {
+										if(clientThread.getNickName().equals(nickName)){
+											clientThread.sendMessage("showRoomPage;"+elements[1]+playerNamesInRoom);
+										} else{
+											clientThread.sendMessage("showRoomPage;RoomPage"+playerNamesInRoom);
+										}
+										try {
+											this.sleep(200);
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+										}
+										if(playerInRoom.getRoom().getMaxNumber() == playerInRoom.getRoom().getPlayerList().size()){
+											clientThread.sendMessage("showGameTablePage;" + elements[1]);
+										}
+									}
+								}
+							}
+						}
+					}
 				} else{
 					sendMessage("showRoomManagerPage;"+elements[1] + ";joinRoom");
 				}
