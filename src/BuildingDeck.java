@@ -18,10 +18,7 @@ public class BuildingDeck {
 	
 	public boolean canRemoveBuildingCard() {
 		
-		if(deck.size() > 0)
-			return true;
-		else
-			return false;
+		return !deck.isEmpty();
 	}
 	
 	public List<BuildingCard> getDeck() {

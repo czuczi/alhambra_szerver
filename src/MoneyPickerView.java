@@ -5,14 +5,10 @@ public class MoneyPickerView {
 	
 	private List<MoneyCard> moneyCards;
 	
-	//biztos vissza kell adni az mc-t?
-	
-	public MoneyCard removeMoneyCard(MoneyCard mc) {
+	public void removeMoneyCard(MoneyCard mc) {
 		
 		MoneyCard money = mc;
 		moneyCards.remove(money);
-		
-		return money;
 	}
 	
 	public boolean refillMoney(MoneyDeck deck) {

@@ -130,6 +130,9 @@ public class ClientThread extends Thread {
 					}
 				}
 				if (isSuccess) {
+					if(player.getRoom().getMaxNumber() == player.getRoom().getPlayerList().size()) {
+						player.getRoom().startGame();
+					}
 					String playerNamesInRoom = "";
 					for (Player aktPlayer : player.getRoom().getPlayerList()) {
 						playerNamesInRoom += ";" + aktPlayer.getName();
