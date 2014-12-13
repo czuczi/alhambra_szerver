@@ -11,6 +11,7 @@ public class Controller {
 	public Controller() {
 		playerList = new LinkedList<>();
 		roomList = new LinkedList<>();
+		gameList = new LinkedList<>();
 	}
 	
 	public List<Player> getPlayerList() {

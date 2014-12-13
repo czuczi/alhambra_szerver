@@ -1,4 +1,5 @@
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -7,6 +8,8 @@ public class MoneyDeck {
 	private List<MoneyCard> deck;
 
 	public void createMoneyDeck() {
+		
+		deck = new LinkedList<>();
 		
 		for(int j = 0; j < 3; j++)
 		{
