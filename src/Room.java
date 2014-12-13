@@ -36,7 +36,6 @@ public class Room {
 	public void startGame() {
 		Game game = new Game(this);
 		game.initGameAttributes();
-		game.giveMoneyToPlayer();
 		
 		Server.controller.getGameList().add(game);
 	}

@@ -130,8 +130,17 @@ public class ClientThread extends Thread {
 					}
 				}
 				if (isSuccess) {
+					Game newGame = null;
+					String currentPlayer="";
 					if(player.getRoom().getMaxNumber() == player.getRoom().getPlayerList().size()) {
 						player.getRoom().startGame();
+						
+						for(Game aktGame : Server.controller.getGameList()){
+							if(aktGame.getRoom().getName().equals(player.getRoom().getName())){
+								newGame = aktGame;
+								break;
+							}
+						}
 					}
 					String playerNamesInRoom = "";
 					for (Player aktPlayer : player.getRoom().getPlayerList()) {
@@ -147,6 +156,7 @@ public class ClientThread extends Thread {
 									clientThread.sendMessage("showRoomPage;RoomPage"+ playerNamesInRoom);
 								}
 								if (playerInRoom.getRoom().getMaxNumber() == playerInRoom.getRoom().getPlayerList().size()) {
+									clientThread.player.setGame(newGame);
 									clientThread.sendMessage("showGameTablePage;RoomPage");
 								}
 							}
@@ -178,6 +188,18 @@ public class ClientThread extends Thread {
 						}
 					}
 				}
+				break;
+				
+			case "amIActPlayer":
+				System.out.println(player.getName());
+				System.out.println(player.getGame().getActPlayerIndex());
+				if(player.getGame().getPlayersOrder().get(player.getGame().getActPlayerIndex()).getName().equals(nickName)){
+					sendMessage("isActPlayer;yes");
+				}else{
+					sendMessage("isActPlayer;no");
+				}
+				
+				
 				break;
 
 			default:
