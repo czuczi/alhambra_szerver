@@ -144,7 +144,15 @@ public class BuildingArea {
 		}	
 	}
 	
-	public boolean canRemoveBuildingCard(){
+	public boolean canRemoveBuildingCard(int a, int b){
+		
+		BuildingCard buildingCard = buildingArea[a][b];
+		
+		if(buildingArea[a][b-1] == null || buildingArea[a][b+1] == null || buildingArea[a-1][b] == null || buildingArea[a+1][b] == null){ //van legalább egy üres oldala(ha kivesszük, nem lesz lyuk)
+			
+		} else{
+			return false;
+		}
 		
 		return false;
 		
