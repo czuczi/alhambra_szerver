@@ -268,7 +268,7 @@ public class BuildingArea {
 					bejart.add(tmp.getId());
 					vizsgalando.remove(tmp);
 				} else {
-					if (vizsgalandoLapY == buildingArea[0].length) { 			// jobb felső sarok
+					if (vizsgalandoLapY == buildingArea[0].length - 1) { 			// jobb felső sarok
 						fillMoveToBottom(tmp, vizsgalandoLapX, vizsgalandoLapY);
 						fillMoveToLeft(tmp, vizsgalandoLapX, vizsgalandoLapY);
 						bejart.add(tmp.getId());
@@ -282,8 +282,8 @@ public class BuildingArea {
 					}
 				}
 			} else {
-				if (vizsgalandoLapY == buildingArea[0].length) { 			// ha jobb szélső sor
-					if (vizsgalandoLapX == buildingArea.length) { 			// jobb alsósarok
+				if (vizsgalandoLapY == buildingArea[0].length - 1) { 			// ha jobb szélső sor
+					if (vizsgalandoLapX == buildingArea.length - 1) { 			// jobb alsósarok
 						fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY);
 						fillMoveToLeft(tmp, vizsgalandoLapX, vizsgalandoLapY);
 						bejart.add(tmp.getId());
@@ -296,7 +296,7 @@ public class BuildingArea {
 						vizsgalando.remove(tmp);
 					}
 				} else {
-					if (vizsgalandoLapX == buildingArea.length) { 					// ha legalsó sor
+					if (vizsgalandoLapX == buildingArea.length - 1) { 					// ha legalsó sor
 						if (vizsgalandoLapY == 0) { 								// bal alsó sarok
 							fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY);
 							fillMoveToRight(tmp, vizsgalandoLapX,vizsgalandoLapY);
