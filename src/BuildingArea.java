@@ -233,7 +233,7 @@ public class BuildingArea {
 				;
 		} else
 			;
-		buildingArea[a][b] = null; 								// eltávolítás(HA NEM JÓ, VISSZATESSZÜK)
+		buildingArea[a][b] = null; 								// eltávolítás(MINDIG VISSZATESSZÜK)
 
 		for (int i = 0; i < buildingArea.length; i++) { 				// kezdőmező pozíciója
 			for (int j = 0; j < buildingArea[i].length; j++) {
@@ -337,9 +337,11 @@ public class BuildingArea {
 				}
 			}
 		}
+		
+		buildingArea[a][b] = buildingCard; 					// visszatesszük
+		
 		if (bejart.size() < buildingCounter) { 				// ha kevesebbet jártunk be mint
 															// ahány van
-			buildingArea[a][b] = buildingCard; 				// visszatesszük
 			return false;
 		} else {
 			return true;
