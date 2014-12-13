@@ -138,6 +138,7 @@ public class ClientThread extends Thread {
 						for(Game aktGame : Server.controller.getGameList()){
 							if(aktGame.getRoom().getName().equals(player.getRoom().getName())){
 								newGame = aktGame;
+								newGame.setActPlayer(newGame.getNextPlayer());
 								break;
 							}
 						}
@@ -192,8 +193,7 @@ public class ClientThread extends Thread {
 				
 			case "amIActPlayer":
 				System.out.println(player.getName());
-				System.out.println(player.getGame().getActPlayerIndex());
-				if(player.getGame().getPlayersOrder().get(player.getGame().getActPlayerIndex()).getName().equals(nickName)){
+				if(player.getGame().getActPlayer().getName().equals(nickName)){
 					sendMessage("isActPlayer;yes");
 				}else{
 					sendMessage("isActPlayer;no");

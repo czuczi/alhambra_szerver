@@ -9,6 +9,7 @@ public class Game {
 	private MoneyPickerView moneyPickerView;
 	private LinkedList<Player> playersOrder;
 	private int actPlayerIndex;
+	private Player actPlayer;
 
 	public Game(Room room) {
 		this.room = room;
@@ -32,6 +33,15 @@ public class Game {
 
 	public BuildingMarket getBuildingMarket() {
 		return buildingMarket;
+	}
+	
+	
+	public Player getActPlayer() {
+		return actPlayer;
+	}
+
+	public void setActPlayer(Player actPlayer) {
+		this.actPlayer = actPlayer;
 	}
 
 	public void initGameAttributes() {
