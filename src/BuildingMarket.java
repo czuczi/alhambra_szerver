@@ -15,7 +15,7 @@ public class BuildingMarket {
 	}
 	
 	//sdd 
-	public void removeBuldingCard(BuildingCard bc){
+	public void removeBuildingCard(BuildingCard bc){
 		
 		for(String k : buildingMarket.keySet())
 		{

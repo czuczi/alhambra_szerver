@@ -68,16 +68,37 @@ public class Player {
 		moneyCards.add(moneyCard);
 	}
 	
-	public boolean rebuildAlhambraAdd(){
-		return false;
+	public boolean rebuildAlhambraAdd(BuildingCard buildingCard, int a, int b){
+		if(buildingArea.canAddBuildingCard(buildingCard, a, b)) {
+			buildingArea.addBuildingCard(buildingCard, a, b);
+			storageArea.removeBuildingCard(buildingCard);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
-	public boolean rebuildAlhambraRemove(){
-		return false;
+	public boolean rebuildAlhambraRemove(int a, int b){
+		if(buildingArea.canRemoveBuildingCard(a, b)) {
+			storageArea.addBuildingCard(buildingArea.getBuildingArea()[a][b]);
+			buildingArea.removeBuildingCard(a, b);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
-	public boolean rebuildAlhambraSwitch(){
-		return false;
+	public boolean rebuildAlhambraSwitch(BuildingCard buildingCard, int a, int b){
+		BuildingCard cardSeged = buildingArea.getBuildingArea()[a][b].clone();
+		buildingArea.removeBuildingCard(a, b);
+		if(buildingArea.canAddBuildingCard(buildingCard, a, b)) {
+			buildingArea.addBuildingCard(buildingCard, a, b);
+			storageArea.removeBuildingCard(buildingCard);
+			return true;
+		} else {
+			buildingArea.getBuildingArea()[a][b] = cardSeged;
+			return false;
+		}
 	}
 	
 	public boolean buyBuildingCardToStorageArea(BuildingCard buildingCard){
@@ -97,7 +118,7 @@ public class Player {
 			return false;
 		} else {
 			storageArea.addBuildingCard(buildingCard);
-			game.getBuildingMarket().removeBuldingCard(buildingCard);
+			game.getBuildingMarket().removeBuildingCard(buildingCard);
 			return true;
 		}
 	}
@@ -120,7 +141,7 @@ public class Player {
 		} else {
 			if(buildingArea.canAddBuildingCard(buildingCard, a, b)) {
 				buildingArea.addBuildingCard(buildingCard, a, b);
-				game.getBuildingMarket().removeBuldingCard(buildingCard);
+				game.getBuildingMarket().removeBuildingCard(buildingCard);
 				return true;
 			} else {
 				return false;
