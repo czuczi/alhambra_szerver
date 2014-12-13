@@ -25,7 +25,7 @@ public class BuildingMarket {
 				String key = k;
 				buildingMarket.remove(k);
 				buildingMarket.put(key, null);
-				
+				return;
 			}
 		}
 		
@@ -37,6 +37,7 @@ public class BuildingMarket {
 		{
 			if(buildingMarket.get(k) == null){			//ha van üres hely
 				if(bd.canRemoveBuildingCard()){			//és tudok húzni
+					buildingMarket.remove(k);
 					buildingMarket.put(k, bd.removeBuildingCard());
 					return true;
 				}else{							//nem tudok húzni ---> vége a játéknak
