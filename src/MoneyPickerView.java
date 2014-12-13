@@ -30,4 +30,14 @@ public class MoneyPickerView {
 		else 
 			return false;
 	}
+
+	public List<MoneyCard> getMoneyCards() {
+		return moneyCards;
+	}
+
+	public void setMoneyCards(List<MoneyCard> moneyCards) {
+		this.moneyCards = moneyCards;
+	}
+	
+	
  }
