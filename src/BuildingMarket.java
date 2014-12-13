@@ -32,16 +32,20 @@ public class BuildingMarket {
 	}
 	
 	
-	//elfogyott a lap vagy csak simán nem vett épületlapot a falsra?
-	//nem jó még
+
 	public boolean refillBuildingCard(BuildingDeck bd){
 		
 		for(String k : buildingMarket.keySet())
 		{
-			if(buildingMarket.get(k) == null && bd.canRemoveBuildingCard())
-			{
-				buildingMarket.put(k, bd.removeBuildingCard());
-				
+			if(buildingMarket.get(k) == null){			//ha van üres hely
+				if(bd.canRemoveBuildingCard()){			//és tudok húzni
+					buildingMarket.put(k, bd.removeBuildingCard());
+					return true;
+				}else{							//nem tudok húzni ---> vége a játéknak
+					return false;
+				}
+			}else{
+				return true;
 			}
 			
 		}
