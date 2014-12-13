@@ -5,15 +5,14 @@ public class Player {
 
 	private String name;
 	private int score;
-	private BuildingMarket buildingMarket;
 	private StorageArea storageArea;
 	private BuildingArea buildingArea;
 	private List<MoneyCard> moneyCards;
 	private Room room;
+	private Game game;
 	
 	public Player(String name) {
 		this.name = name;
-		buildingMarket = new BuildingMarket();
 		storageArea = new StorageArea();
 		buildingArea = new BuildingArea();
 		moneyCards = new LinkedList<>();
@@ -64,8 +63,9 @@ public class Player {
 		this.room = null;
 	}
 	
-	public MoneyCard pickMoneyCard(){
-		return null;
+	public void pickMoneyCard(MoneyCard moneyCard){
+		game.getMoneyPickerView().removeMoneyCard(moneyCard);
+		moneyCards.add(moneyCard);
 	}
 	
 	public boolean rebuildAlhambraAdd(){
@@ -80,12 +80,52 @@ public class Player {
 		return false;
 	}
 	
-	public boolean buyBuildingCardToStorageArea(){
-		return false;
+	public boolean buyBuildingCardToStorageArea(BuildingCard buildingCard){
+		int moneyInGivenType = 0;
+		String moneyType = null;
+		for (String type : game.getBuildingMarket().getBuildingMarket().keySet()) {
+			if(game.getBuildingMarket().getBuildingMarket().get(type).equals(buildingCard)) {
+				moneyType = type;
+			}
+		}
+		for (MoneyCard moneyCard : moneyCards) {
+			if(moneyCard.getType().equals(moneyType)) {
+				moneyInGivenType += moneyCard.getValue();
+			}
+		}
+		if(moneyInGivenType < buildingCard.getValue()) {
+			return false;
+		} else {
+			storageArea.addBuildingCard(buildingCard);
+			game.getBuildingMarket().removeBuldingCard(buildingCard);
+			return true;
+		}
 	}
 	
-	public boolean buyBuildingCardToAlhambra(){
-		return false;
+	public boolean buyBuildingCardToAlhambra(BuildingCard buildingCard, int a, int b){
+		int moneyInGivenType = 0;
+		String moneyType = null;
+		for (String type : game.getBuildingMarket().getBuildingMarket().keySet()) {
+			if(game.getBuildingMarket().getBuildingMarket().get(type).equals(buildingCard)) {
+				moneyType = type;
+			}
+		}
+		for (MoneyCard moneyCard : moneyCards) {
+			if(moneyCard.getType().equals(moneyType)) {
+				moneyInGivenType += moneyCard.getValue();
+			}
+		}
+		if(moneyInGivenType < buildingCard.getValue()) {
+			return false;
+		} else {
+			if(buildingArea.canAddBuildingCard(buildingCard, a, b)) {
+				buildingArea.addBuildingCard(buildingCard, a, b);
+				game.getBuildingMarket().removeBuldingCard(buildingCard);
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 
 	public String getName() {
@@ -94,10 +134,6 @@ public class Player {
 
 	public int getScore() {
 		return score;
-	}
-
-	public BuildingMarket getBuildingMarket() {
-		return buildingMarket;
 	}
 
 	public StorageArea getStorageArea() {
@@ -114,6 +150,14 @@ public class Player {
 
 	public Room getRoom() {
 		return room;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
 	}
 	
 }

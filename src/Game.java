@@ -1,11 +1,11 @@
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 public class Game {
 	private Room room;
 	private MoneyDeck moneyDeck;
 	private BuildingDeck buildingDeck;
+	private BuildingMarket buildingMarket;
 	private MoneyPickerView moneyPickerView;
 	private LinkedList<Player> playersOrder;
 	private int actPlayerIndex;
@@ -30,6 +30,10 @@ public class Game {
 		return moneyPickerView;
 	}
 
+	public BuildingMarket getBuildingMarket() {
+		return buildingMarket;
+	}
+
 	public void initGameAttributes() {
 		buildingDeck = new BuildingDeck();
 		moneyDeck = new MoneyDeck();
@@ -46,6 +50,7 @@ public class Game {
 
 		for (Player player : room.getPlayerList()) {
 			playersOrder.add(player);
+			player.setGame(this);
 		}
 
 		int[] amountOfCards = new int[playersOrder.size()];

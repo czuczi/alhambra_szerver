@@ -146,11 +146,6 @@ public class ClientThread extends Thread {
 								} else {
 									clientThread.sendMessage("showRoomPage;RoomPage"+ playerNamesInRoom);
 								}
-								try {
-									this.sleep(200);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
 								if (playerInRoom.getRoom().getMaxNumber() == playerInRoom.getRoom().getPlayerList().size()) {
 									clientThread.sendMessage("showGameTablePage;RoomPage");
 								}
