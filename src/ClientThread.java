@@ -191,22 +191,25 @@ public class ClientThread extends Thread {
 				}
 				break;
 				
-			case "amIActPlayer":
+			case "amIActPlayer":		//KI AZ AKTUÁLIS JÁTÉKOS
 				System.out.println(player.getName());
 				if(player.getGame().getActPlayer().getName().equals(nickName)){
 					sendMessage("isActPlayer;yes");
 				}else{
 					sendMessage("isActPlayer;no");
 				}
-				//
-				String playerMoneyCards ="";
-				for(MoneyCard aktMoneyCard : player.getMoneyCards()){
-					playerMoneyCards += ";"+aktMoneyCard.getType()+";"+aktMoneyCard.getValue();
-				}
-				sendMessage("yourMoneyCards;"+player.getMoneyCards().size()+playerMoneyCards);
-				
 				break;
 
+			case "tableAttributesRefresh":
+				//player money
+				sendMessage("yourMoneyCards"+getPlayerMoneyCardForSend());
+				
+				//moneyPickerView
+				sendMessage("moneyPickerViewCards"+getMoneyPickerViewCardsForSend());
+				
+				//buildingMarket
+				sendMessage("buildingMarketCards"+getBuildingMarketCardsForSend());
+				
 			default:
 				break;
 			}
@@ -231,5 +234,33 @@ public class ClientThread extends Thread {
 			roomNamesList += ";" + room.getName();
 		}
 		return roomNamesList;
+	}
+	
+	public String getPlayerMoneyCardForSend(){
+		String playerMoneyCards ="";
+		for(MoneyCard aktMoneyCard : player.getMoneyCards()){
+			playerMoneyCards += ";"+aktMoneyCard.getType()+";"+aktMoneyCard.getValue();
+		}
+		return playerMoneyCards;
+	}
+	
+	public String getMoneyPickerViewCardsForSend(){
+		String moneyPickerViewCards = "";
+		for(MoneyCard aktMoneyCard : player.getGame().getMoneyPickerView().getMoneyCards()){
+			moneyPickerViewCards += ";" + aktMoneyCard.getType() + ";" + aktMoneyCard.getValue();
+		}
+		return moneyPickerViewCards;
+	}
+	
+	public String getBuildingMarketCardsForSend(){
+		String buildingMarketCards = "";
+		List<BuildingCard> buildingCards = new LinkedList<>();
+		for(String k : player.getGame().getBuildingMarket().getBuildingMarket().keySet()){
+			buildingCards.add(player.getGame().getBuildingMarket().getBuildingMarket().get(k));	
+		}	
+		for(BuildingCard aktBuildingCard : buildingCards){
+			buildingMarketCards += ";"+aktBuildingCard.getImage();
+		}
+		return buildingMarketCards;
 	}
 }

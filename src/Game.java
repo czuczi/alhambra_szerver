@@ -46,11 +46,13 @@ public class Game {
 
 	public void initGameAttributes() {
 		buildingDeck = new BuildingDeck();
+		buildingMarket = new BuildingMarket();
 		moneyDeck = new MoneyDeck();
 		moneyPickerView = new MoneyPickerView();
 		playersOrder = new LinkedList<>();
 
 		buildingDeck.createBuildingDeck();
+		buildingMarket.refillBuildingCard(buildingDeck);
 		moneyDeck.createMoneyDeck();
 
 		giveMoneyToPlayer();
