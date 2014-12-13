@@ -34,6 +34,7 @@ public class Game {
 		buildingDeck = new BuildingDeck();
 		moneyDeck = new MoneyDeck();
 		moneyPickerView = new MoneyPickerView();
+		playersOrder = new LinkedList<>();
 
 		buildingDeck.createBuildingDeck();
 		moneyDeck.createMoneyDeck();
