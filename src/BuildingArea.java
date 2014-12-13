@@ -11,7 +11,7 @@ public class BuildingArea {
 	
 	
 	public BuildingArea() {
-		this.buildingArea = new BuildingCard [5][5];
+		this.buildingArea = new BuildingCard [21][21];
 	}
 
 	public void addBuildingCard(BuildingCard buildingCard, int a, int b){
@@ -346,21 +346,6 @@ public class BuildingArea {
 		}
 	}
 	
-	public void extendAreaTop(){
-		
-	}
-	
-	public void extendAreaBottom(){
-		
-	}
-	
-	public void extendAreaLeft(){
-		
-	}
-	
-	public void extendAreaRight(){
-		
-	}
 	
 	public boolean isLeftNeighbourWallOk(BuildingCard buildingCard, int a, int b){
 		if(buildingArea[a][b-1] != null){				//van baloldali szomszéd
