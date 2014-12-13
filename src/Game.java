@@ -78,6 +78,7 @@ public class Game {
 		for (int i = 0; i < amountOfCards.length; i++) {
 			if (amountOfCards[i] == minAmountOfCards) {
 				minDB++;
+				starter = playersOrder.get(i);
 			}
 		}
 
