@@ -15,25 +15,25 @@ public class MoneyDeck {
 		{
 			for(int i = 0; i < 9; i++)
 			{
-				MoneyCard mc = new MoneyCard("Denar", i+1);
+				MoneyCard mc = new MoneyCard("blue", i+1);
 				deck.add(mc);
 			}
 			
 			for(int i = 0; i < 9; i++)
 			{
-				MoneyCard mc = new MoneyCard("Dirham", i+1);
+				MoneyCard mc = new MoneyCard("green", i+1);
 				deck.add(mc);
 			}
 			
 			for(int i = 0; i < 9; i++)
 			{
-				MoneyCard mc = new MoneyCard("Dukat", i+1);
+				MoneyCard mc = new MoneyCard("orange", i+1);
 				deck.add(mc);
 			}
 			
 			for(int i = 0; i < 9; i++)
 			{
-				MoneyCard mc = new MoneyCard("Gulden", i+1);
+				MoneyCard mc = new MoneyCard("yellow", i+1);
 				deck.add(mc);
 			}
 		}

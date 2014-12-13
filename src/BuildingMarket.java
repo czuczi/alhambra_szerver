@@ -8,10 +8,10 @@ public class BuildingMarket {
 
 	public BuildingMarket() {
 		this.buildingMarket = new HashMap<>();
-		buildingMarket.put("Denar", null);
-		buildingMarket.put("Dirham", null);
-		buildingMarket.put("Dukat", null);
-		buildingMarket.put("Gulden", null);
+		buildingMarket.put("blue", null);
+		buildingMarket.put("green", null);
+		buildingMarket.put("orange", null);
+		buildingMarket.put("yellow", null);
 	}
 	
 	//sdd 
