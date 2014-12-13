@@ -198,7 +198,12 @@ public class ClientThread extends Thread {
 				}else{
 					sendMessage("isActPlayer;no");
 				}
-				
+				//
+				String playerMoneyCards ="";
+				for(MoneyCard aktMoneyCard : player.getMoneyCards()){
+					playerMoneyCards += ";"+aktMoneyCard.getType()+";"+aktMoneyCard.getValue();
+				}
+				sendMessage("yourMoneyCards;"+player.getMoneyCards().size()+playerMoneyCards);
 				
 				break;
 
