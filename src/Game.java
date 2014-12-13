@@ -110,7 +110,7 @@ public class Game {
 
 	public Player getNextPlayer() {
 		if (actPlayerIndex == playersOrder.size()) {
-			actPlayerIndex = 0;
+			actPlayerIndex = 1;
 		} else {
 			actPlayerIndex++;
 		}
