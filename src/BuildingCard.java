@@ -1,9 +1,8 @@
 import java.util.List;
 import java.util.UUID;
 
+public class BuildingCard implements Cloneable {
 
-public class BuildingCard {
-	
 	private String id;
 	private String type;
 	private boolean top_wall;
@@ -13,7 +12,16 @@ public class BuildingCard {
 	private List<BuildingCard> surroundingBuildings;
 	private int price;
 	private String image;
-	
+
+	@Override
+	protected BuildingCard clone() {
+		try {
+			return (BuildingCard)super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public BuildingCard(String type, boolean top_wall,
 			boolean left_wall, boolean right_wall, boolean bottom_wall, int value, String image) {
@@ -94,7 +102,5 @@ public class BuildingCard {
 	public void setValue(int value) {
 		this.price = value;
 	}
-	
-	
 
 }
