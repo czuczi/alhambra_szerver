@@ -152,7 +152,7 @@ public class ClientThread extends Thread {
 									e.printStackTrace();
 								}
 								if (playerInRoom.getRoom().getMaxNumber() == playerInRoom.getRoom().getPlayerList().size()) {
-									clientThread.sendMessage("showGameTablePage;"+ elements[1]);
+									clientThread.sendMessage("showGameTablePage;RoomPage");
 								}
 							}
 						}
