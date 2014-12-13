@@ -8,10 +8,10 @@ public class BuildingMarket {
 
 	public BuildingMarket() {
 		this.buildingMarket = new HashMap<>();
-		buildingMarket.put("Denar", null);
-		buildingMarket.put("Dirham", null);
-		buildingMarket.put("Dukat", null);
-		buildingMarket.put("Gulden", null);
+		buildingMarket.put("blue", null);
+		buildingMarket.put("green", null);
+		buildingMarket.put("orange", null);
+		buildingMarket.put("yellow", null);
 	}
 	
 	//sdd 
@@ -31,17 +31,19 @@ public class BuildingMarket {
 		
 	}
 	
-	
-	//elfogyott a lap vagy csak simán nem vett épületlapot a falsra?
-	//nem jó még
 	public boolean refillBuildingCard(BuildingDeck bd){
 		
 		for(String k : buildingMarket.keySet())
 		{
-			if(buildingMarket.get(k) == null && bd.canRemoveBuildingCard())
-			{
-				buildingMarket.put(k, bd.removeBuildingCard());
-				
+			if(buildingMarket.get(k) == null){			//ha van üres hely
+				if(bd.canRemoveBuildingCard()){			//és tudok húzni
+					buildingMarket.put(k, bd.removeBuildingCard());
+					return true;
+				}else{							//nem tudok húzni ---> vége a játéknak
+					return false;
+				}
+			}else{
+				return true;
 			}
 			
 		}
