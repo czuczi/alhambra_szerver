@@ -209,6 +209,34 @@ public class ClientThread extends Thread {
 				
 				//buildingMarket
 				sendMessage("buildingMarketCards"+getBuildingMarketCardsForSend());
+				break;
+				
+			case "pickMoneyCards":
+				//pickMoneyCards
+				List<MoneyCard> pickerView = player.getGame().getMoneyPickerView().getMoneyCards();
+				int szum = 0;
+				for(int i=1; i<elements.length; i++){
+					szum += pickerView.get(Integer.parseInt(elements[i])).getValue();
+				}
+				if(szum > 5 && elements.length > 2){
+					sendMessage("pickMoneyCardsFailed");
+				}else{
+					for(int i=1, j=0; i<elements.length; j++, i++){
+						player.pickMoneyCard(pickerView.get(Integer.parseInt(elements[i])-j));		//Miracle. Don't touch it!!!!!
+					}
+					sendMessage("yourMoneyCards"+getPlayerMoneyCardForSend());
+					player.getGame().getMoneyPickerView().refillMoney(player.getGame().getMoneyDeck());
+					sendMessage("moneyPickerViewCards"+getMoneyPickerViewCardsForSend());
+					
+					if(player.getGame().isWasEvaluation()){
+						//BROADCAST ÜZENET AZ EREDMÉNYRŐL
+						player.getGame().setWasEvaluation(false);
+					}
+					actPlayerChange();
+				}
+				
+				break;
+				
 				
 			default:
 				break;
@@ -262,5 +290,15 @@ public class ClientThread extends Thread {
 			buildingMarketCards += ";"+aktBuildingCard.getImage();
 		}
 		return buildingMarketCards;
+	}
+	
+	public void actPlayerChange(){
+		player.getGame().setActPlayer(player.getGame().getNextPlayer());
+		sendMessage("isActPlayer;no");
+		for(ClientThread aktThread : Server.clientThreadList){
+			if(player.getGame().getActPlayer().getName().equals(aktThread.player.getName())){
+				aktThread.sendMessage("isActPlayer;yes");
+			}
+		}
 	}
 }

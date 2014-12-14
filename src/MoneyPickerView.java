@@ -5,9 +5,11 @@ import java.util.List;
 public class MoneyPickerView {
 	
 	private List<MoneyCard> moneyCards;
+	private Game game;
 	
-	public MoneyPickerView() {
+	public MoneyPickerView(Game aktGame) {
 		moneyCards = new LinkedList<>();
+		this.game = aktGame;
 	}
 
 	public void removeMoneyCard(MoneyCard mc) {
@@ -22,7 +24,13 @@ public class MoneyPickerView {
 		{
 			for(int i = 0; i < missing;i++)
 			{
-				moneyCards.add(deck.removeMoneyCard());
+				MoneyCard akt = deck.removeMoneyCard();
+				if(akt.getValue() == -1){
+					game.evaluation();
+					i--;
+				}else{
+					moneyCards.add(akt);
+				}
 			}
 			
 			return true;

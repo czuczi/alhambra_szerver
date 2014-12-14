@@ -35,7 +35,6 @@ public class BuildingMarket {
 		
 		for(String k : buildingMarket.keySet())
 		{
-			System.out.println(buildingMarket.get(k));
 			if(buildingMarket.get(k) == null){			//ha van üres hely
 				if(bd.canRemoveBuildingCard()){			//és tudok húzni
 					buildingMarket.put(k, bd.removeBuildingCard());

@@ -16,6 +16,7 @@ public class Player {
 		storageArea = new StorageArea();
 		buildingArea = new BuildingArea();
 		moneyCards = new LinkedList<>();
+		score = 0;
 	}
 	
 	public boolean createRoom(String roomName, int max){
@@ -148,6 +149,50 @@ public class Player {
 			}
 		}
 	}
+	
+	public List<Integer> getNumberOfBuildingCards(){
+		
+		BuildingArea ba = this.buildingArea;
+		BuildingCard [][] table = new BuildingCard [21][21];
+		table = ba.getBuildingArea();
+		
+		int blue = 0;
+		int red = 0;
+		int brown = 0;
+		int white = 0;
+		int green = 0;
+		int purple = 0;
+		
+		for(int i = 0; i < 21;i++)
+		{
+			for(int j = 0; j < 21; j++)
+			{
+				if(table[i][j].getType().equals("blue"))
+					blue++;
+				else if(table[i][j].getType().equals("red"))
+					red++;
+				else if(table[i][j].getType().equals("brown"))
+					brown++;
+				else if(table[i][j].getType().equals("white"))
+					white++;
+				else if(table[i][j].getType().equals("green"))
+					green++;
+				else if(table[i][j].getType().equals("purple"))
+					purple++;
+			}
+		}
+		
+		List<Integer> list = new LinkedList<>();
+		list.add(blue);
+		list.add(red);
+		list.add(brown);
+		list.add(white);
+		list.add(green);
+		list.add(purple);
+		
+		return list;
+		
+	}
 
 	public String getName() {
 		return name;
@@ -180,5 +225,10 @@ public class Player {
 	public void setGame(Game game) {
 		this.game = game;
 	}
+
+	public void incrementScore(int score) {
+		this.score += score;
+	}
+	
 	
 }
