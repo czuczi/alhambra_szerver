@@ -139,6 +139,7 @@ public class Game {
 		
 		int startX = -1, startY = -1, x = -1, y = -1;
 		int maxWall = 0, actWall = 0;
+		boolean actWallHelper = true;
 		
 		BuildingCard[][] matrix = player.getBuildingArea().getBuildingArea();
 		
@@ -217,8 +218,9 @@ public class Game {
 		while(true) {
 			if(y > 0) {
 				if(matrix[x][y-1] != null && matrix[x][y-1].isTop_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra
-					if(actWall == 0) {
+					if(actWallHelper == true) {
 						actWall++;
+						actWallHelper = false;
 					}
 					actWall++;
 					y--;
@@ -230,12 +232,14 @@ public class Game {
 					actWall++;
 					x++;
 					y--;
+					actWallHelper = true;
 				}
 			}
 			else if(x < matrix.length - 1) {
 				if(matrix[x+1][y] != null && matrix[x+1][y].isLeft_wall() && matrix[x][y].isLeft_wall()) {	//megyünk le
-					if(actWall == 0) {
+					if(actWallHelper == true) {
 						actWall++;
+						actWallHelper = false;
 					}
 					actWall++;
 					x++;
@@ -247,12 +251,14 @@ public class Game {
 					actWall++;
 					x++;
 					y++;
+					actWallHelper = true;
 				}
 			}
 			else if(y < matrix[0].length - 1) {
 				if(matrix[x][y+1] != null && matrix[x][y+1].isBottom_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra
-					if(actWall == 0) {
+					if(actWallHelper == true) {
 						actWall++;
+						actWallHelper = false;
 					}
 					actWall++;
 					y++;
@@ -264,12 +270,14 @@ public class Game {
 					actWall++;
 					x--;
 					y++;
+					actWallHelper = true;
 				}
 			}
 			else if(x > 0) {
 				if(matrix[x-1][y] != null && matrix[x-1][y].isRight_wall() && matrix[x][y].isRight_wall()) {	//megyünk fel
-					if(actWall == 0) {
+					if(actWallHelper == true) {
 						actWall++;
+						actWallHelper = false;
 					}
 					actWall++;
 					x--;
@@ -281,6 +289,7 @@ public class Game {
 					actWall++;
 					x--;
 					y--;
+					actWallHelper = true;
 				}
 			}
 			else {
@@ -288,6 +297,7 @@ public class Game {
 					maxWall = actWall;	//maximumbeállítás faltörés esetén
 				}
 				actWall = 0;
+				actWallHelper = true;
 				
 				if(y > 0) {
 					if(matrix[x][y-1] != null) {	//megyünk balra
