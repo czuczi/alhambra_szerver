@@ -12,6 +12,7 @@ public class Game {
 	private LinkedList<Player> playersOrder;
 	private int actPlayerIndex;
 	private Player actPlayer;
+	private boolean wasEvaluation;
 
 	public Game(Room room) {
 		this.room = room;
@@ -33,11 +34,18 @@ public class Game {
 		return moneyPickerView;
 	}
 
-	public BuildingMarket getBuildingMarket() {
-		return buildingMarket;
+	public MoneyDeck getMoneyDeck() {
+		return moneyDeck;
 	}
-	
-	
+
+	public void setMoneyDeck(MoneyDeck moneyDeck) {
+		this.moneyDeck = moneyDeck;
+	}
+
+	public void setBuildingDeck(BuildingDeck buildingDeck) {
+		this.buildingDeck = buildingDeck;
+	}
+
 	public Player getActPlayer() {
 		return actPlayer;
 	}
@@ -45,12 +53,28 @@ public class Game {
 	public void setActPlayer(Player actPlayer) {
 		this.actPlayer = actPlayer;
 	}
+	
+	public BuildingMarket getBuildingMarket() {
+		return buildingMarket;
+	}
+
+	public void setBuildingMarket(BuildingMarket buildingMarket) {
+		this.buildingMarket = buildingMarket;
+	}
+
+	public boolean isWasEvaluation() {
+		return wasEvaluation;
+	}
+
+	public void setWasEvaluation(boolean wasEvaluation) {
+		this.wasEvaluation = wasEvaluation;
+	}
 
 	public void initGameAttributes() {
 		buildingDeck = new BuildingDeck();
 		buildingMarket = new BuildingMarket();
 		moneyDeck = new MoneyDeck();
-		moneyPickerView = new MoneyPickerView();
+		moneyPickerView = new MoneyPickerView(this);
 		playersOrder = new LinkedList<>();
 
 		buildingDeck.createBuildingDeck();
@@ -133,7 +157,7 @@ public class Game {
 	}
 
 	public void evaluation() {
-		
+		wasEvaluation = true;
 	}
 	
 	private int getLongestOutsideWallByPlayer(Player player) {
