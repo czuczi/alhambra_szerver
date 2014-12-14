@@ -103,4 +103,13 @@ public class BuildingCard implements Cloneable {
 		this.price = value;
 	}
 
+	@Override
+	public String toString() {
+		return "BuildingCard [id=" + id + ", type=" + type + ", top_wall="
+				+ top_wall + ", left_wall=" + left_wall + ", right_wall="
+				+ right_wall + ", bottom_wall=" + bottom_wall
+				+ ", surroundingBuildings=" + surroundingBuildings + ", price="
+				+ price + ", image=" + image + "]";
+	}
+
 }

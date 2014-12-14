@@ -248,6 +248,10 @@ public class BuildingArea {
 			}
 		}
 
+		if(kozeppontX == a && kozeppontY == b) {
+			return false;
+		}
+		
 		vizsgalando.add(buildingArea[kozeppontX][kozeppontY]); 					// középpont betétele
 		BuildingCard tmp;
 
@@ -316,7 +320,7 @@ public class BuildingArea {
 							fillMoveToBottom(tmp, vizsgalandoLapX,vizsgalandoLapY);
 							bejart.add(tmp.getId());
 							vizsgalando.remove(tmp);
-						} else { 													// ha nem sélső lap
+						} else { 													// ha nem szélső lap
 							fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY);
 							fillMoveToRight(tmp, vizsgalandoLapX,vizsgalandoLapY);
 							fillMoveToBottom(tmp, vizsgalandoLapX,vizsgalandoLapY);

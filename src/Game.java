@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class Game {
@@ -132,5 +133,213 @@ public class Game {
 
 	public void evaluation() {
 
+	}
+	
+	private int getLongestOutsideWallByPlayer(Player player) {
+		
+		int startX = -1, startY = -1, x = -1, y = -1;
+		int maxWall = 0, actWall = 0;
+		
+		BuildingCard[][] matrix = player.getBuildingArea().getBuildingArea();
+		
+		
+		for(int i = 0; i < matrix.length; i++) {
+			for(int j = 0; j < matrix[0].length; j++) {
+				if(matrix[i][j] != null) {
+					if((startX == -1 && startY == -1) || (i <= x)) {	//megkeressük a(z) (egyik) legfelső épületlapot
+						startX = x = i;
+						startY = y = j;
+					}
+					break;
+				}
+			}
+		}
+		
+		while(true) {
+			if(y > 0) {
+				if(matrix[x][y-1] != null && matrix[x][y-1].isTop_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra
+					y--;
+				}
+			}
+			else if(y > 0 && x < matrix.length - 1) {
+				if(matrix[x+1][y-1] != null && matrix[x+1][y-1].isTop_wall() && matrix[x][y].isLeft_wall()) {	//megyünk balra le
+					x++;
+					y--;
+				}
+			}
+			else if(x < matrix.length - 1) {
+				if(matrix[x+1][y] != null && matrix[x+1][y].isLeft_wall() && matrix[x][y].isLeft_wall()) {	//megyünk le
+					x++;
+				}
+			}
+			else if(x < matrix.length - 1 && y < matrix[0].length - 1) {
+				if(matrix[x+1][y+1] != null && matrix[x+1][y+1].isLeft_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra le
+					x++;
+					y++;
+				}
+			}
+			else if(y < matrix[0].length - 1) {
+				if(matrix[x][y+1] != null && matrix[x][y+1].isBottom_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra
+					y++;
+				}
+			}
+			else if(x > 0 && y < matrix[0].length - 1) {
+				if(matrix[x-1][y+1] != null && matrix[x-1][y+1].isBottom_wall() && matrix[x][y].isRight_wall()) {	//megyünk jobbra fel
+					x--;
+					y++;
+				}
+			}
+			else if(x > 0) {
+				if(matrix[x-1][y] != null && matrix[x-1][y].isRight_wall() && matrix[x][y].isRight_wall()) {	//megyünk fel
+					x--;
+				}
+			}
+			else if(x > 0 && y > 0) {
+				if(matrix[x-1][y-1] != null && matrix[x-1][y-1].isRight_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra fel
+					x--;
+					y--;
+				}
+			}
+			else {
+				startX = x;	//kerestünk egy olyan x-et
+				startY = y;	//és egy olyan y-t
+				break;		//ahol a fal megszakad
+			}
+			if(x == startX && y == startY) {	//nem szakad meg a fal sehol, így körbeértünk
+				break;
+			}
+		}
+		
+		
+		
+		
+		
+		while(true) {
+			if(y > 0) {
+				if(matrix[x][y-1] != null && matrix[x][y-1].isTop_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra
+					if(actWall == 0) {
+						actWall++;
+					}
+					actWall++;
+					y--;
+				}
+			}
+			else if(y > 0 && x < matrix.length - 1) {
+				if(matrix[x+1][y-1] != null && matrix[x+1][y-1].isTop_wall() && matrix[x][y].isLeft_wall()) {	//megyünk balra le
+					actWall++;	//ekkor plusz két fal jött a képbe
+					actWall++;
+					x++;
+					y--;
+				}
+			}
+			else if(x < matrix.length - 1) {
+				if(matrix[x+1][y] != null && matrix[x+1][y].isLeft_wall() && matrix[x][y].isLeft_wall()) {	//megyünk le
+					if(actWall == 0) {
+						actWall++;
+					}
+					actWall++;
+					x++;
+				}
+			}
+			else if(x < matrix.length - 1 && y < matrix[0].length - 1) {
+				if(matrix[x+1][y+1] != null && matrix[x+1][y+1].isLeft_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra le
+					actWall++;
+					actWall++;
+					x++;
+					y++;
+				}
+			}
+			else if(y < matrix[0].length - 1) {
+				if(matrix[x][y+1] != null && matrix[x][y+1].isBottom_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra
+					if(actWall == 0) {
+						actWall++;
+					}
+					actWall++;
+					y++;
+				}
+			}
+			else if(x > 0 && y < matrix[0].length - 1) {
+				if(matrix[x-1][y+1] != null && matrix[x-1][y+1].isBottom_wall() && matrix[x][y].isRight_wall()) {	//megyünk jobbra fel
+					actWall++;
+					actWall++;
+					x--;
+					y++;
+				}
+			}
+			else if(x > 0) {
+				if(matrix[x-1][y] != null && matrix[x-1][y].isRight_wall() && matrix[x][y].isRight_wall()) {	//megyünk fel
+					if(actWall == 0) {
+						actWall++;
+					}
+					actWall++;
+					x--;
+				}
+			}
+			else if(x > 0 && y > 0) {
+				if(matrix[x-1][y-1] != null && matrix[x-1][y-1].isRight_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra fel
+					actWall++;
+					actWall++;
+					x--;
+					y--;
+				}
+			}
+			else {
+				if(actWall > maxWall) {
+					maxWall = actWall;	//maximumbeállítás faltörés esetén
+				}
+				actWall = 0;
+				
+				if(y > 0) {
+					if(matrix[x][y-1] != null) {	//megyünk balra
+						y--;
+					}
+				}
+				else if(y > 0 && x < matrix.length - 1) {
+					if(matrix[x+1][y-1] != null) {	//megyünk balra le
+						x++;
+						y--;
+					}
+				}
+				else if(x < matrix.length - 1) {
+					if(matrix[x+1][y] != null) {	//megyünk le
+						x++;
+					}
+				}
+				else if(x < matrix.length - 1 && y < matrix[0].length - 1) {
+					if(matrix[x+1][y+1] != null) {	//megyünk jobbra le
+						x++;
+						y++;
+					}
+				}
+				else if(y < matrix[0].length - 1) {
+					if(matrix[x][y+1] != null) {	//megyünk jobbra
+						y++;
+					}
+				}
+				else if(x > 0 && y < matrix[0].length - 1) {
+					if(matrix[x-1][y+1] != null) {	//megyünk jobbra fel
+						x--;
+						y++;
+					}
+				}
+				else if(x > 0) {
+					if(matrix[x-1][y] != null) {	//megyünk fel
+						x--;
+					}
+				}
+				else if(x > 0 && y > 0) {
+					if(matrix[x-1][y-1] != null) {	//megyünk balra fel
+						x--;
+						y--;
+					}
+				}
+			}
+			
+			if(x == startX && y == startY) { //ha visszajutottunk a kiindulási pozícióhoz, akkor vége a számolásnak
+				break;
+			}
+		}
+		
+		return maxWall;
 	}
 }
