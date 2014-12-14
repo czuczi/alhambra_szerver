@@ -26,7 +26,11 @@ public class MoneyPickerView {
 			{
 				MoneyCard akt = deck.removeMoneyCard();
 				if(akt.getValue() == -1){
-					game.evaluation();
+					if(akt.getType().equals("evaluation1")){
+						game.evaluation(1);
+					}else{
+						game.evaluation(2);
+					}
 					i--;
 				}else{
 					moneyCards.add(akt);
