@@ -130,8 +130,18 @@ public class ClientThread extends Thread {
 					}
 				}
 				if (isSuccess) {
+					Game newGame = null;
+					String currentPlayer="";
 					if(player.getRoom().getMaxNumber() == player.getRoom().getPlayerList().size()) {
 						player.getRoom().startGame();
+						
+						for(Game aktGame : Server.controller.getGameList()){
+							if(aktGame.getRoom().getName().equals(player.getRoom().getName())){
+								newGame = aktGame;
+								newGame.setActPlayer(newGame.getNextPlayer());
+								break;
+							}
+						}
 					}
 					String playerNamesInRoom = "";
 					for (Player aktPlayer : player.getRoom().getPlayerList()) {
@@ -147,6 +157,7 @@ public class ClientThread extends Thread {
 									clientThread.sendMessage("showRoomPage;RoomPage"+ playerNamesInRoom);
 								}
 								if (playerInRoom.getRoom().getMaxNumber() == playerInRoom.getRoom().getPlayerList().size()) {
+									clientThread.player.setGame(newGame);
 									clientThread.sendMessage("showGameTablePage;RoomPage");
 								}
 							}
@@ -179,7 +190,26 @@ public class ClientThread extends Thread {
 					}
 				}
 				break;
+				
+			case "amIActPlayer":		//KI AZ AKTUÁLIS JÁTÉKOS
+				System.out.println(player.getName());
+				if(player.getGame().getActPlayer().getName().equals(nickName)){
+					sendMessage("isActPlayer;yes");
+				}else{
+					sendMessage("isActPlayer;no");
+				}
+				break;
 
+			case "tableAttributesRefresh":
+				//player money
+				sendMessage("yourMoneyCards"+getPlayerMoneyCardForSend());
+				
+				//moneyPickerView
+				sendMessage("moneyPickerViewCards"+getMoneyPickerViewCardsForSend());
+				
+				//buildingMarket
+				sendMessage("buildingMarketCards"+getBuildingMarketCardsForSend());
+				
 			default:
 				break;
 			}
@@ -204,5 +234,33 @@ public class ClientThread extends Thread {
 			roomNamesList += ";" + room.getName();
 		}
 		return roomNamesList;
+	}
+	
+	public String getPlayerMoneyCardForSend(){
+		String playerMoneyCards ="";
+		for(MoneyCard aktMoneyCard : player.getMoneyCards()){
+			playerMoneyCards += ";"+aktMoneyCard.getType()+";"+aktMoneyCard.getValue();
+		}
+		return playerMoneyCards;
+	}
+	
+	public String getMoneyPickerViewCardsForSend(){
+		String moneyPickerViewCards = "";
+		for(MoneyCard aktMoneyCard : player.getGame().getMoneyPickerView().getMoneyCards()){
+			moneyPickerViewCards += ";" + aktMoneyCard.getType() + ";" + aktMoneyCard.getValue();
+		}
+		return moneyPickerViewCards;
+	}
+	
+	public String getBuildingMarketCardsForSend(){
+		String buildingMarketCards = "";
+		List<BuildingCard> buildingCards = new LinkedList<>();
+		for(String k : player.getGame().getBuildingMarket().getBuildingMarket().keySet()){
+			buildingCards.add(player.getGame().getBuildingMarket().getBuildingMarket().get(k));	
+		}	
+		for(BuildingCard aktBuildingCard : buildingCards){
+			buildingMarketCards += ";"+aktBuildingCard.getImage();
+		}
+		return buildingMarketCards;
 	}
 }
