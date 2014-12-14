@@ -142,6 +142,8 @@ public class Game {
 		boolean actWallHelper = true;
 		
 		BuildingCard[][] matrix = player.getBuildingArea().getBuildingArea();
+		List<BuildingCard> outsideCards = new LinkedList<>();
+		List<BuildingCard> outsideCardsHelper;
 		
 		
 		for(int i = 0; i < matrix.length; i++) {
@@ -151,203 +153,279 @@ public class Game {
 						startX = x = i;
 						startY = y = j;
 					}
+					if(!outsideCards.contains(matrix[i][j])) {
+						outsideCards.add(matrix[i][j]);
+					}
 					break;
 				}
 			}
 		}
 		
-		while(true) {
+		for(int i = 0; i < matrix.length; i++) {
+			for(int j = matrix[0].length - 1; j > 0; j--) {
+				if(matrix[i][j] != null) {
+					if(!outsideCards.contains(matrix[i][j])) {
+						outsideCards.add(matrix[i][j]);
+					}
+					break;
+				}
+			}
+		}
+		
+		for(int i = 0; i < matrix[0].length; i++) {
+			for(int j = 0; j < matrix.length; j++) {
+				if(matrix[j][i] != null) {
+					if(!outsideCards.contains(matrix[j][i])) {
+						outsideCards.add(matrix[j][i]);
+					}
+					break;
+				}
+			}
+		}
+		
+		for(int i = 0; i < matrix[0].length; i++) {
+			for(int j = matrix.length - 1; j > 0; j--) {
+				if(matrix[j][i] != null) {
+					if(!outsideCards.contains(matrix[j][i])) {
+						outsideCards.add(matrix[j][i]);
+					}
+					break;
+				}
+			}
+		}
+		
+		outsideCardsHelper = new LinkedList<>(outsideCards);
+		
+		while(!outsideCards.isEmpty()) {
+			if(x > 0 && y > 0) {
+				if(matrix[x-1][y-1] != null && outsideCards.contains(matrix[x-1][y-1]) && matrix[x-1][y-1].isRight_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra fel
+					x--;
+					y--;
+					outsideCards.remove(matrix[x-1][y-1]);
+					continue;
+				}
+			}
 			if(y > 0) {
-				if(matrix[x][y-1] != null && matrix[x][y-1].isTop_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra
+				if(matrix[x][y-1] != null && outsideCards.contains(matrix[x][y-1]) && matrix[x][y-1].isTop_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra
 					y--;
+					outsideCards.remove(matrix[x][y-1]);
+					continue;
 				}
 			}
-			else if(y > 0 && x < matrix.length - 1) {
-				if(matrix[x+1][y-1] != null && matrix[x+1][y-1].isTop_wall() && matrix[x][y].isLeft_wall()) {	//megyünk balra le
+			if(y > 0 && x < matrix.length - 1) {
+				if(matrix[x+1][y-1] != null && outsideCards.contains(matrix[x+1][y-1]) && matrix[x+1][y-1].isTop_wall() && matrix[x][y].isLeft_wall()) {	//megyünk balra le
 					x++;
 					y--;
+					outsideCards.remove(matrix[x+1][y-1]);
+					continue;
 				}
 			}
-			else if(x < matrix.length - 1) {
-				if(matrix[x+1][y] != null && matrix[x+1][y].isLeft_wall() && matrix[x][y].isLeft_wall()) {	//megyünk le
+			if(x > 0) {
+				if(matrix[x-1][y] != null && outsideCards.contains(matrix[x-1][y]) && matrix[x-1][y].isRight_wall() && matrix[x][y].isRight_wall()) {	//megyünk fel
+					x--;
+					outsideCards.remove(matrix[x-1][y]);
+					continue;
+				}
+			}
+			if(x < matrix.length - 1) {
+				if(matrix[x+1][y] != null && outsideCards.contains(matrix[x+1][y]) && matrix[x+1][y].isLeft_wall() && matrix[x][y].isLeft_wall()) {	//megyünk le
 					x++;
+					outsideCards.remove(matrix[x+1][y]);
+					continue;
 				}
 			}
-			else if(x < matrix.length - 1 && y < matrix[0].length - 1) {
-				if(matrix[x+1][y+1] != null && matrix[x+1][y+1].isLeft_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra le
+			if(x < matrix.length - 1 && y < matrix[0].length - 1) {
+				if(matrix[x+1][y+1] != null && outsideCards.contains(matrix[x+1][y+1]) && matrix[x+1][y+1].isLeft_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra le
 					x++;
 					y++;
+					outsideCards.remove(matrix[x+1][y+1]);
+					continue;
 				}
 			}
-			else if(y < matrix[0].length - 1) {
-				if(matrix[x][y+1] != null && matrix[x][y+1].isBottom_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra
+			if(y < matrix[0].length - 1) {
+				if(matrix[x][y+1] != null && outsideCards.contains(matrix[x][y+1]) && matrix[x][y+1].isBottom_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra
 					y++;
+					outsideCards.remove(matrix[x][y+1]);
+					continue;
 				}
 			}
-			else if(x > 0 && y < matrix[0].length - 1) {
-				if(matrix[x-1][y+1] != null && matrix[x-1][y+1].isBottom_wall() && matrix[x][y].isRight_wall()) {	//megyünk jobbra fel
+			if(x > 0 && y < matrix[0].length - 1) {
+				if(matrix[x-1][y+1] != null && outsideCards.contains(matrix[x-1][y+1]) && matrix[x-1][y+1].isBottom_wall() && matrix[x][y].isRight_wall()) {	//megyünk jobbra fel
 					x--;
 					y++;
+					outsideCards.remove(matrix[x-1][y+1]);
+					continue;
 				}
 			}
-			else if(x > 0) {
-				if(matrix[x-1][y] != null && matrix[x-1][y].isRight_wall() && matrix[x][y].isRight_wall()) {	//megyünk fel
-					x--;
-				}
-			}
-			else if(x > 0 && y > 0) {
-				if(matrix[x-1][y-1] != null && matrix[x-1][y-1].isRight_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra fel
-					x--;
-					y--;
-				}
-			}
-			else {
 				startX = x;	//kerestünk egy olyan x-et
 				startY = y;	//és egy olyan y-t
 				break;		//ahol a fal megszakad
-			}
-			if(x == startX && y == startY) {	//nem szakad meg a fal sehol, így körbeértünk
-				break;
-			}
 		}
 		
 		
 		
+		outsideCards = new LinkedList<>(outsideCardsHelper);
 		
-		
-		while(true) {
+		while(!outsideCards.isEmpty()) {
+			if(x > 0 && y > 0) {
+				if(matrix[x-1][y-1] != null && outsideCards.contains(matrix[x-1][y-1]) && matrix[x-1][y-1].isRight_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra fel
+					actWall++;
+					actWall++;
+					x--;
+					y--;
+					actWallHelper = true;
+					outsideCards.remove(matrix[x-1][y-1]);
+					continue;
+				}
+			}
 			if(y > 0) {
-				if(matrix[x][y-1] != null && matrix[x][y-1].isTop_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra
+				if(matrix[x][y-1] != null && outsideCards.contains(matrix[x][y-1]) && matrix[x][y-1].isTop_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra
 					if(actWallHelper == true) {
 						actWall++;
 						actWallHelper = false;
 					}
 					actWall++;
 					y--;
+					outsideCards.remove(matrix[x][y-1]);
+					continue;
 				}
 			}
-			else if(y > 0 && x < matrix.length - 1) {
-				if(matrix[x+1][y-1] != null && matrix[x+1][y-1].isTop_wall() && matrix[x][y].isLeft_wall()) {	//megyünk balra le
+			if(y > 0 && x < matrix.length - 1) {
+				if(matrix[x+1][y-1] != null && outsideCards.contains(matrix[x+1][y-1]) && matrix[x+1][y-1].isTop_wall() && matrix[x][y].isLeft_wall()) {	//megyünk balra le
 					actWall++;	//ekkor plusz két fal jött a képbe
 					actWall++;
 					x++;
 					y--;
 					actWallHelper = true;
+					outsideCards.remove(matrix[x+1][y-1]);
+					continue;
 				}
 			}
-			else if(x < matrix.length - 1) {
-				if(matrix[x+1][y] != null && matrix[x+1][y].isLeft_wall() && matrix[x][y].isLeft_wall()) {	//megyünk le
+			if(x > 0) {
+				if(matrix[x-1][y] != null && outsideCards.contains(matrix[x-1][y]) && matrix[x-1][y].isRight_wall() && matrix[x][y].isRight_wall()) {	//megyünk fel
+					if(actWallHelper == true) {
+						actWall++;
+						actWallHelper = false;
+					}
+					actWall++;
+					x--;
+					outsideCards.remove(matrix[x-1][y]);
+					continue;
+				}
+			}
+			if(x < matrix.length - 1) {
+				if(matrix[x+1][y] != null && outsideCards.contains(matrix[x+1][y]) && matrix[x+1][y].isLeft_wall() && matrix[x][y].isLeft_wall()) {	//megyünk le
 					if(actWallHelper == true) {
 						actWall++;
 						actWallHelper = false;
 					}
 					actWall++;
 					x++;
+					outsideCards.remove(matrix[x+1][y]);
+					continue;
 				}
 			}
-			else if(x < matrix.length - 1 && y < matrix[0].length - 1) {
-				if(matrix[x+1][y+1] != null && matrix[x+1][y+1].isLeft_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra le
+			if(x < matrix.length - 1 && y < matrix[0].length - 1) {
+				if(matrix[x+1][y+1] != null && outsideCards.contains(matrix[x+1][y+1]) && matrix[x+1][y+1].isLeft_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra le
 					actWall++;
 					actWall++;
 					x++;
 					y++;
 					actWallHelper = true;
+					outsideCards.remove(matrix[x+1][y+1]);
+					continue;
 				}
 			}
-			else if(y < matrix[0].length - 1) {
-				if(matrix[x][y+1] != null && matrix[x][y+1].isBottom_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra
+			if(y < matrix[0].length - 1) {
+				if(matrix[x][y+1] != null && outsideCards.contains(matrix[x][y+1]) && matrix[x][y+1].isBottom_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra
 					if(actWallHelper == true) {
 						actWall++;
 						actWallHelper = false;
 					}
 					actWall++;
 					y++;
+					outsideCards.remove(matrix[x][y+1]);
+					continue;
 				}
 			}
-			else if(x > 0 && y < matrix[0].length - 1) {
-				if(matrix[x-1][y+1] != null && matrix[x-1][y+1].isBottom_wall() && matrix[x][y].isRight_wall()) {	//megyünk jobbra fel
+			if(x > 0 && y < matrix[0].length - 1) {
+				if(matrix[x-1][y+1] != null && outsideCards.contains(matrix[x-1][y+1]) && matrix[x-1][y+1].isBottom_wall() && matrix[x][y].isRight_wall()) {	//megyünk jobbra fel
 					actWall++;
 					actWall++;
 					x--;
 					y++;
 					actWallHelper = true;
+					outsideCards.remove(matrix[x-1][y+1]);
+					continue;
 				}
 			}
-			else if(x > 0) {
-				if(matrix[x-1][y] != null && matrix[x-1][y].isRight_wall() && matrix[x][y].isRight_wall()) {	//megyünk fel
-					if(actWallHelper == true) {
-						actWall++;
-						actWallHelper = false;
-					}
-					actWall++;
-					x--;
-				}
-			}
-			else if(x > 0 && y > 0) {
-				if(matrix[x-1][y-1] != null && matrix[x-1][y-1].isRight_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra fel
-					actWall++;
-					actWall++;
-					x--;
-					y--;
-					actWallHelper = true;
-				}
-			}
-			else {
+			
 				if(actWall > maxWall) {
 					maxWall = actWall;	//maximumbeállítás faltörés esetén
 				}
 				actWall = 0;
 				actWallHelper = true;
 				
+				if(x > 0 && y > 0) {
+					if(matrix[x-1][y-1] != null && outsideCards.contains(matrix[x-1][y-1])) {	//megyünk balra fel
+						x--;
+						y--;
+						outsideCards.remove(matrix[x-1][y-1]);
+						continue;
+					}
+				}
 				if(y > 0) {
-					if(matrix[x][y-1] != null) {	//megyünk balra
+					if(matrix[x][y-1] != null && outsideCards.contains(matrix[x][y-1])) {	//megyünk balra
 						y--;
+						outsideCards.remove(matrix[x][y-1]);
+						continue;
 					}
 				}
-				else if(y > 0 && x < matrix.length - 1) {
-					if(matrix[x+1][y-1] != null) {	//megyünk balra le
+				if(y > 0 && x < matrix.length - 1) {
+					if(matrix[x+1][y-1] != null && outsideCards.contains(matrix[x+1][y-1])) {	//megyünk balra le
 						x++;
 						y--;
+						outsideCards.remove(matrix[x+1][y-1]);
+						continue;
 					}
 				}
-				else if(x < matrix.length - 1) {
-					if(matrix[x+1][y] != null) {	//megyünk le
+				if(x > 0) {
+					if(matrix[x-1][y] != null && outsideCards.contains(matrix[x-1][y])) {	//megyünk fel
+						x--;
+						outsideCards.remove(matrix[x-1][y]);
+						continue;
+					}
+				}
+				if(x < matrix.length - 1) {
+					if(matrix[x+1][y] != null && outsideCards.contains(matrix[x+1][y])) {	//megyünk le
 						x++;
+						outsideCards.remove(matrix[x+1][y]);
+						continue;
 					}
 				}
-				else if(x < matrix.length - 1 && y < matrix[0].length - 1) {
-					if(matrix[x+1][y+1] != null) {	//megyünk jobbra le
+				if(x < matrix.length - 1 && y < matrix[0].length - 1) {
+					if(matrix[x+1][y+1] != null && outsideCards.contains(matrix[x+1][y+1])) {	//megyünk jobbra le
 						x++;
 						y++;
+						outsideCards.remove(matrix[x+1][y+1]);
+						continue;
 					}
 				}
-				else if(y < matrix[0].length - 1) {
-					if(matrix[x][y+1] != null) {	//megyünk jobbra
+				if(y < matrix[0].length - 1) {
+					if(matrix[x][y+1] != null && outsideCards.contains(matrix[x][y+1])) {	//megyünk jobbra
 						y++;
+						outsideCards.remove(matrix[x][y+1]);
+						continue;
 					}
 				}
-				else if(x > 0 && y < matrix[0].length - 1) {
-					if(matrix[x-1][y+1] != null) {	//megyünk jobbra fel
+				if(x > 0 && y < matrix[0].length - 1) {
+					if(matrix[x-1][y+1] != null && outsideCards.contains(matrix[x-1][y+1])) {	//megyünk jobbra fel
 						x--;
 						y++;
+						outsideCards.remove(matrix[x-1][y+1]);
+						continue;
 					}
 				}
-				else if(x > 0) {
-					if(matrix[x-1][y] != null) {	//megyünk fel
-						x--;
-					}
-				}
-				else if(x > 0 && y > 0) {
-					if(matrix[x-1][y-1] != null) {	//megyünk balra fel
-						x--;
-						y--;
-					}
-				}
-			}
-			
-			if(x == startX && y == startY) { //ha visszajutottunk a kiindulási pozícióhoz, akkor vége a számolásnak
-				break;
-			}
 		}
 		
 		return maxWall;
