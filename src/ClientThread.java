@@ -222,7 +222,7 @@ public class ClientThread extends Thread {
 					sendMessage("pickMoneyCardsFailed");
 				}else{
 					for(int i=1, j=0; i<elements.length; j++, i++){
-						player.pickMoneyCard(pickerView.get(Integer.parseInt(elements[i])-j));
+						player.pickMoneyCard(pickerView.get(Integer.parseInt(elements[i])-j));		//Miracle. Don't touch it!!!!!
 					}
 					sendMessage("yourMoneyCards"+getPlayerMoneyCardForSend());
 					player.getGame().getMoneyPickerView().refillMoney(player.getGame().getMoneyDeck());
