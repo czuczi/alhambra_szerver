@@ -251,6 +251,11 @@ public class Game {
 				if(scored_purple.size() != 0)
 					p.incrementScore(6/scored_purple.size());
 			}
+			
+			for(Player p : player)
+			{
+				p.incrementScore(getLongestOutsideWallByPlayer(p));
+			}
 			break;
 	//második értékelés		
 		case 2:
@@ -461,6 +466,11 @@ public class Game {
 					for(Player p : scored_purple_first)
 						p.incrementScore(19/scored_purple_second.size());
 	
+			}
+			
+			for(Player p : player)
+			{
+				p.incrementScore(getLongestOutsideWallByPlayer(p));
 			}
 			
 			break;
@@ -865,6 +875,11 @@ public class Game {
 			{
 				for(Player p : scored_purple_1)
 					p.incrementScore(40/scored_purple_3.size());
+			}
+			
+			for(Player p : player)
+			{
+				p.incrementScore(getLongestOutsideWallByPlayer(p));
 			}
 			
 			break;
