@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 
 public class BuildingMarket {
@@ -7,7 +8,7 @@ public class BuildingMarket {
 	private Map<String, BuildingCard> buildingMarket;
 
 	public BuildingMarket() {
-		this.buildingMarket = new HashMap<String, BuildingCard>();
+		this.buildingMarket = new TreeMap<String, BuildingCard>();
 		buildingMarket.put("Blue", null);
 		buildingMarket.put("Green", null);
 		buildingMarket.put("Orange", null);
@@ -25,7 +26,7 @@ public class BuildingMarket {
 				String key = k;
 				buildingMarket.remove(k);
 				buildingMarket.put(key, null);
-				
+				break;
 			}
 		}
 		
@@ -42,10 +43,10 @@ public class BuildingMarket {
 					return false;
 				}
 			}else{
-				return true;
+				;
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	public Map<String, BuildingCard> getBuildingMarket() {
