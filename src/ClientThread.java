@@ -29,6 +29,21 @@ public class ClientThread extends Thread {
 		return nickName;
 	}
 
+	public void end() {
+		try {
+			mySocket.close();
+			is.close();
+			bf.close();
+			os.close();
+			interaction = null;
+			requestName = null;
+			nickName = null;
+			player = null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void sendMessage(String message) {
 		try {
 			os.writeBytes(message + "\n");
@@ -36,6 +51,10 @@ public class ClientThread extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	public boolean recieveMessage(BufferedReader bf) {
@@ -49,6 +68,22 @@ public class ClientThread extends Thread {
 				bf.close();
 				os.close();
 				Server.controller.logout(nickName);
+				List<ClientThread> clientThreadsToRemove = new LinkedList<>();
+				if(player != null) {
+					if(player.getGame() != null) {
+						for(ClientThread aktThread : Server.clientThreadList){
+							if(aktThread.getPlayer().getGame().equals(player.getGame())) {
+								clientThreadsToRemove.add(aktThread);
+							}
+						}
+						
+						Server.clientThreadList.removeAll(clientThreadsToRemove);
+						
+						for (ClientThread clientThread : clientThreadsToRemove) {
+							clientThread.end();
+						}
+					}
+				}
 				return false;
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -69,7 +104,7 @@ public class ClientThread extends Thread {
 		}
 
 		while (true) {
-			if (!recieveMessage(bf)) {
+			if (bf == null || !recieveMessage(bf)) {
 				break;
 			}
 			String[] elements = interaction.split(";");

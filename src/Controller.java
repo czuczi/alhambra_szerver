@@ -1,5 +1,7 @@
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 
 public class Controller {
@@ -42,11 +44,38 @@ public class Controller {
 	}
 	
 	public void logout(String playerName){
+		Set<Player> playersToRemove = new HashSet<>();
+		Player actPlayer = null;
+		Room actRoom = null;
 		for(Player player : playerList){
 			if(player.getName().equals(playerName)){
-				playerList.remove(player);
+				actPlayer = player;
+				playersToRemove.add(actPlayer);
+				break;
 			}
 		}
+		
+		if(!roomList.isEmpty()) {
+			for(Room room : roomList) {
+				if(room.getPlayerList().contains(actPlayer)) {
+					actRoom = room;
+					playersToRemove.addAll(room.getPlayerList());
+					roomList.remove(actRoom);
+					break;
+				}
+			}
+		}
+		
+		if(!gameList.isEmpty()) {
+			for(Game game : gameList) {
+				if(game.getRoom().equals(actRoom)) {
+					gameList.remove(game);
+					break;
+				}
+			}
+		}
+		
+		playerList.removeAll(playersToRemove);
 	}
 	
 }

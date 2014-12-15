@@ -3,13 +3,13 @@ import java.util.List;
 
 public class Player {
 
-	private String name;
+	private String name = null;
 	private int score;
-	private StorageArea storageArea;
-	private BuildingArea buildingArea;
-	private List<MoneyCard> moneyCards;
-	private Room room;
-	private Game game;
+	private StorageArea storageArea = null;
+	private BuildingArea buildingArea = null;
+	private List<MoneyCard> moneyCards = null;
+	private Room room = null;
+	private Game game = null;
 	private boolean megegyszerjohet;
 	
 	public Player(String name) {
