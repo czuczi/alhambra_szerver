@@ -22,6 +22,12 @@ public class Game {
 		return room;
 	}
 
+	
+	
+	public BuildingDeck getBuildingDeck() {
+		return buildingDeck;
+	}
+
 	public LinkedList<Player> getPlayersOrder() {
 		return playersOrder;
 	}
