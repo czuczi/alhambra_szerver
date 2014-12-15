@@ -209,6 +209,9 @@ public class ClientThread extends Thread {
 				
 				//buildingMarket
 				sendMessage("buildingMarketCards"+getBuildingMarketCardsForSend());
+				
+				//storageArea
+				sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
 				break;
 				
 			case "pickMoneyCards":
@@ -237,6 +240,54 @@ public class ClientThread extends Thread {
 				
 				break;
 				
+			case "buyBuildingCard":
+				List<MoneyCard> selectedMoneyCards = new LinkedList<>();
+				List<MoneyCard> torlendo = new LinkedList<>();
+				BuildingCard buildingCard = player.getGame().getBuildingMarket().getBuildingMarket().get(elements[1]);
+				int osszeg = 0;
+				
+				for(int i=2; i<elements.length; i++){
+					selectedMoneyCards.add(player.getMoneyCards().get(Integer.parseInt(elements[i])));
+				}
+				for (MoneyCard moneyCard : selectedMoneyCards) {
+					if(moneyCard.getType().equals(elements[1])) {
+						osszeg += moneyCard.getValue();
+					}else{
+						torlendo.add(moneyCard);
+					}
+				}
+				selectedMoneyCards.removeAll(torlendo);			//más típusú pénzek törlése a kijelölésből
+				if(osszeg < buildingCard.getValue()) {			
+					sendMessage("isEnoughMoney;no");
+				}else{
+					sendMessage("isEnoughMoney;yes");			//van elég pénz a vásárláshoz
+					recieveMessage(bf);
+					String[] elements2 = interaction.split(";");
+					
+					if(elements2[0].equals("buyToAlhambra")){
+						player.buyBuildingCardToAlhambra(buildingCard, Integer.parseInt(elements2[1]), Integer.parseInt(elements2[2]));
+						player.getMoneyCards().removeAll(selectedMoneyCards);
+					}else{
+						if(elements2[0].equals("buyToStorageArea")){
+							player.buyBuildingCardToStorageArea(buildingCard);
+							player.getMoneyCards().removeAll(selectedMoneyCards);
+						}
+					}
+					sendMessage("yourMoneyCards"+getPlayerMoneyCardForSend());		
+					sendMessage("buildingMarketCards"+getBuildingMarketCardsForSend());
+					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+					
+					//
+					//STORAGEAREA + BUILDINGARE REFRESH
+					//
+					if(!(osszeg == buildingCard.getValue())){
+						player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck());
+						actPlayerChange();
+						
+					}
+				}
+				
+				break;
 				
 			default:
 				break;
@@ -284,12 +335,29 @@ public class ClientThread extends Thread {
 		String buildingMarketCards = "";
 		List<BuildingCard> buildingCards = new LinkedList<>();
 		for(String k : player.getGame().getBuildingMarket().getBuildingMarket().keySet()){
-			buildingCards.add(player.getGame().getBuildingMarket().getBuildingMarket().get(k));	
+			if(player.getGame().getBuildingMarket().getBuildingMarket().get(k) != null){
+				buildingCards.add(player.getGame().getBuildingMarket().getBuildingMarket().get(k));	
+			}else{
+				buildingCards.add(null);
+			}
 		}	
 		for(BuildingCard aktBuildingCard : buildingCards){
-			buildingMarketCards += ";"+aktBuildingCard.getImage();
+			if(aktBuildingCard != null){
+				buildingMarketCards += ";"+aktBuildingCard.getImage();
+			}else{
+				buildingMarketCards += ";./resource/buildingCards/back";
+			}
 		}
 		return buildingMarketCards;
+	}
+	
+	public String getStorageAreaCardsForSend(){
+		String storageAreaCards = "";
+		List<BuildingCard> buildingCards = new LinkedList<>();
+		for(BuildingCard aktBuildingCard : player.getStorageArea().getBuildingCardList()){
+			storageAreaCards += ";"+aktBuildingCard.getImage();
+		}
+		return storageAreaCards;
 	}
 	
 	public void actPlayerChange(){

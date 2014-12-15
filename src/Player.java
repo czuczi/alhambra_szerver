@@ -10,6 +10,7 @@ public class Player {
 	private List<MoneyCard> moneyCards;
 	private Room room;
 	private Game game;
+	private boolean megegyszerjohet;
 	
 	public Player(String name) {
 		this.name = name;
@@ -103,51 +104,23 @@ public class Player {
 	}
 	
 	public boolean buyBuildingCardToStorageArea(BuildingCard buildingCard){
-		int moneyInGivenType = 0;
-		String moneyType = null;
-		for (String type : game.getBuildingMarket().getBuildingMarket().keySet()) {
-			if(game.getBuildingMarket().getBuildingMarket().get(type).equals(buildingCard)) {
-				moneyType = type;
-			}
-		}
-		for (MoneyCard moneyCard : moneyCards) {
-			if(moneyCard.getType().equals(moneyType)) {
-				moneyInGivenType += moneyCard.getValue();
-			}
-		}
-		if(moneyInGivenType < buildingCard.getValue()) {
-			return false;
-		} else {
-			storageArea.addBuildingCard(buildingCard);
-			game.getBuildingMarket().removeBuildingCard(buildingCard);
-			return true;
-		}
+		
+		storageArea.addBuildingCard(buildingCard);
+		game.getBuildingMarket().removeBuildingCard(buildingCard);
+		return true;
+		
 	}
 	
 	public boolean buyBuildingCardToAlhambra(BuildingCard buildingCard, int a, int b){
-		int moneyInGivenType = 0;
-		String moneyType = null;
-		for (String type : game.getBuildingMarket().getBuildingMarket().keySet()) {
-			if(game.getBuildingMarket().getBuildingMarket().get(type).equals(buildingCard)) {
-				moneyType = type;
-			}
-		}
-		for (MoneyCard moneyCard : moneyCards) {
-			if(moneyCard.getType().equals(moneyType)) {
-				moneyInGivenType += moneyCard.getValue();
-			}
-		}
-		if(moneyInGivenType < buildingCard.getValue()) {
-			return false;
+		
+		if(buildingArea.canAddBuildingCard(buildingCard, a, b)) {
+			buildingArea.addBuildingCard(buildingCard, a, b);
+			game.getBuildingMarket().removeBuildingCard(buildingCard);
+			return true;
 		} else {
-			if(buildingArea.canAddBuildingCard(buildingCard, a, b)) {
-				buildingArea.addBuildingCard(buildingCard, a, b);
-				game.getBuildingMarket().removeBuildingCard(buildingCard);
-				return true;
-			} else {
-				return false;
-			}
+			return false;
 		}
+		
 	}
 	
 	public List<Integer> getNumberOfBuildingCards(){
@@ -192,6 +165,16 @@ public class Player {
 		
 		return list;
 		
+	}
+	
+	
+
+	public boolean isMegegyszerjohet() {
+		return megegyszerjohet;
+	}
+
+	public void setMegegyszerjohet(boolean megegyszerjohet) {
+		this.megegyszerjohet = megegyszerjohet;
 	}
 
 	public String getName() {
