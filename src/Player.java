@@ -96,6 +96,7 @@ public class Player {
 		if(buildingArea.canAddBuildingCard(buildingCard, a, b)) {
 			buildingArea.addBuildingCard(buildingCard, a, b);
 			storageArea.removeBuildingCard(buildingCard);
+			storageArea.addBuildingCard(cardSeged);
 			return true;
 		} else {
 			buildingArea.getBuildingArea()[a][b] = cardSeged;
@@ -140,17 +141,17 @@ public class Player {
 		{
 			for(int j = 0; j < 21; j++)
 			{
-				if(table[i][j].getType().equals("blue"))
+				if(table[i][j] != null && table[i][j].getType().equals("blue"))
 					blue++;
-				else if(table[i][j].getType().equals("red"))
+				else if(table[i][j] != null && table[i][j].getType().equals("red"))
 					red++;
-				else if(table[i][j].getType().equals("brown"))
+				else if(table[i][j] != null && table[i][j].getType().equals("brown"))
 					brown++;
-				else if(table[i][j].getType().equals("white"))
+				else if(table[i][j] != null && table[i][j].getType().equals("white"))
 					white++;
-				else if(table[i][j].getType().equals("green"))
+				else if(table[i][j] != null && table[i][j].getType().equals("green"))
 					green++;
-				else if(table[i][j].getType().equals("purple"))
+				else if(table[i][j] != null && table[i][j].getType().equals("purple"))
 					purple++;
 			}
 		}

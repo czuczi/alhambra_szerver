@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class ClientThread extends Thread {
 
 	private String nickName;
 	private Player player;
+	private boolean readyToEnd;
 
 	public ClientThread(Socket mySocket) {
 		this.mySocket = mySocket;
@@ -270,7 +273,21 @@ public class ClientThread extends Thread {
 					sendMessage("moneyPickerViewCards"+getMoneyPickerViewCardsForSend());
 					
 					if(player.getGame().isWasEvaluation()){
-						//BROADCAST ÜZENET AZ EREDMÉNYRŐL
+						String result = "";
+						List<Player> tmpList = player.getRoom().getPlayerList();
+						Collections.sort(tmpList, new Comparator<Player>() {
+
+							@Override
+							public int compare(Player o1, Player o2) {
+								return o2.getScore() - o1.getScore();
+							}
+						});
+						
+						for(Player aktP : tmpList){
+							result += ";"+aktP.getName()+";"+aktP.getScore();
+						}
+						
+						broadcastForAllPlayersInRoom("evaluation"+result);
 						player.getGame().setWasEvaluation(false);
 					}
 					actPlayerChange();
@@ -319,14 +336,103 @@ public class ClientThread extends Thread {
 					sendMessage("yourMoneyCards"+getPlayerMoneyCardForSend());		
 					sendMessage("buildingMarketCards"+getBuildingMarketCardsForSend());
 					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
 					
-					//
-					//STORAGEAREA + BUILDINGARE REFRESH
-					//
 					if(!(osszeg == buildingCard.getValue())){
-						player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck());
-						actPlayerChange();
+						if(player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck())){
+							actPlayerChange();
+						}else{
+							player.getGame().evaluation(3);
+							String result = "";
+							List<Player> tmpList = player.getRoom().getPlayerList();
+							Collections.sort(tmpList, new Comparator<Player>() {
+
+								@Override
+								public int compare(Player o1, Player o2) {
+									return o2.getScore() - o1.getScore();
+								}
+							});
+							
+							for(Player aktP : tmpList){
+								result += ";"+aktP.getName()+";"+aktP.getScore();
+							}
+							
+							broadcastForAllPlayersInRoom("evaluation"+result);
+						}
 						
+						
+					}
+				}
+				break;
+				
+			case "removeToStorage":
+				System.out.println("removeToStorage");
+				if(player.rebuildAlhambraRemove(Integer.parseInt(elements[1]), Integer.parseInt(elements[2]))){
+					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
+					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+					actPlayerChange();
+				}else{
+					sendMessage("removeFailed");
+				}
+				break;
+				
+			case "rebuildAddToAlhambra":
+				System.out.println("rebuildAddToAlhambra");
+				BuildingCard builingCardAdd = player.getStorageArea().getBuildingCardList().get(Integer.parseInt(elements[3]));
+				if(player.rebuildAlhambraAdd(builingCardAdd, Integer.parseInt(elements[1]), Integer.parseInt(elements[2]))){
+					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
+					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+					actPlayerChange();
+				}else{
+					sendMessage("invalidBuyToAlhambra");
+				}
+				
+				break;
+				
+			case "switchBuilding":
+				System.out.println("switchBuilding");
+				BuildingCard buildingCardFromStorage = player.getStorageArea().getBuildingCardList().get(Integer.parseInt(elements[3]));
+				if(player.rebuildAlhambraSwitch(buildingCardFromStorage, Integer.parseInt(elements[1]), Integer.parseInt(elements[2]))){
+					
+					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
+					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+					actPlayerChange();
+				}else{
+					sendMessage("switchFailed");
+				}
+				break;
+				
+			case "endGame":
+				int counter = 0;
+				readyToEnd = true;
+				for(ClientThread aktThread2 : Server.clientThreadList){
+					if(player.getGame().getRoom().equals(aktThread2.player.getGame().getRoom())){
+						if(aktThread2.readyToEnd){
+							counter++;
+						}
+					}
+				}
+				if(counter < player.getGame().getPlayersOrder().size()){
+					;
+				}else{
+					broadcastForAllPlayersInRoom("showRoomManagerPage;GameTablePage");
+					for(Player aktualisPlayer : player.getGame().getPlayersOrder()){
+						Room tmpSzoba = aktualisPlayer.getRoom();
+						
+						Server.controller.getRoomList().remove(tmpSzoba);
+						Server.controller.getGameList().remove(player.getGame());
+						
+						Server.controller.getPlayerList().remove(aktualisPlayer);
+						Player jatekos = new Player(nickName);
+						for (Player aktPlayer : Server.controller.getPlayerList()) {
+							if (aktPlayer.getName().equals(nickName)) {
+								player = aktPlayer;
+							}
+						}
+						readyToEnd = false;
+					}
+					for (ClientThread clientThread : Server.clientThreadList) {
+						clientThread.sendMessage("refreshRoomList" + getAllRoomNames());
 					}
 				}
 				

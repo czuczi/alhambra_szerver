@@ -241,7 +241,7 @@ public class BuildingArea {
 
 		for (int i = 0; i < buildingArea.length; i++) { 				// kezdőmező pozíciója
 			for (int j = 0; j < buildingArea[i].length; j++) {
-				if (buildingArea[i][j].getType().equals("STARTAREA")) {
+				if (buildingArea[i][j] != null && buildingArea[i][j].getType().equals("STARTAREA")) {
 					kozeppontX = i;
 					kozeppontY = j;
 					break;
@@ -263,7 +263,7 @@ public class BuildingArea {
 			tmp = vizsgalando.get(0);
 			for (int i = 0; i < buildingArea.length; i++) {					 	// vizsgált lap pozíciójának kinyerése
 				for (int j = 0; j < buildingArea[i].length; j++) {
-					if (buildingArea[i][j].equals(tmp)) {
+					if (buildingArea[i][j] != null && buildingArea[i][j].equals(tmp)) {
 						vizsgalandoLapX = i;
 						vizsgalandoLapY = j;
 					}
