@@ -379,8 +379,9 @@ public class Game {
 			
 			if(scored_blue_first.size() > 1)
 			{
-					for(Player p : scored_blue_first)
-						p.incrementScore(9/scored_blue_second.size());
+				if(scored_blue_second.size() != 0)
+					{for(Player p : scored_blue_first)
+						p.incrementScore(9/scored_blue_second.size());}
 	
 			}
 			
@@ -397,8 +398,9 @@ public class Game {
 			
 			if(scored_red_first.size() > 1)
 			{
-					for(Player p : scored_red_first)
-						p.incrementScore(11/scored_red_second.size());
+				if(scored_red_second.size() != 0)
+					{for(Player p : scored_red_first)
+						p.incrementScore(11/scored_red_second.size());}
 	
 			}
 			
@@ -415,8 +417,9 @@ public class Game {
 			
 			if(scored_brown_first.size() > 1)
 			{
-					for(Player p : scored_brown_first)
-						p.incrementScore(13/scored_brown_second.size());
+				if(scored_brown_second.size() != 0)
+					{for(Player p : scored_brown_first)
+						p.incrementScore(13/scored_brown_second.size());}
 	
 			}
 			
@@ -433,8 +436,9 @@ public class Game {
 			
 			if(scored_white_first.size() > 1)
 			{
-					for(Player p : scored_white_first)
-						p.incrementScore(15/scored_white_second.size());
+				if(scored_white_second.size() != 0)
+					{for(Player p : scored_white_first)
+						p.incrementScore(15/scored_white_second.size());}
 	
 			}
 			
@@ -451,8 +455,9 @@ public class Game {
 			
 			if(scored_green_first.size() > 1)
 			{
-					for(Player p : scored_green_first)
-						p.incrementScore(17/scored_green_second.size());
+				if(scored_green_second.size() != 0)
+					{for(Player p : scored_green_first)
+						p.incrementScore(17/scored_green_second.size());}
 	
 			}
 		
@@ -469,8 +474,9 @@ public class Game {
 			
 			if(scored_purple_first.size() > 1)
 			{
-					for(Player p : scored_purple_first)
-						p.incrementScore(19/scored_purple_second.size());
+				if(scored_purple_second.size() != 0)
+					{for(Player p : scored_purple_first)
+						p.incrementScore(19/scored_purple_second.size());}
 	
 			}
 			
@@ -671,8 +677,9 @@ public class Game {
 			
 			if(scored_blue_1.size() > 2)
 			{
-				for(Player p : scored_blue_1)
-					p.incrementScore(25/scored_blue_3.size());
+				if(scored_blue_3.size() != 0)
+					{for(Player p : scored_blue_1)
+						p.incrementScore(25/scored_blue_3.size());}
 			}
 			
 			
@@ -713,8 +720,9 @@ public class Game {
 			
 			if(scored_red_1.size() > 2)
 			{
-				for(Player p : scored_red_1)
-					p.incrementScore(28/scored_red_3.size());
+				if(scored_red_3.size() != 0)
+					{for(Player p : scored_red_1)
+						p.incrementScore(28/scored_red_3.size());}
 			}
 			
 			
@@ -755,8 +763,9 @@ public class Game {
 			
 			if(scored_brown_1.size() > 2)
 			{
-				for(Player p : scored_brown_1)
-					p.incrementScore(31/scored_brown_3.size());
+				if(scored_brown_3.size() != 0)
+					{for(Player p : scored_brown_1)
+						p.incrementScore(31/scored_brown_3.size());}
 			}
 			
 			if(scored_white_1.size() == 1)
@@ -796,8 +805,9 @@ public class Game {
 			
 			if(scored_white_1.size() > 2)
 			{
-				for(Player p : scored_white_1)
-					p.incrementScore(34/scored_white_3.size());
+				if(scored_white_3.size() != 0)
+					{for(Player p : scored_white_1)
+						p.incrementScore(34/scored_white_3.size());}
 			}
 			
 			
@@ -838,8 +848,9 @@ public class Game {
 			
 			if(scored_green_1.size() > 2)
 			{
-				for(Player p : scored_green_1)
-					p.incrementScore(37/scored_green_3.size());
+				if(scored_green_3.size() != 0)
+					{for(Player p : scored_green_1)
+						p.incrementScore(37/scored_green_3.size());}
 			}
 			
 			if(scored_purple_1.size() == 1)
@@ -879,8 +890,9 @@ public class Game {
 			
 			if(scored_purple_1.size() > 2)
 			{
-				for(Player p : scored_purple_1)
-					p.incrementScore(40/scored_purple_3.size());
+				if(scored_purple_3.size() != 0)
+					{for(Player p : scored_purple_1)
+						p.incrementScore(40/scored_purple_3.size());}
 			}
 			
 			for(Player p : player)
@@ -897,7 +909,9 @@ public class Game {
 	}
 	
 	private int getLongestOutsideWallByPlayer(Player player) {
-		
+		if(true) {
+			return 0;
+		}
 		int startX = -1, startY = -1, x = -1, y = -1;
 		int maxWall = 0, actWall = 0;
 		boolean actWallHelper = true;
