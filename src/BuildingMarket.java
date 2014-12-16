@@ -21,7 +21,7 @@ public class BuildingMarket {
 		for(String k : buildingMarket.keySet())
 		{
 			
-			if(buildingMarket.get(k).equals(bc))
+			if(buildingMarket.get(k) != null && buildingMarket.get(k).equals(bc))
 			{
 				String key = k;
 				buildingMarket.remove(k);

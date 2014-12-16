@@ -319,17 +319,48 @@ public class ClientThread extends Thread {
 					sendMessage("yourMoneyCards"+getPlayerMoneyCardForSend());		
 					sendMessage("buildingMarketCards"+getBuildingMarketCardsForSend());
 					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
 					
-					//
-					//STORAGEAREA + BUILDINGARE REFRESH
-					//
 					if(!(osszeg == buildingCard.getValue())){
 						player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck());
 						actPlayerChange();
 						
 					}
 				}
+				break;
 				
+			case "removeToStorage":
+				System.out.println("removeToStorage");
+				if(player.rebuildAlhambraRemove(Integer.parseInt(elements[1]), Integer.parseInt(elements[2]))){
+					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
+					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+				}else{
+					sendMessage("removeFailed");
+				}
+				break;
+				
+			case "rebuildAddToAlhambra":
+				System.out.println("rebuildAddToAlhambra");
+				BuildingCard builingCardAdd = player.getStorageArea().getBuildingCardList().get(Integer.parseInt(elements[3]));
+				if(player.rebuildAlhambraAdd(builingCardAdd, Integer.parseInt(elements[1]), Integer.parseInt(elements[2]))){
+					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
+					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+					
+				}else{
+					sendMessage("invalidBuyToAlhambra");
+				}
+				
+				break;
+				
+			case "switchBuilding":
+				System.out.println("switchBuilding");
+				BuildingCard buildingCardFromStorage = player.getStorageArea().getBuildingCardList().get(Integer.parseInt(elements[3]));
+				if(player.rebuildAlhambraSwitch(buildingCardFromStorage, Integer.parseInt(elements[1]), Integer.parseInt(elements[2]))){
+					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
+					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+				}else{
+					sendMessage("switchFailed");
+				}
 				break;
 				
 			default:
