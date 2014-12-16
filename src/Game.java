@@ -25,6 +25,7 @@ public class Game {
 	
 	
 	public BuildingDeck getBuildingDeck() {
+		
 		return buildingDeck;
 	}
 
