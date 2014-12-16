@@ -175,7 +175,7 @@ public class Game {
 		int max_purple;
 		
 		wasEvaluation = true;
-		switch (evaluate_number) {
+		switch (1) {
 	// első értékelés	
 		case 1:
 			

@@ -339,8 +339,27 @@ public class ClientThread extends Thread {
 					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
 					
 					if(!(osszeg == buildingCard.getValue())){
-						player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck());
-						actPlayerChange();
+						if(player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck())){
+							actPlayerChange();
+						}else{
+							player.getGame().evaluation(3);
+							String result = "";
+							List<Player> tmpList = player.getRoom().getPlayerList();
+							Collections.sort(tmpList, new Comparator<Player>() {
+
+								@Override
+								public int compare(Player o1, Player o2) {
+									return o2.getScore() - o1.getScore();
+								}
+							});
+							
+							for(Player aktP : tmpList){
+								result += ";"+aktP.getName()+";"+aktP.getScore();
+							}
+							
+							broadcastForAllPlayersInRoom("evaluation"+result);
+						}
+						
 						
 					}
 				}
@@ -383,9 +402,10 @@ public class ClientThread extends Thread {
 				
 			case "endGame":
 				int counter = 0;
-				for(ClientThread aktThread : Server.clientThreadList){
-					if(player.getGame().getRoom().equals(aktThread.player.getGame().getRoom())){
-						if(aktThread.readyToEnd){
+				readyToEnd = true;
+				for(ClientThread aktThread2 : Server.clientThreadList){
+					if(player.getGame().getRoom().equals(aktThread2.player.getGame().getRoom())){
+						if(aktThread2.readyToEnd){
 							counter++;
 						}
 					}
