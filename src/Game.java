@@ -898,6 +898,9 @@ public class Game {
 	}
 	
 	private int getLongestOutsideWallByPlayer(Player player) {
+		if(true) {
+			return 0;
+		}
 		
 		int startX = -1, startY = -1, x = -1, y = -1;
 		int maxWall = 0, actWall = 0;
@@ -1024,11 +1027,12 @@ public class Game {
 				break;		//ahol a fal megszakad
 		}
 		
-		
-		
 		outsideCards = new LinkedList<>(outsideCardsHelper);
 		
 		while(!outsideCards.isEmpty()) {
+			if(outsideCards.size() == 1 && outsideCards.get(0).equals(matrix[10][10])) {
+				break;
+			}
 			if(x > 0 && y > 0) {
 				if(matrix[x-1][y-1] != null && outsideCards.contains(matrix[x-1][y-1]) && matrix[x-1][y-1].isRight_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra fel
 					actWall++;
@@ -1121,7 +1125,6 @@ public class Game {
 					continue;
 				}
 			}
-			
 				if(actWall > maxWall) {
 					maxWall = actWall;	//maximumbeállítás faltörés esetén
 				}
@@ -1189,7 +1192,6 @@ public class Game {
 					}
 				}
 		}
-		
 		return maxWall;
 	}
 }
