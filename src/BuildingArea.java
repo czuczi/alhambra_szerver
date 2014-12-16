@@ -12,6 +12,8 @@ public class BuildingArea {
 	
 	public BuildingArea() {
 		this.buildingArea = new BuildingCard [21][21];
+		BuildingCard kozep = new BuildingCard("STARTAREA", false, false, false, false, -1, null);
+		buildingArea[10][10] = kozep;
 	}
 
 	public void addBuildingCard(BuildingCard buildingCard, int a, int b){
@@ -29,10 +31,12 @@ public class BuildingArea {
 		bejarhatoOldalakSzama = 0;
 		boolean lyuk = false;
 		
+		System.out.println(a +"\t" +b);
+		
 		if(buildingArea[a][b] == null){		// üres a mező
 			for(int i=0; i<buildingArea.length; i++){		//kezdőmező pozíciója
 				for(int j=0; j<buildingArea[i].length; j++){
-					if(buildingArea[i][j].getType().equals("STARTAREA")){
+					if(buildingArea[i][j] != null && buildingArea[i][j].getType().equals("STARTAREA")){
 						kozeppontX = i;
 						kozeppontY = j;
 						break;

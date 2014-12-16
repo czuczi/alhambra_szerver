@@ -247,6 +247,9 @@ public class ClientThread extends Thread {
 				
 				//storageArea
 				sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+				
+				//buildingArea
+				sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
 				break;
 				
 			case "pickMoneyCards":
@@ -300,8 +303,13 @@ public class ClientThread extends Thread {
 					String[] elements2 = interaction.split(";");
 					
 					if(elements2[0].equals("buyToAlhambra")){
-						player.buyBuildingCardToAlhambra(buildingCard, Integer.parseInt(elements2[1]), Integer.parseInt(elements2[2]));
-						player.getMoneyCards().removeAll(selectedMoneyCards);
+						if(player.buyBuildingCardToAlhambra(buildingCard, Integer.parseInt(elements2[1]), Integer.parseInt(elements2[2]))){
+							player.getMoneyCards().removeAll(selectedMoneyCards);
+						}else{
+							sendMessage("invalidBuyToAlhambra");
+							break;
+						}
+						sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
 					}else{
 						if(elements2[0].equals("buyToStorageArea")){
 							player.buyBuildingCardToStorageArea(buildingCard);
@@ -395,6 +403,21 @@ public class ClientThread extends Thread {
 		return storageAreaCards;
 	}
 	
+	public String getBuildingAreaCardsForSend(){
+		String buildingAreaCards = "";
+		BuildingCard[][] matrix = player.getBuildingArea().getBuildingArea();
+		for(int i=0; i<matrix.length; i++){
+			for(int j=0; j<matrix[i].length; j++){
+				if(matrix[i][j] == null){
+					buildingAreaCards += ";"+j+";"+i+";null";
+				}else{
+					buildingAreaCards += ";"+j+";"+i+";"+matrix[i][j].getImage();
+				}
+			}
+		}
+		return buildingAreaCards;
+	}
+	
 	public void actPlayerChange(){
 		player.getGame().setActPlayer(player.getGame().getNextPlayer());
 		sendMessage("isActPlayer;no");
@@ -403,5 +426,7 @@ public class ClientThread extends Thread {
 				aktThread.sendMessage("isActPlayer;yes");
 			}
 		}
+		player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck());
+		player.getGame().getMoneyPickerView().refillMoney(player.getGame().getMoneyDeck());
 	}
 }
