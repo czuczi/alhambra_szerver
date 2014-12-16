@@ -21,6 +21,7 @@ public class ClientThread extends Thread {
 
 	private String nickName;
 	private Player player;
+	private boolean readyToEnd;
 
 	public ClientThread(Socket mySocket) {
 		this.mySocket = mySocket;
@@ -277,7 +278,7 @@ public class ClientThread extends Thread {
 
 							@Override
 							public int compare(Player o1, Player o2) {
-								return o1.getScore() - o2.getScore();
+								return o2.getScore() - o1.getScore();
 							}
 						});
 						for(Player aktP : tmpList){
@@ -376,6 +377,41 @@ public class ClientThread extends Thread {
 				}else{
 					sendMessage("switchFailed");
 				}
+				break;
+				
+			case "endGame":
+				int counter = 0;
+				for(ClientThread aktThread : Server.clientThreadList){
+					if(player.getGame().getRoom().equals(aktThread.player.getGame().getRoom())){
+						if(aktThread.readyToEnd){
+							counter++;
+						}
+					}
+				}
+				if(counter < player.getGame().getPlayersOrder().size()){
+					;
+				}else{
+					broadcastForAllPlayersInRoom("showRoomManagerPage;GameTablePage");
+					for(Player aktualisPlayer : player.getGame().getPlayersOrder()){
+						Room tmpSzoba = aktualisPlayer.getRoom();
+						
+						Server.controller.getRoomList().remove(tmpSzoba);
+						Server.controller.getGameList().remove(player.getGame());
+						
+						Server.controller.getPlayerList().remove(aktualisPlayer);
+						Player jatekos = new Player(nickName);
+						for (Player aktPlayer : Server.controller.getPlayerList()) {
+							if (aktPlayer.getName().equals(nickName)) {
+								player = aktPlayer;
+							}
+						}
+						readyToEnd = false;
+					}
+					for (ClientThread clientThread : Server.clientThreadList) {
+						clientThread.sendMessage("refreshRoomList" + getAllRoomNames());
+					}
+				}
+				
 				break;
 				
 			default:
