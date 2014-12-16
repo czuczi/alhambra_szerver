@@ -112,8 +112,8 @@ public class Player {
 	}
 	
 	public boolean buyBuildingCardToAlhambra(BuildingCard buildingCard, int a, int b){
-		
 		if(buildingArea.canAddBuildingCard(buildingCard, a, b)) {
+			System.out.println("HOZZÁADTA AZ ALHAMBRÁHOZ");
 			buildingArea.addBuildingCard(buildingCard, a, b);
 			game.getBuildingMarket().removeBuildingCard(buildingCard);
 			return true;
