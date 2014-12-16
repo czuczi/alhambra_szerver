@@ -211,7 +211,7 @@ public class ClientThread extends Thread {
 				for (ClientThread clientThread : Server.clientThreadList) {
 					clientThread.sendMessage("refreshRoomList" + getAllRoomNames());
 				}
-				sendMessage("showRoomManagerPage;" + elements[1]);
+				sendMessage("showRoomManagerPage;" + elements[1] + getAllRoomNames());
 				
 				String playerNamesInRoom = "";
 				for (Player aktPlayer : tmpRoom.getPlayerList()) {
