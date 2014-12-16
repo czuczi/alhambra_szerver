@@ -356,6 +356,7 @@ public class ClientThread extends Thread {
 				System.out.println("switchBuilding");
 				BuildingCard buildingCardFromStorage = player.getStorageArea().getBuildingCardList().get(Integer.parseInt(elements[3]));
 				if(player.rebuildAlhambraSwitch(buildingCardFromStorage, Integer.parseInt(elements[1]), Integer.parseInt(elements[2]))){
+					
 					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
 					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
 				}else{

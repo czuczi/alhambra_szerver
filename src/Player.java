@@ -96,6 +96,7 @@ public class Player {
 		if(buildingArea.canAddBuildingCard(buildingCard, a, b)) {
 			buildingArea.addBuildingCard(buildingCard, a, b);
 			storageArea.removeBuildingCard(buildingCard);
+			storageArea.addBuildingCard(cardSeged);
 			return true;
 		} else {
 			buildingArea.getBuildingArea()[a][b] = cardSeged;
