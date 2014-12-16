@@ -966,14 +966,14 @@ public class Game {
 				if(matrix[x-1][y-1] != null && outsideCards.contains(matrix[x-1][y-1]) && matrix[x-1][y-1].isRight_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra fel
 					x--;
 					y--;
-					outsideCards.remove(matrix[x-1][y-1]);
+					outsideCards.remove(matrix[x][y]);
 					continue;
 				}
 			}
 			if(y > 0) {
 				if(matrix[x][y-1] != null && outsideCards.contains(matrix[x][y-1]) && matrix[x][y-1].isTop_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra
 					y--;
-					outsideCards.remove(matrix[x][y-1]);
+					outsideCards.remove(matrix[x][y]);
 					continue;
 				}
 			}
@@ -981,21 +981,21 @@ public class Game {
 				if(matrix[x+1][y-1] != null && outsideCards.contains(matrix[x+1][y-1]) && matrix[x+1][y-1].isTop_wall() && matrix[x][y].isLeft_wall()) {	//megyünk balra le
 					x++;
 					y--;
-					outsideCards.remove(matrix[x+1][y-1]);
+					outsideCards.remove(matrix[x][y]);
 					continue;
 				}
 			}
 			if(x > 0) {
 				if(matrix[x-1][y] != null && outsideCards.contains(matrix[x-1][y]) && matrix[x-1][y].isRight_wall() && matrix[x][y].isRight_wall()) {	//megyünk fel
 					x--;
-					outsideCards.remove(matrix[x-1][y]);
+					outsideCards.remove(matrix[x][y]);
 					continue;
 				}
 			}
 			if(x < matrix.length - 1) {
 				if(matrix[x+1][y] != null && outsideCards.contains(matrix[x+1][y]) && matrix[x+1][y].isLeft_wall() && matrix[x][y].isLeft_wall()) {	//megyünk le
 					x++;
-					outsideCards.remove(matrix[x+1][y]);
+					outsideCards.remove(matrix[x][y]);
 					continue;
 				}
 			}
@@ -1003,14 +1003,14 @@ public class Game {
 				if(matrix[x+1][y+1] != null && outsideCards.contains(matrix[x+1][y+1]) && matrix[x+1][y+1].isLeft_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra le
 					x++;
 					y++;
-					outsideCards.remove(matrix[x+1][y+1]);
+					outsideCards.remove(matrix[x][y]);
 					continue;
 				}
 			}
 			if(y < matrix[0].length - 1) {
 				if(matrix[x][y+1] != null && outsideCards.contains(matrix[x][y+1]) && matrix[x][y+1].isBottom_wall() && matrix[x][y].isBottom_wall()) {	//megyünk jobbra
 					y++;
-					outsideCards.remove(matrix[x][y+1]);
+					outsideCards.remove(matrix[x][y]);
 					continue;
 				}
 			}
@@ -1018,10 +1018,11 @@ public class Game {
 				if(matrix[x-1][y+1] != null && outsideCards.contains(matrix[x-1][y+1]) && matrix[x-1][y+1].isBottom_wall() && matrix[x][y].isRight_wall()) {	//megyünk jobbra fel
 					x--;
 					y++;
-					outsideCards.remove(matrix[x-1][y+1]);
+					outsideCards.remove(matrix[x][y]);
 					continue;
 				}
 			}
+				System.out.println("idáig lefutott");
 				startX = x;	//kerestünk egy olyan x-et
 				startY = y;	//és egy olyan y-t
 				break;		//ahol a fal megszakad
@@ -1030,9 +1031,6 @@ public class Game {
 		outsideCards = new LinkedList<>(outsideCardsHelper);
 		
 		while(!outsideCards.isEmpty()) {
-			if(outsideCards.size() == 1 && outsideCards.get(0).equals(matrix[10][10])) {
-				break;
-			}
 			if(x > 0 && y > 0) {
 				if(matrix[x-1][y-1] != null && outsideCards.contains(matrix[x-1][y-1]) && matrix[x-1][y-1].isRight_wall() && matrix[x][y].isTop_wall()) {	//megyünk balra fel
 					actWall++;
@@ -1040,7 +1038,8 @@ public class Game {
 					x--;
 					y--;
 					actWallHelper = true;
-					outsideCards.remove(matrix[x-1][y-1]);
+					outsideCards.remove(matrix[x][y]);
+					System.out.println(1);
 					continue;
 				}
 			}
@@ -1052,7 +1051,8 @@ public class Game {
 					}
 					actWall++;
 					y--;
-					outsideCards.remove(matrix[x][y-1]);
+					outsideCards.remove(matrix[x][y]);
+					System.out.println(2);
 					continue;
 				}
 			}
@@ -1063,7 +1063,8 @@ public class Game {
 					x++;
 					y--;
 					actWallHelper = true;
-					outsideCards.remove(matrix[x+1][y-1]);
+					outsideCards.remove(matrix[x][y]);
+					System.out.println(3);
 					continue;
 				}
 			}
@@ -1075,7 +1076,8 @@ public class Game {
 					}
 					actWall++;
 					x--;
-					outsideCards.remove(matrix[x-1][y]);
+					outsideCards.remove(matrix[x][y]);
+					System.out.println(4);
 					continue;
 				}
 			}
@@ -1087,7 +1089,8 @@ public class Game {
 					}
 					actWall++;
 					x++;
-					outsideCards.remove(matrix[x+1][y]);
+					outsideCards.remove(matrix[x][y]);
+					System.out.println(5);
 					continue;
 				}
 			}
@@ -1098,7 +1101,8 @@ public class Game {
 					x++;
 					y++;
 					actWallHelper = true;
-					outsideCards.remove(matrix[x+1][y+1]);
+					outsideCards.remove(matrix[x][y]);
+					System.out.println(6);
 					continue;
 				}
 			}
@@ -1110,7 +1114,8 @@ public class Game {
 					}
 					actWall++;
 					y++;
-					outsideCards.remove(matrix[x][y+1]);
+					outsideCards.remove(matrix[x][y]);
+					System.out.println(7);
 					continue;
 				}
 			}
@@ -1121,7 +1126,8 @@ public class Game {
 					x--;
 					y++;
 					actWallHelper = true;
-					outsideCards.remove(matrix[x-1][y+1]);
+					outsideCards.remove(matrix[x][y]);
+					System.out.println(8);
 					continue;
 				}
 			}
@@ -1135,14 +1141,16 @@ public class Game {
 					if(matrix[x-1][y-1] != null && outsideCards.contains(matrix[x-1][y-1])) {	//megyünk balra fel
 						x--;
 						y--;
-						outsideCards.remove(matrix[x-1][y-1]);
+						outsideCards.remove(matrix[x][y]);
+						System.out.println(9);
 						continue;
 					}
 				}
 				if(y > 0) {
 					if(matrix[x][y-1] != null && outsideCards.contains(matrix[x][y-1])) {	//megyünk balra
 						y--;
-						outsideCards.remove(matrix[x][y-1]);
+						outsideCards.remove(matrix[x][y]);
+						System.out.println(10);
 						continue;
 					}
 				}
@@ -1150,21 +1158,24 @@ public class Game {
 					if(matrix[x+1][y-1] != null && outsideCards.contains(matrix[x+1][y-1])) {	//megyünk balra le
 						x++;
 						y--;
-						outsideCards.remove(matrix[x+1][y-1]);
+						outsideCards.remove(matrix[x][y]);
+						System.out.println(11);
 						continue;
 					}
 				}
 				if(x > 0) {
 					if(matrix[x-1][y] != null && outsideCards.contains(matrix[x-1][y])) {	//megyünk fel
 						x--;
-						outsideCards.remove(matrix[x-1][y]);
+						outsideCards.remove(matrix[x][y]);
+						System.out.println(12);
 						continue;
 					}
 				}
 				if(x < matrix.length - 1) {
 					if(matrix[x+1][y] != null && outsideCards.contains(matrix[x+1][y])) {	//megyünk le
 						x++;
-						outsideCards.remove(matrix[x+1][y]);
+						outsideCards.remove(matrix[x][y]);
+						System.out.println(13);
 						continue;
 					}
 				}
@@ -1172,14 +1183,16 @@ public class Game {
 					if(matrix[x+1][y+1] != null && outsideCards.contains(matrix[x+1][y+1])) {	//megyünk jobbra le
 						x++;
 						y++;
-						outsideCards.remove(matrix[x+1][y+1]);
+						outsideCards.remove(matrix[x][y]);
+						System.out.println(14);
 						continue;
 					}
 				}
 				if(y < matrix[0].length - 1) {
 					if(matrix[x][y+1] != null && outsideCards.contains(matrix[x][y+1])) {	//megyünk jobbra
 						y++;
-						outsideCards.remove(matrix[x][y+1]);
+						outsideCards.remove(matrix[x][y]);
+						System.out.println(15);
 						continue;
 					}
 				}
@@ -1187,10 +1200,27 @@ public class Game {
 					if(matrix[x-1][y+1] != null && outsideCards.contains(matrix[x-1][y+1])) {	//megyünk jobbra fel
 						x--;
 						y++;
-						outsideCards.remove(matrix[x-1][y+1]);
+						outsideCards.remove(matrix[x][y]);
+						System.out.println(16);
 						continue;
 					}
 				}
+				if(outsideCards.get(0).isBottom_wall()) {
+					actWall++;
+				}
+				if(outsideCards.get(0).isLeft_wall()) {
+					actWall++;
+				}
+				if(outsideCards.get(0).isRight_wall()) {
+					actWall++;
+				}
+				if(outsideCards.get(0).isTop_wall()) {
+					actWall++;
+				}
+				if(actWall > maxWall) {
+					maxWall = actWall;
+				}
+				break;
 		}
 		return maxWall;
 	}

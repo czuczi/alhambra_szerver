@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -273,13 +274,14 @@ public class ClientThread extends Thread {
 					if(player.getGame().isWasEvaluation()){
 						String result = "";
 						List<Player> tmpList = player.getRoom().getPlayerList();
-						tmpList.sort(new Comparator<Player>() {
+						Collections.sort(tmpList, new Comparator<Player>() {
 
 							@Override
 							public int compare(Player o1, Player o2) {
-								return o1.getScore() - o2.getScore();
+								return o2.getScore() - o1.getScore();
 							}
 						});
+						
 						for(Player aktP : tmpList){
 							result += ";"+aktP.getName()+";"+aktP.getScore();
 						}
