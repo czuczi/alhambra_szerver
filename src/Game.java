@@ -228,36 +228,13 @@ public class Game {
 					scored_purple.add(p);
 			}
 			
-			for(Player p : scored_blue)
-			{
-				if(scored_blue.size() != 0)
-					p.incrementScore(1/scored_blue.size());
-			}
-			for(Player p : scored_red)
-			{
-				if(scored_red.size() != 0)
-					p.incrementScore(2/scored_red.size());
-			}
-			for(Player p : scored_brown)
-			{
-				if(scored_brown.size() != 0)
-					p.incrementScore(3/scored_brown.size());
-			}
-			for(Player p : scored_white)
-			{
-				if(scored_white.size() != 0)
-					p.incrementScore(4/scored_white.size());
-			}
-			for(Player p : scored_green)
-			{
-				if(scored_green.size() != 0)
-					p.incrementScore(5/scored_green.size());
-			}
-			for(Player p : scored_purple)
-			{
-				if(scored_purple.size() != 0)
-					p.incrementScore(6/scored_purple.size());
-			}
+			scoreDivideExaminerAndIncrementer1(scored_blue, 1);
+			scoreDivideExaminerAndIncrementer1(scored_red, 2);
+			scoreDivideExaminerAndIncrementer1(scored_brown, 3);
+			scoreDivideExaminerAndIncrementer1(scored_white, 4);
+			scoreDivideExaminerAndIncrementer1(scored_green, 5);
+			scoreDivideExaminerAndIncrementer1(scored_purple, 6);
+			
 			
 			for(Player p : player)
 			{
@@ -367,119 +344,12 @@ public class Game {
 					scored_purple_second.add(p);
 			}
 			
-			if(scored_blue_first.size() == 1)
-			{
-				scored_blue_first.get(0).incrementScore(8);
-				if(scored_blue_second.size() != 0)
-				{
-					for(Player p : scored_blue_second)
-						p.incrementScore(1/scored_blue_second.size());
-				}
-	
-			}
-			
-			if(scored_blue_first.size() > 1)
-			{
-				if(scored_blue_second.size() != 0)
-					{for(Player p : scored_blue_first)
-						p.incrementScore(9/scored_blue_second.size());}
-	
-			}
-			
-			if(scored_red_first.size() == 1)
-			{
-				scored_red_first.get(0).incrementScore(9);
-				if(scored_red_second.size() != 0)
-				{
-					for(Player p : scored_red_second)
-						p.incrementScore(2/scored_red_second.size());
-				}
-	
-			}
-			
-			if(scored_red_first.size() > 1)
-			{
-				if(scored_red_second.size() != 0)
-					{for(Player p : scored_red_first)
-						p.incrementScore(11/scored_red_second.size());}
-	
-			}
-			
-			if(scored_brown_first.size() == 1)
-			{
-				scored_brown_first.get(0).incrementScore(10);
-				if(scored_brown_second.size() != 0)
-				{
-					for(Player p : scored_brown_second)
-						p.incrementScore(3/scored_brown_second.size());
-				}
-	
-			}
-			
-			if(scored_brown_first.size() > 1)
-			{
-				if(scored_brown_second.size() != 0)
-					{for(Player p : scored_brown_first)
-						p.incrementScore(13/scored_brown_second.size());}
-	
-			}
-			
-			if(scored_white_first.size() == 1)
-			{
-				scored_white_first.get(0).incrementScore(11);
-				if(scored_white_second.size() != 0)
-				{
-					for(Player p : scored_white_second)
-						p.incrementScore(4/scored_white_second.size());
-				}
-	
-			}
-			
-			if(scored_white_first.size() > 1)
-			{
-				if(scored_white_second.size() != 0)
-					{for(Player p : scored_white_first)
-						p.incrementScore(15/scored_white_second.size());}
-	
-			}
-			
-			if(scored_green_first.size() == 1)
-			{
-				scored_green_first.get(0).incrementScore(12);
-				if(scored_green_second.size() != 0)
-				{
-					for(Player p : scored_green_second)
-						p.incrementScore(5/scored_green_second.size());
-				}
-	
-			}
-			
-			if(scored_green_first.size() > 1)
-			{
-				if(scored_green_second.size() != 0)
-					{for(Player p : scored_green_first)
-						p.incrementScore(17/scored_green_second.size());}
-	
-			}
-		
-			if(scored_purple_first.size() == 1)
-			{
-				scored_purple_first.get(0).incrementScore(13);
-				if(scored_purple_second.size() != 0)
-				{
-					for(Player p : scored_purple_second)
-						p.incrementScore(6/scored_purple_second.size());
-				}
-	
-			}
-			
-			if(scored_purple_first.size() > 1)
-			{
-				if(scored_purple_second.size() != 0)
-					{for(Player p : scored_purple_first)
-						p.incrementScore(19/scored_purple_second.size());}
-	
-			}
+			scoreDivideExaminerAndIncrementer2(scored_blue_first, scored_blue_second, 8, 1);
+			scoreDivideExaminerAndIncrementer2(scored_red_first, scored_red_second, 9, 2);
+			scoreDivideExaminerAndIncrementer2(scored_brown_first, scored_brown_second, 10, 3);
+			scoreDivideExaminerAndIncrementer2(scored_white_first, scored_white_second, 11, 4);
+			scoreDivideExaminerAndIncrementer2(scored_green_first, scored_green_second, 12, 5);
+			scoreDivideExaminerAndIncrementer2(scored_purple_first, scored_purple_second, 13, 6);
 			
 			for(Player p : player)
 			{
@@ -640,261 +510,14 @@ public class Game {
 					scored_purple_3.add(p);
 			}
 			
-			
-			if(scored_blue_1.size() == 1)
-			{
-				scored_blue_1.get(0).incrementScore(16);
-				if(scored_blue_2.size() == 1)
-				{
-					scored_blue_2.get(0).incrementScore(8);
-					if(scored_blue_3.size() != 0)
-					{
-						for(Player p : scored_blue_3)
-							p.incrementScore(1/scored_blue_3.size());
-					}
-					
-				}
-				
-				if(scored_blue_2.size() > 1)
-				{
-					for(Player p : scored_blue_2)
-						p.incrementScore(9/scored_blue_2.size());
-				}
-
-			}
-			
-			if(scored_blue_1.size() == 2)
-			{
-				scored_blue_1.get(0).incrementScore(8);
-				scored_blue_1.get(1).incrementScore(8);
-				
-				if(scored_blue_3.size() != 0)
-				{
-					for(Player p : scored_blue_3)
-						p.incrementScore(1/scored_blue_3.size());
-				}
-				
-			}
-			
-			if(scored_blue_1.size() > 2)
-			{
-				if(scored_blue_3.size() != 0)
-					{for(Player p : scored_blue_1)
-						p.incrementScore(25/scored_blue_3.size());}
-			}
+			scoreDivideExaminerAndIncrementer3(scored_blue_1, scored_blue_2, scored_blue_3, 16, 8, 1);
+			scoreDivideExaminerAndIncrementer3(scored_red_1, scored_red_2, scored_red_3, 17, 9, 2);
+			scoreDivideExaminerAndIncrementer3(scored_brown_1, scored_brown_2, scored_brown_3, 18, 10, 3);
+			scoreDivideExaminerAndIncrementer3(scored_white_1, scored_white_2, scored_white_3, 19, 11, 4);
+			scoreDivideExaminerAndIncrementer3(scored_green_1, scored_green_2, scored_green_3, 20, 12, 5);
+			scoreDivideExaminerAndIncrementer3(scored_purple_1, scored_purple_2, scored_purple_3, 21, 13, 6);
 			
 			
-			if(scored_red_1.size() == 1)
-			{
-				scored_red_1.get(0).incrementScore(17);
-				if(scored_red_2.size() == 1)
-				{
-					scored_red_2.get(0).incrementScore(9);
-					if(scored_red_3.size() != 0)
-					{
-						for(Player p : scored_red_3)
-							p.incrementScore(2/scored_red_3.size());
-					}
-					
-				}
-				
-				if(scored_red_2.size() > 1)
-				{
-					for(Player p : scored_red_2)
-						p.incrementScore(11/scored_red_2.size());
-				}
-
-			}
-			
-			if(scored_red_1.size() == 2)
-			{
-				scored_red_1.get(0).incrementScore(8);
-				scored_red_1.get(1).incrementScore(8);
-				
-				if(scored_red_3.size() != 0)
-				{
-					for(Player p : scored_red_3)
-						p.incrementScore(2/scored_red_3.size());
-				}
-				
-			}
-			
-			if(scored_red_1.size() > 2)
-			{
-				if(scored_red_3.size() != 0)
-					{for(Player p : scored_red_1)
-						p.incrementScore(28/scored_red_3.size());}
-			}
-			
-			
-			if(scored_brown_1.size() == 1)
-			{
-				scored_brown_1.get(0).incrementScore(18);
-				if(scored_brown_2.size() == 1)
-				{
-					scored_brown_2.get(0).incrementScore(10);
-					if(scored_brown_3.size() != 0)
-					{
-						for(Player p : scored_brown_3)
-							p.incrementScore(3/scored_brown_3.size());
-					}
-					
-				}
-				
-				if(scored_brown_2.size() > 1)
-				{
-					for(Player p : scored_brown_2)
-						p.incrementScore(13/scored_brown_2.size());
-				}
-
-			}
-			
-			if(scored_brown_1.size() == 2)
-			{
-				scored_brown_1.get(0).incrementScore(9);
-				scored_brown_1.get(1).incrementScore(9);
-				
-				if(scored_brown_3.size() != 0)
-				{
-					for(Player p : scored_brown_3)
-						p.incrementScore(3/scored_brown_3.size());
-				}
-				
-			}
-			
-			if(scored_brown_1.size() > 2)
-			{
-				if(scored_brown_3.size() != 0)
-					{for(Player p : scored_brown_1)
-						p.incrementScore(31/scored_brown_3.size());}
-			}
-			
-			if(scored_white_1.size() == 1)
-			{
-				scored_white_1.get(0).incrementScore(19);
-				if(scored_white_2.size() == 1)
-				{
-					scored_white_2.get(0).incrementScore(11);
-					if(scored_white_3.size() != 0)
-					{
-						for(Player p : scored_white_3)
-							p.incrementScore(4/scored_white_3.size());
-					}
-					
-				}
-				
-				if(scored_white_2.size() > 1)
-				{
-					for(Player p : scored_white_2)
-						p.incrementScore(15/scored_white_2.size());
-				}
-
-			}
-			
-			if(scored_white_1.size() == 2)
-			{
-				scored_white_1.get(0).incrementScore(9);
-				scored_white_1.get(1).incrementScore(9);
-				
-				if(scored_white_3.size() != 0)
-				{
-					for(Player p : scored_white_3)
-						p.incrementScore(4/scored_white_3.size());
-				}
-				
-			}
-			
-			if(scored_white_1.size() > 2)
-			{
-				if(scored_white_3.size() != 0)
-					{for(Player p : scored_white_1)
-						p.incrementScore(34/scored_white_3.size());}
-			}
-			
-			
-			if(scored_green_1.size() == 1)
-			{
-				scored_green_1.get(0).incrementScore(20);
-				if(scored_green_2.size() == 1)
-				{
-					scored_green_2.get(0).incrementScore(12);
-					if(scored_green_3.size() != 0)
-					{
-						for(Player p : scored_green_3)
-							p.incrementScore(5/scored_green_3.size());
-					}
-					
-				}
-				
-				if(scored_green_2.size() > 1)
-				{
-					for(Player p : scored_white_2)
-						p.incrementScore(17/scored_green_2.size());
-				}
-
-			}
-			
-			if(scored_green_1.size() == 2)
-			{
-				scored_green_1.get(0).incrementScore(10);
-				scored_green_1.get(1).incrementScore(10);
-				
-				if(scored_green_3.size() != 0)
-				{
-					for(Player p : scored_green_3)
-						p.incrementScore(5/scored_green_3.size());
-				}
-				
-			}
-			
-			if(scored_green_1.size() > 2)
-			{
-				if(scored_green_3.size() != 0)
-					{for(Player p : scored_green_1)
-						p.incrementScore(37/scored_green_3.size());}
-			}
-			
-			if(scored_purple_1.size() == 1)
-			{
-				scored_purple_1.get(0).incrementScore(21);
-				if(scored_purple_2.size() == 1)
-				{
-					scored_purple_2.get(0).incrementScore(13);
-					if(scored_purple_3.size() != 0)
-					{
-						for(Player p : scored_purple_3)
-							p.incrementScore(6/scored_purple_3.size());
-					}
-					
-				}
-				
-				if(scored_purple_2.size() > 1)
-				{
-					for(Player p : scored_purple_2)
-						p.incrementScore(19/scored_purple_2.size());
-				}
-
-			}
-			
-			if(scored_purple_1.size() == 2)
-			{
-				scored_purple_1.get(0).incrementScore(10);
-				scored_purple_1.get(1).incrementScore(10);
-				
-				if(scored_purple_3.size() != 0)
-				{
-					for(Player p : scored_purple_3)
-						p.incrementScore(6/scored_purple_3.size());
-				}
-				
-			}
-			
-			if(scored_purple_1.size() > 2)
-			{
-				if(scored_purple_3.size() != 0)
-					{for(Player p : scored_purple_1)
-						p.incrementScore(40/scored_purple_3.size());}
-			}
 			
 			for(Player p : player)
 			{
@@ -1236,4 +859,86 @@ public class Game {
 		}
 		return maxWall;
 	}
+	
+	public void addScoreToPlayersWithEqualBuildings(int osszpont, List<Player> lista){
+		for(Player akt : lista){
+			akt.incrementScore(osszpont / lista.size());
+		}
+	}
+	
+	public void scoreDivideExaminerAndIncrementer1(List<Player> firstPlayerLists, int firstScore){
+		for(Player p : firstPlayerLists)
+		{
+			if(firstPlayerLists.size() != 0)
+				p.incrementScore(firstScore / firstPlayerLists.size());
+		}
+	}
+	
+	public void scoreDivideExaminerAndIncrementer2(List<Player> firstPlayersList, List<Player> secondPlayersList, int firstScore, int secondScore){
+		if(firstPlayersList.size() == 1){			//EGY LEGTOBB
+			firstPlayersList.get(0).incrementScore(firstScore);
+			if(secondPlayersList.size() == 1){		//EGY LEGTOBB ES EGY MASODIK
+				secondPlayersList.get(0).incrementScore(secondScore);
+			}else{									
+				if(secondPlayersList.size() > 1){	//EGY LEGTOBB ES TOBB MASODIK
+					addScoreToPlayersWithEqualBuildings(secondScore, secondPlayersList);
+				}
+			}
+		}else{
+			if(secondPlayersList.size() == 0){		//TOBB LEGTOBB ES NINCS MASODIK
+				addScoreToPlayersWithEqualBuildings(firstScore + secondScore, firstPlayersList);			//AZ ELSO KET HELYEZES OSSZPONTJAIT OSZTJUK SZET
+			}else{									//TOBB LEGTOBB ES VAN MASODIK
+				addScoreToPlayersWithEqualBuildings(firstScore, firstPlayersList);			//AZ ELSO HELYEZES OSSZPONTJAIT OSZTJUK SZET A HOLTVERSENYBEN LEVOK KOZT
+				
+				addScoreToPlayersWithEqualBuildings(secondScore, secondPlayersList);
+			}
+		}
+	}
+	
+	public void scoreDivideExaminerAndIncrementer3(List<Player> firstPlayersList, List<Player> secondPlayersList, List<Player> thirdPlayersList, int firstScore, int secondScore, int thirdScore){
+		if(firstPlayersList.size() == 1){							//EGY ELSO
+			firstPlayersList.get(0).incrementScore(firstScore);
+			if(secondPlayersList.size() == 1){						//EGY ELSO + EGY MASODIK
+				secondPlayersList.get(0).incrementScore(secondScore);
+				if(thirdPlayersList.size() > 0){					//EGY ELSO + EGY MASODIK + EGY VAGY TOBB HARMADIK
+					addScoreToPlayersWithEqualBuildings(thirdScore, thirdPlayersList);
+				}
+			}else{
+				if(secondPlayersList.size() > 1){					//EGY ELSO + TOBB MASODIK
+					if(thirdPlayersList.size() == 0){				//EGY ELSO + TOBB MASODIK + 0 HARMADIK (OSSZPONTOSZTAS)
+						addScoreToPlayersWithEqualBuildings(secondScore + thirdScore, secondPlayersList);
+					}else{										//EGY ELSO + TOBB MASODIK + EGY VAGY TOBB HARMADIK
+						addScoreToPlayersWithEqualBuildings(secondScore, secondPlayersList);
+						addScoreToPlayersWithEqualBuildings(thirdScore, thirdPlayersList);
+					}
+				}
+			}
+		}else{
+			if(firstPlayersList.size() > 1){						//TOBB ELSO
+				if(secondPlayersList.size() == 0){					//TOBB ELSO + 0 MASODIK + 0 HARMADIK
+					if(firstPlayersList.size() == 2){				//ELSO KET HELY PONTJAIT OSZTJUK
+						addScoreToPlayersWithEqualBuildings(firstScore + secondScore, firstPlayersList);
+					}else{
+						addScoreToPlayersWithEqualBuildings(firstScore + secondScore + thirdScore, firstPlayersList);
+					}
+				}else{
+					addScoreToPlayersWithEqualBuildings(firstScore, firstPlayersList);
+					if(secondPlayersList.size() == 1){				//TOBB ELSO + EGY MASODIK
+						addScoreToPlayersWithEqualBuildings(secondScore, secondPlayersList);
+						if(thirdPlayersList.size() > 0){			//TOBB ELSO + EGY MASODIK + EGY VAGY TOBB HARMADIK
+							addScoreToPlayersWithEqualBuildings(thirdScore, thirdPlayersList);
+						}
+					}else{										//TOBB ELSO + TOBB MASODIK
+						if(thirdPlayersList.size() == 0){			//TOBB ELSO + TOBB MASODIK + 0 HARMADIK
+							addScoreToPlayersWithEqualBuildings(secondScore + thirdScore, secondPlayersList);
+						}else{									//TOBB ELSO + TOBB MASODIK + EGY VAGY TOBB HARMADIK
+							addScoreToPlayersWithEqualBuildings(secondScore, secondPlayersList);
+							addScoreToPlayersWithEqualBuildings(thirdScore, thirdPlayersList);
+						}
+					}
+				}
+			}
+		}
+	}
+	
 }
