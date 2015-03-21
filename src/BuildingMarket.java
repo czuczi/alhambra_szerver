@@ -31,19 +31,25 @@ public class BuildingMarket {
 		}
 		
 	}
-	
+//JAVÍTVA	
 	public boolean refillBuildingCard(BuildingDeck bd){
+		int emptyPlaces = 0;
 		
-		for(String k : buildingMarket.keySet())
-		{
-			if(buildingMarket.get(k) == null){			//ha van üres hely
-				if(bd.canRemoveBuildingCard()){			//és tudok húzni
+		for(String k : buildingMarket.keySet()){		//ujretoltendo helyek szama
+			if(buildingMarket.get(k) == null){
+				emptyPlaces++;
+			}
+		}
+		
+		if(bd.getDeck().size() < emptyPlaces){			//nem tudom újratölteni
+			return false;
+		}else{
+			for (String k : buildingMarket.keySet()) {
+				if (buildingMarket.get(k) == null) { 			// ha van üres hely
 					buildingMarket.put(k, bd.removeBuildingCard());
-				}else{							//nem tudok húzni ---> vége a játéknak
-					return false;
+				} else {
+					;
 				}
-			}else{
-				;
 			}
 		}
 		return true;

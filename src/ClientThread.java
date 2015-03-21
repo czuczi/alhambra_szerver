@@ -337,11 +337,17 @@ public class ClientThread extends Thread {
 					sendMessage("buildingMarketCards"+getBuildingMarketCardsForSend());
 					sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
 					sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
-					
+
+//JAVITANDOO!!!
 					if(!(osszeg == buildingCard.getValue())){
-						if(player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck())){
+						if(player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck())){ //új kör és lehet újratölteni
 							actPlayerChange();
 						}else{
+							
+							
+							
+							
+							//ertekeles
 							player.getGame().evaluation(3);
 							String result = "";
 							List<Player> tmpList = player.getRoom().getPlayerList();
