@@ -35,20 +35,11 @@ public class MoneyPickerView {
 			}
 
 			return true;
-		} else {
-			deck.createMoneyDeck();
+		} else {			
+			deck.recreateMoneyDeck(game.getSpendedMoneyCardList());						//az elköltött lapokból újrakeverem a paklit
+			game.getSpendedMoneyCardList().clear();
 			for (int i = 0; i < missing; i++) {
-				MoneyCard akt = deck.removeMoneyCard();
-				if (akt.getValue() == -1) {
-					if (akt.getType().equals("evaluation1")) {
-						game.evaluation(1);
-					} else {
-						game.evaluation(2);
-					}
-					i--;
-				} else {
-					moneyCards.add(akt);
-				}
+				moneyCards.add(deck.removeMoneyCard());
 			}
 			return true;
 		}

@@ -38,12 +38,23 @@ public class MoneyDeck {
 			}
 		}
 		
-		for(int i = 0; i < 5; i++)
+		for(int i = 0; i < 5; i++){
 			Collections.shuffle(deck);
+		}
 	}
 	
-	public MoneyCard removeMoneyCard() {
+	public void recreateMoneyDeck(List<MoneyCard> spendedCardList){
+		deck = new LinkedList<>();
 		
+		deck.addAll(spendedCardList);
+		for(int i = 0; i < 5; i++){
+			Collections.shuffle(deck);
+		}
+	}
+	
+	
+	
+	public MoneyCard removeMoneyCard() {
 		return deck.remove(0);
 	}
 	

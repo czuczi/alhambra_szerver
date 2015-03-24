@@ -16,6 +16,7 @@ public class Game {
 	private Player actPlayer;
 	private boolean wasEvaluation;
 /*ÚJ*/	private Map<String, List<BuildingCard>> giftCardsOfPlayers = new TreeMap<String, List<BuildingCard>>();
+/*ÚJ*/	private List<MoneyCard> spendedMoneyCardList = new LinkedList<>();
 
 	public Game(Room room) {
 		this.room = room;
@@ -1028,6 +1029,15 @@ public class Game {
 	public void setGiftCardsOfPlayers(Map<String, List<BuildingCard>> giftCardsOfPlayers) {
 		this.giftCardsOfPlayers = giftCardsOfPlayers;
 	}
+
+	public List<MoneyCard> getSpendedMoneyCardList() {
+		return spendedMoneyCardList;
+	}
+
+	public void setSpendedMoneyCardList(List<MoneyCard> spendedMoneyCardList) {
+		this.spendedMoneyCardList = spendedMoneyCardList;
+	}
+	
 	
 	
 	

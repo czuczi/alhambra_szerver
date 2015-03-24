@@ -346,6 +346,7 @@ public class ClientThread extends Thread {
 					
 					if(elements2[0].equals("buyToAlhambra")){
 						if(player.buyBuildingCardToAlhambra(buildingCard, Integer.parseInt(elements2[1]), Integer.parseInt(elements2[2]))){
+							player.getGame().getSpendedMoneyCardList().addAll(selectedMoneyCards);					//elköltött pénzt tároljuk az újrakeveréshez
 							player.getMoneyCards().removeAll(selectedMoneyCards);
 						}else{
 							sendMessage("invalidBuyToAlhambra");
@@ -355,6 +356,7 @@ public class ClientThread extends Thread {
 					}else{
 						if(elements2[0].equals("buyToStorageArea")){
 							player.buyBuildingCardToStorageArea(buildingCard);
+							player.getGame().getSpendedMoneyCardList().addAll(selectedMoneyCards);					//elköltött pénzt tároljuk az újrakeveréshez
 							player.getMoneyCards().removeAll(selectedMoneyCards);
 						}
 					}
