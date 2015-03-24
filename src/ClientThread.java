@@ -430,6 +430,32 @@ public class ClientThread extends Thread {
 						
 						moveActPlayerForGiftGiving();				//benne van az evaluation3 is
 					}
+				}else{
+					if(elements[1].equals("buildToAlhambra")){				//gift építése az alhambrába
+						Map<String, List<BuildingCard>> gifts = player.getGame().getGiftCardsOfPlayers();
+						BuildingCard selectedGift = null;
+						for(String akt : gifts.keySet()){
+							if(akt.equals(nickName)){
+								selectedGift = gifts.get(akt).get(Integer.parseInt(elements[4]));
+								break;
+							}
+						}
+						int size = player.buyGiftToAlhambra(selectedGift, Integer.parseInt(elements[2]), Integer.parseInt(elements[3]), Integer.parseInt(elements[4]));
+						if(size == -1){			//építési szabályok megsértése
+							sendMessage("invalidBuyToAlhambra");
+						}else{
+							if(size != 0){		//még van gift-je
+								sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
+								sendMessage("gifts"+getGiftCardsForSend());
+							}else{
+								player.getGame().getGiftCardsOfPlayers().remove(nickName);				//ha beépítette az összes ajándékot törlöm a map-ből
+								sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
+								sendMessage("giftClose");
+								
+								moveActPlayerForGiftGiving();
+							}
+						}
+					}
 				}
 				
 				break;

@@ -118,6 +118,17 @@ public class Player {
 		return game.getGiftCardsOfPlayers().get(name).size();
 	}
 	
+	public int buyGiftToAlhambra(BuildingCard bc, int x, int y, int giftIndex){
+		if(buildingArea.canAddBuildingCard(bc, x, y)){			//ha megfelel az építési szabályoknak (ha sikeres, listaméretet ad vissza, ha nem, -1-et)
+			buildingArea.addBuildingCard(bc, x, y);
+			game.getGiftCardsOfPlayers().get(name).remove(giftIndex);	
+			
+			return game.getGiftCardsOfPlayers().get(name).size();
+		}else{
+			return -1;
+		}
+	}
+	
 	public boolean buyBuildingCardToAlhambra(BuildingCard buildingCard, int a, int b){
 		if(buildingArea.canAddBuildingCard(buildingCard, a, b)) {
 			System.out.println("HOZZÁADTA AZ ALHAMBRÁHOZ");
