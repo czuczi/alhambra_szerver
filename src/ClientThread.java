@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.sound.midi.Receiver;
 
@@ -253,6 +254,20 @@ public class ClientThread extends Thread {
 				
 				//buildingArea
 				sendMessage("buildingAreaCards"+getBuildingAreaCardsForSend());
+				
+				if(player.getGame().getActPlayer().getName().equals(nickName)){			//aktplayer frissíti az egész táblát
+					for(String akt : player.getGame().getBuildingMarket().getBuildingMarket().keySet()){
+						if(player.getGame().getBuildingMarket().getBuildingMarket().get(akt) == null && !player.getGame().getBuildingDeck().canRemoveBuildingCard()){
+							//building market-ban van üres hely és a building deck üres
+							if(player.getGame().getGiftCardsOfPlayers().containsKey(nickName)){		//ha van kiosztandó ajándékkártya
+								sendMessage("gifts"+getGiftCardsForSend());
+								break;
+							}else{
+								moveActPlayerForGiftGiving();
+							}
+						}
+					}
+				}
 				break;
 				
 			case "pickMoneyCards":
@@ -290,7 +305,17 @@ public class ClientThread extends Thread {
 						broadcastForAllPlayersInRoom("evaluation"+result);
 						player.getGame().setWasEvaluation(false);
 					}
-					actPlayerChange();
+					
+					if(player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck())){ //új kör és lehet újratölteni
+						actPlayerChange();
+					} else{
+						player.getGame().setGiftCardsOfPlayers();
+						if(player.getGame().getGiftCardsOfPlayers().containsKey(nickName)){			//ha kap ajándék lapot
+							sendMessage("gifts" + getGiftCardsForSend());
+						}else{
+							moveActPlayerForGiftGiving();				//benne van az evaluation3 is
+						}
+					}
 				}
 				
 				break;
@@ -343,30 +368,13 @@ public class ClientThread extends Thread {
 						if(player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck())){ //új kör és lehet újratölteni
 							actPlayerChange();
 						}else{
-							
-							
-							
-							
-							//ertekeles
-							player.getGame().evaluation(3);
-							String result = "";
-							List<Player> tmpList = player.getRoom().getPlayerList();
-							Collections.sort(tmpList, new Comparator<Player>() {
-
-								@Override
-								public int compare(Player o1, Player o2) {
-									return o2.getScore() - o1.getScore();
-								}
-							});
-							
-							for(Player aktP : tmpList){
-								result += ";"+aktP.getName()+";"+aktP.getScore();
-							}
-							
-							broadcastForAllPlayersInRoom("evaluation"+result);
-						}
-						
-						
+							player.getGame().setGiftCardsOfPlayers();
+							if(player.getGame().getGiftCardsOfPlayers().containsKey(nickName)){
+								sendMessage("gifts" + getGiftCardsForSend());
+							}else{
+								moveActPlayerForGiftGiving();				//benne van az evaluation3 is
+							}		
+						}	
 					}
 				}
 				break;
@@ -406,6 +414,24 @@ public class ClientThread extends Thread {
 				}else{
 					sendMessage("switchFailed");
 				}
+				break;
+				
+			case "buildGift":
+				if(elements[1].equals("buildToStorageArea")){
+					int giftSize = player.buyGiftToStorageArea(Integer.parseInt(elements[2]));  			//hozzáadja a storage-hoz és kitörli a gift listából
+					
+					if(giftSize != 0){				//view frissítés
+						sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+						sendMessage("gifts"+getGiftCardsForSend());
+					}else{
+						player.getGame().getGiftCardsOfPlayers().remove(nickName);				//ha beépítette az összes ajándékot törlöm a map-ből
+						sendMessage("storageAreaCards"+getStorageAreaCardsForSend());
+						sendMessage("giftClose");
+						
+						moveActPlayerForGiftGiving();				//benne van az evaluation3 is
+					}
+				}
+				
 				break;
 				
 			case "endGame":
@@ -540,5 +566,42 @@ public class ClientThread extends Thread {
 		}
 		player.getGame().getBuildingMarket().refillBuildingCard(player.getGame().getBuildingDeck());
 		player.getGame().getMoneyPickerView().refillMoney(player.getGame().getMoneyDeck());
+	}
+	
+	public String getGiftCardsForSend(){
+		String message = "";
+		Map<String, List<BuildingCard>> gifts = player.getGame().getGiftCardsOfPlayers();
+		for(String keyPlayerName : gifts.keySet()){
+			if(keyPlayerName.equals(nickName)){				//a thread játékosának kiküldjük a megmaradt kártyákat
+				for(BuildingCard akt : gifts.get(keyPlayerName)){
+					message += ";"+akt.getImage();
+				}
+				break;
+			}
+		}
+		return message;
+	}
+	
+	public void moveActPlayerForGiftGiving(){
+		if(!player.getGame().getGiftCardsOfPlayers().isEmpty()){		//ha még van kiosztandó ajándék lap
+			actPlayerChange();
+		}else{										//ha az összes lapot kiosztottuk, végső értékelés
+			//ertekeles
+			player.getGame().evaluation(3);
+			String result = "";
+			List<Player> tmpList = player.getRoom().getPlayerList();
+			Collections.sort(tmpList, new Comparator<Player>() {
+
+				@Override
+				public int compare(Player o1, Player o2) {
+					return o2.getScore() - o1.getScore();
+				}
+			});
+			
+			for(Player aktP : tmpList){
+				result += ";"+aktP.getName()+";"+aktP.getScore();
+			}
+			broadcastForAllPlayersInRoom("evaluation"+result);
+		}
 	}
 }

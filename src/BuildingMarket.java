@@ -15,7 +15,7 @@ public class BuildingMarket {
 		buildingMarket.put("Yellow", null);
 	}
 	
-	//sdd 
+//sdd 
 	public void removeBuildingCard(BuildingCard bc){
 		
 		for(String k : buildingMarket.keySet())
@@ -35,14 +35,24 @@ public class BuildingMarket {
 	public boolean refillBuildingCard(BuildingDeck bd){
 		int emptyPlaces = 0;
 		
-		for(String k : buildingMarket.keySet()){		//ujretoltendo helyek szama
+		for(String k : buildingMarket.keySet()){		//újratöltendő helyek számolása
 			if(buildingMarket.get(k) == null){
 				emptyPlaces++;
 			}
 		}
 		
-		if(bd.getDeck().size() < emptyPlaces){			//nem tudom újratölteni
-			return false;
+		if(bd.getDeck().size() < emptyPlaces){			//nem tudom teljesen újratölteni
+			for (String k : buildingMarket.keySet()) {
+				if (buildingMarket.get(k) == null) { 			// ha van üres hely
+					if(bd.canRemoveBuildingCard()){
+						buildingMarket.put(k, bd.removeBuildingCard());
+					}else{
+						return false;
+					}
+				} else {
+					;
+				}
+			}	
 		}else{
 			for (String k : buildingMarket.keySet()) {
 				if (buildingMarket.get(k) == null) { 			// ha van üres hely

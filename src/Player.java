@@ -105,11 +105,17 @@ public class Player {
 	}
 	
 	public boolean buyBuildingCardToStorageArea(BuildingCard buildingCard){
-		
 		storageArea.addBuildingCard(buildingCard);
 		game.getBuildingMarket().removeBuildingCard(buildingCard);
-		return true;
 		
+		return true;
+	}
+	
+	public int buyGiftToStorageArea(int i){
+		storageArea.addBuildingCard(game.getGiftCardsOfPlayers().get(name).get(i));
+		game.getGiftCardsOfPlayers().get(name).remove(i);
+		
+		return game.getGiftCardsOfPlayers().get(name).size();
 	}
 	
 	public boolean buyBuildingCardToAlhambra(BuildingCard buildingCard, int a, int b){
@@ -166,6 +172,39 @@ public class Player {
 		
 		return list;
 		
+	}
+	
+//ÚJ
+	public List<Integer> getNumberOfMoneyCards(){
+		List<Integer> result = new LinkedList<Integer>();
+		int blue = 0;
+		int green = 0;
+		int orange = 0;
+		int yellow = 0;
+		
+		for(MoneyCard akt : moneyCards){
+			if(akt.getType().equals("Blue")){
+				blue++;
+			}else{
+				if(akt.getType().equals("Green")){
+					green++;
+				}else{
+					if(akt.getType().equals("Orange")){
+						orange++;
+					}else{
+						if(akt.getType().equals("Yellow")){
+							yellow++;
+						}
+					}
+				}
+			}
+		}
+		result.add(blue);
+		result.add(green);
+		result.add(orange);
+		result.add(yellow);
+		
+		return result;
 	}
 	
 	

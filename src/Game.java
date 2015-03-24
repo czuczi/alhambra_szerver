@@ -1,7 +1,9 @@
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
 public class Game {
 	private Room room;
@@ -13,6 +15,7 @@ public class Game {
 	private int actPlayerIndex;
 	private Player actPlayer;
 	private boolean wasEvaluation;
+/*ÚJ*/	private Map<String, List<BuildingCard>> giftCardsOfPlayers = new TreeMap<String, List<BuildingCard>>();
 
 	public Game(Room room) {
 		this.room = room;
@@ -940,5 +943,92 @@ public class Game {
 			}
 		}
 	}
+	
+//ÚJ
+	public void setGiftCardsOfPlayers() {
+
+		List<Player> player = room.getPlayerList();
+		int max_blue = 0;
+		int max_green = 0;
+		int max_orange = 0;
+		int max_yellow = 0;
+
+		List<Player> maxBluePlayerList = new LinkedList<Player>();
+		List<Player> maxGreenPlayerList = new LinkedList<Player>();
+		List<Player> maxOrangePlayerList = new LinkedList<Player>();
+		List<Player> maxYellowPlayerList = new LinkedList<Player>();
+
+		Map<String, List<Player>> dataForMap = new TreeMap<String, List<Player>>();
+
+		for (Player p : player) {
+			List<Integer> list = new LinkedList<Integer>();
+			list = p.getNumberOfMoneyCards();
+
+			if (list.get(0) > max_blue)
+				max_blue = list.get(0);
+			if (list.get(1) > max_green)
+				max_green = list.get(1);
+			if (list.get(2) > max_orange)
+				max_orange = list.get(2);
+			if (list.get(3) > max_yellow)
+				max_yellow = list.get(3);
+		}
+
+		for (Player p : player) {
+			List<Integer> list = new LinkedList<Integer>();
+			list = p.getNumberOfMoneyCards();
+
+			if (list.get(0) == max_blue && max_blue != 0)
+				maxBluePlayerList.add(p);
+			if (list.get(1) == max_green && max_green != 0)
+				maxGreenPlayerList.add(p);
+			if (list.get(2) == max_orange && max_orange != 0)
+				maxOrangePlayerList.add(p);
+			if (list.get(3) == max_yellow && max_yellow != 0)
+				maxYellowPlayerList.add(p);
+		}
+		dataForMap.put("Blue", maxBluePlayerList);
+		dataForMap.put("Green", maxGreenPlayerList);
+		dataForMap.put("Orange", maxOrangePlayerList);
+		dataForMap.put("Yellow", maxYellowPlayerList);
+
+		buildMap(dataForMap);
+	}
+	
+	public void buildMap(Map<String, List<Player>> data){
+		for(String key : data.keySet()){
+			if(data.get(key).size() == 1 && buildingMarket.getBuildingMarket().get(key) != null){			//szabály szerint csak ekkor osztjuk ki
+				String maxPlayer = data.get(key).get(0).getName();
+				if(giftCardsOfPlayers.containsKey(maxPlayer)){		//már kapott egy lapot és benne van a map-ben
+					List<BuildingCard> value = giftCardsOfPlayers.get(maxPlayer);
+					giftCardsOfPlayers.remove(maxPlayer);
+					valueAddToMapAndRemoveMarket(maxPlayer, value, key);
+				}else{
+					List<BuildingCard> value = new LinkedList<BuildingCard>();
+					valueAddToMapAndRemoveMarket(maxPlayer, value, key);
+				}	
+			}else{
+				if(buildingMarket.getBuildingMarket().get(key) != null){
+					buildingMarket.removeBuildingCard(buildingMarket.getBuildingMarket().get(key));
+				}
+			}
+		}
+	}
+	
+	public void valueAddToMapAndRemoveMarket(String playerName, List<BuildingCard> list, String key){
+		list.add(buildingMarket.getBuildingMarket().get(key));
+		giftCardsOfPlayers.put(playerName, list);
+		buildingMarket.removeBuildingCard(buildingMarket.getBuildingMarket().get(key));
+	}
+
+	public Map<String, List<BuildingCard>> getGiftCardsOfPlayers() {
+		return giftCardsOfPlayers;
+	}
+
+	public void setGiftCardsOfPlayers(Map<String, List<BuildingCard>> giftCardsOfPlayers) {
+		this.giftCardsOfPlayers = giftCardsOfPlayers;
+	}
+	
+	
 	
 }
