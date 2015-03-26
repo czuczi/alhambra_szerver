@@ -67,25 +67,23 @@ public class ClientThread extends Thread {
 			return true;
 		} catch (IOException e) {
 			try {
+				System.out.println("CLIENTHREAD_RECIEVEMESSAGE_EXCEPTION");
+				List<Player> playersToRoomManagerPage = null;
 				mySocket.close();
 				is.close();
 				bf.close();
 				os.close();
-				Server.controller.logout(nickName);
-				List<ClientThread> clientThreadsToRemove = new LinkedList<>();
+				playersToRoomManagerPage = Server.controller.logout(nickName);				//kiléptetem azt az egyet és a maradékot megkapom
+				List<ClientThread> clientThreadsToBack = new LinkedList<>();
 				if(player != null) {
 					if(player.getGame() != null) {
 						for(ClientThread aktThread : Server.clientThreadList){
-							if(aktThread.getPlayer().getGame().equals(player.getGame())) {
-								clientThreadsToRemove.add(aktThread);
+							if (playersToRoomManagerPage.contains(aktThread.getPlayer())) { // a játék többi játékosait visszairányítjuk a roomManagerPage-re
+								aktThread.sendMessage("showRoomManagerPage;GameTablePage;forcedExit"+ getAllRoomNames());
 							}
 						}
-						
-						Server.clientThreadList.removeAll(clientThreadsToRemove);
-						
-						for (ClientThread clientThread : clientThreadsToRemove) {
-							clientThread.end();
-						}
+						Server.clientThreadList.remove(this);
+						this.end();
 					}
 				}
 				return false;
@@ -136,7 +134,9 @@ public class ClientThread extends Thread {
 			case "logout": 																	// LOGOUT
 				System.out.println("logout success");
 				Server.controller.logout(nickName);
+				Server.clientThreadList.remove(this);
 				sendMessage("showLoginPage;" + elements[1]);
+				this.end();
 				break;
 
 			case "newRoom": 																// NEW ROOM

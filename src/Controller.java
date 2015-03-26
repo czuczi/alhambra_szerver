@@ -42,40 +42,40 @@ public class Controller {
 			return true;
 		}
 	}
-	
-	public void logout(String playerName){
-		Set<Player> playersToRemove = new HashSet<>();
+
+//JAVÍTVA
+	public List<Player> logout(String playerName){
+		List<Player> playersBackToRoomManagerPage = new LinkedList<Player>();
 		Player actPlayer = null;
 		Room actRoom = null;
-		for(Player player : playerList){
+		for(Player player : playerList){				//ki lépett ki
 			if(player.getName().equals(playerName)){
 				actPlayer = player;
-				playersToRemove.add(actPlayer);
-				break;
 			}
 		}
 		
-		if(!roomList.isEmpty()) {
-			for(Room room : roomList) {
-				if(room.getPlayerList().contains(actPlayer)) {
+		if (!roomList.isEmpty()) {
+			for (Room room : roomList) { // kiket kell visszaléptetni a roomMangerPage-re
+				if (room.getPlayerList().contains(actPlayer)) {
 					actRoom = room;
-					playersToRemove.addAll(room.getPlayerList());
+					playersBackToRoomManagerPage.addAll(room.getPlayerList());
+					playersBackToRoomManagerPage.remove(actPlayer);
 					roomList.remove(actRoom);
 					break;
 				}
 			}
 		}
-		
-		if(!gameList.isEmpty()) {
-			for(Game game : gameList) {
-				if(game.getRoom().equals(actRoom)) {
+
+		if (!gameList.isEmpty()) {
+			for (Game game : gameList) {
+				if (game.getRoom().equals(actRoom)) {
 					gameList.remove(game);
 					break;
 				}
 			}
 		}
-		
-		playerList.removeAll(playersToRemove);
+		playerList.remove(actPlayer);
+		return playersBackToRoomManagerPage;
 	}
 	
 }
