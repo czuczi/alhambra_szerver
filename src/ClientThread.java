@@ -67,7 +67,6 @@ public class ClientThread extends Thread {
 			return true;
 		} catch (IOException e) {
 			try {
-				System.out.println("CLIENTHREAD_RECIEVEMESSAGE_EXCEPTION");
 				List<Player> playersToRoomManagerPage = null;
 				mySocket.close();
 				is.close();
@@ -195,10 +194,17 @@ public class ClientThread extends Thread {
 								} else {
 									clientThread.sendMessage("showRoomPage;RoomPage"+ playerNamesInRoom);
 								}
-								if (playerInRoom.getRoom().getMaxNumber() == playerInRoom.getRoom().getPlayerList().size()) {
+								if (playerInRoom.getRoom().getMaxNumber() <= playerInRoom.getRoom().getPlayerList().size()) { //fentebb már hozzáadtuk a botot, ezért lehet nagyobb
 									clientThread.player.setGame(newGame);
 									clientThread.sendMessage("showGameTablePage;RoomPage");
 								}
+							}
+						}
+					}
+					if(newGame != null && newGame.isSpecialRulesForTwoPlayer()){						//kézzel kell beállítani neki a game-et, mert nincs hozzá thread
+						for(Player akt : newGame.getRoom().getPlayerList()){
+							if(akt.getName().equals("ro-bot")){
+								akt.setGame(newGame);
 							}
 						}
 					}
@@ -290,6 +296,9 @@ public class ClientThread extends Thread {
 					if(player.getGame().isWasEvaluation()){
 						String result = "";
 						List<Player> tmpList = player.getRoom().getPlayerList();
+						if(player.getGame().isSpecialRulesForTwoPlayer()){
+							tmpList.add(player.getGame().getBot());								//Bot hozzáadása az értékeléshez
+						}
 						Collections.sort(tmpList, new Comparator<Player>() {
 
 							@Override
@@ -301,7 +310,9 @@ public class ClientThread extends Thread {
 						for(Player aktP : tmpList){
 							result += ";"+aktP.getName()+";"+aktP.getScore();
 						}
-						
+						if(player.getGame().isSpecialRulesForTwoPlayer()){
+							player.getRoom().getPlayerList().remove(player.getGame().getBot());		//mivel a tmp referenciát ad át és belekerül
+						}
 						broadcastForAllPlayersInRoom("evaluation"+result);
 						player.getGame().setWasEvaluation(false);
 					}
@@ -475,7 +486,7 @@ public class ClientThread extends Thread {
 				if(counter < player.getGame().getPlayersOrder().size()){
 					;
 				}else{
-					broadcastForAllPlayersInRoom("showRoomManagerPage;GameTablePage");
+					broadcastForAllPlayersInRoom("showRoomManagerPage;GameTablePage;notForcedExit");
 					for(Player aktualisPlayer : player.getGame().getPlayersOrder()){
 						Room tmpSzoba = aktualisPlayer.getRoom();
 						
@@ -618,6 +629,10 @@ public class ClientThread extends Thread {
 			player.getGame().evaluation(3);
 			String result = "";
 			List<Player> tmpList = player.getRoom().getPlayerList();
+			if(player.getGame().isSpecialRulesForTwoPlayer()){
+				tmpList.add(player.getGame().getBot());
+			}
+			
 			Collections.sort(tmpList, new Comparator<Player>() {
 
 				@Override
@@ -628,6 +643,9 @@ public class ClientThread extends Thread {
 			
 			for(Player aktP : tmpList){
 				result += ";"+aktP.getName()+";"+aktP.getScore();
+			}
+			if(player.getGame().isSpecialRulesForTwoPlayer()){
+				player.getRoom().getPlayerList().remove(player.getGame().getBot());
 			}
 			broadcastForAllPlayersInRoom("evaluation"+result);
 		}

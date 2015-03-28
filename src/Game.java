@@ -17,6 +17,8 @@ public class Game {
 	private boolean wasEvaluation;
 /*ÚJ*/	private Map<String, List<BuildingCard>> giftCardsOfPlayers = new TreeMap<String, List<BuildingCard>>();
 /*ÚJ*/	private List<MoneyCard> spendedMoneyCardList = new LinkedList<>();
+/*ÚJ*/	private boolean specialRulesForTwoPlayer = false;
+/*ÚJ*/	private Player bot;
 
 	public Game(Room room) {
 		this.room = room;
@@ -90,7 +92,17 @@ public class Game {
 
 		buildingDeck.createBuildingDeck();
 		buildingMarket.refillBuildingCard(buildingDeck);
-		moneyDeck.createMoneyDeck();
+		if(room.getMaxNumber() == 2){
+			moneyDeck.createMoneyDeck(2);
+		}else{
+			moneyDeck.createMoneyDeck(3);
+		}
+		
+		if(this.room.getMaxNumber() == 2){					//beállítom a boolean-t ha két játékos van, valamint a bot-ot
+			specialRulesForTwoPlayer = true;
+			bot = new Player("ro-bot");
+			bot.setGame(this);
+		}
 
 		giveMoneyToPlayer();
 
@@ -145,6 +157,10 @@ public class Game {
 		moneyDeck.getDeck().add(leftDeckSize/5 + randNumber, new MoneyCard("evaluation1", -1));
 		randNumber = random.nextInt(leftDeckSize/5);
 		moneyDeck.getDeck().add(3*leftDeckSize/5 + randNumber, new MoneyCard("evaluation2", -1));
+		
+		if(specialRulesForTwoPlayer){
+			giveBuildingCardToBot(6);
+		}
 	}
 
 	public void giveMoneyToPlayer() {
@@ -170,6 +186,9 @@ public class Game {
 	public void evaluation(int evaluate_number) {
 				
 		List<Player> player = room.getPlayerList();
+		if(specialRulesForTwoPlayer){
+			player.add(bot);
+		}
 		
 		int max_blue;
 		int max_red;
@@ -240,9 +259,14 @@ public class Game {
 			scoreDivideExaminerAndIncrementer1(scored_purple, 6);
 			
 			
-			for(Player p : player)
+	/*		for(Player p : player)
 			{
 				p.incrementScore(getLongestOutsideWallByPlayer(p));
+			}
+	*/		
+			if(specialRulesForTwoPlayer){
+				giveBuildingCardToBot(6);
+				room.getPlayerList().remove(bot);
 			}
 			break;
 	//második értékelés		
@@ -355,11 +379,16 @@ public class Game {
 			scoreDivideExaminerAndIncrementer2(scored_green_first, scored_green_second, 12, 5);
 			scoreDivideExaminerAndIncrementer2(scored_purple_first, scored_purple_second, 13, 6);
 			
-			for(Player p : player)
+	/*		for(Player p : player)
 			{
 				p.incrementScore(getLongestOutsideWallByPlayer(p));
 			}
-			
+	*/
+			if(specialRulesForTwoPlayer){
+				int numberOfCardsForGive = buildingDeck.getDeck().size()/3;
+				giveBuildingCardToBot(numberOfCardsForGive);
+				room.getPlayerList().remove(bot);
+			}
 			break;
 			
 // harmadik értékelés			
@@ -523,11 +552,14 @@ public class Game {
 			
 			
 			
-			for(Player p : player)
+	/*		for(Player p : player)
 			{
 				p.incrementScore(getLongestOutsideWallByPlayer(p));
 			}
-			
+	*/		
+			if(isSpecialRulesForTwoPlayer()){
+				room.getPlayerList().remove(bot);
+			}
 			break;
 
 		default:
@@ -1022,6 +1054,23 @@ public class Game {
 		buildingMarket.removeBuildingCard(buildingMarket.getBuildingMarket().get(key));
 	}
 
+	public void giveBuildingCardToBot(int numberOfCards){
+		int counter = 0;					//értékelés utáni hat lap kiosztása a bot-nak
+		for(int i = 0; i < 21; i++){
+			for(int j = 0; j < 21; j++){
+				if(counter < numberOfCards){
+					if(bot.getBuildingArea().isEmptyPlaceForBot(i, j)){
+						bot.getBuildingArea().addBuildingCard(buildingDeck.removeBuildingCard(), i, j);
+						counter++;
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+	
 	public Map<String, List<BuildingCard>> getGiftCardsOfPlayers() {
 		return giftCardsOfPlayers;
 	}
@@ -1036,6 +1085,22 @@ public class Game {
 
 	public void setSpendedMoneyCardList(List<MoneyCard> spendedMoneyCardList) {
 		this.spendedMoneyCardList = spendedMoneyCardList;
+	}
+
+	public boolean isSpecialRulesForTwoPlayer() {
+		return specialRulesForTwoPlayer;
+	}
+
+	public void setSpecialRulesForTwoPlayer(boolean specialRulesForTwoPlayer) {
+		this.specialRulesForTwoPlayer = specialRulesForTwoPlayer;
+	}
+
+	public Player getBot() {
+		return bot;
+	}
+
+	public void setBot(Player bot) {
+		this.bot = bot;
 	}
 	
 	

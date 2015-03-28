@@ -458,6 +458,13 @@ public class BuildingArea {
 	}
 	
 	
+	public boolean isEmptyPlaceForBot(int i, int j){
+		if(buildingArea[i][j] == null){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 	
 	public BuildingCard[][] getBuildingArea() {

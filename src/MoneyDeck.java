@@ -7,11 +7,11 @@ public class MoneyDeck {
 	
 	private List<MoneyCard> deck;
 
-	public void createMoneyDeck() {
+	public void createMoneyDeck(int numberPerOneMoneyCard) {
 		
 		deck = new LinkedList<>();
 		
-		for(int j = 0; j < 3; j++)
+		for(int j = 0; j < numberPerOneMoneyCard; j++)
 		{
 			for(int i = 0; i < 9; i++)
 			{
