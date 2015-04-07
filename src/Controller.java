@@ -51,17 +51,26 @@ public class Controller {
 		for(Player player : playerList){				//ki lépett ki
 			if(player.getName().equals(playerName)){
 				actPlayer = player;
+				break;
 			}
 		}
 		
 		if (!roomList.isEmpty()) {
 			for (Room room : roomList) { // kiket kell visszaléptetni a roomMangerPage-re
 				if (room.getPlayerList().contains(actPlayer)) {
-					actRoom = room;
-					playersBackToRoomManagerPage.addAll(room.getPlayerList());
-					playersBackToRoomManagerPage.remove(actPlayer);
-					roomList.remove(actRoom);
-					break;
+					if(actPlayer.getGame() != null){			//játékban volt
+						actRoom = room;
+						playersBackToRoomManagerPage.addAll(room.getPlayerList());
+						playersBackToRoomManagerPage.remove(actPlayer);
+						roomList.remove(actRoom);
+						break;
+					}else{										//ha csak a szoba nézetből lép ki x-el
+						room.getPlayerList().remove(actPlayer);
+						if(room.getPlayerList().size() == 0){		//ha az utolsó ember lép ki kijelentkezéssel
+							roomList.remove(room);
+						}
+						break;
+					}
 				}
 			}
 		}

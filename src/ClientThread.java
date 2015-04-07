@@ -135,6 +135,22 @@ public class ClientThread extends Thread {
 				Server.controller.logout(nickName);
 				Server.clientThreadList.remove(this);
 				sendMessage("showLoginPage;" + elements[1]);
+				if(elements[1].equals("RoomPage")){						//szobából lépek ki x-el, frissíteni kell a player listát
+					String playerNamesInRoom = "";
+					for (Player aktPlayer : player.getRoom().getPlayerList()) {
+						playerNamesInRoom += ";" + aktPlayer.getName();
+					}
+					for(Player aktPlayer : player.getRoom().getPlayerList()){
+						for(ClientThread clientThread : Server.clientThreadList){
+							if(aktPlayer.getName().equals(clientThread.getNickName())){
+								clientThread.sendMessage("showRoomPage;RoomPage" + playerNamesInRoom);
+							}
+						}
+					}
+					for (ClientThread clientThread : Server.clientThreadList) {				//szoba listát is frissíteni kell(ha az utolsó kilép és megszűnik az adott szoba))
+						clientThread.sendMessage("refreshRoomList" + getAllRoomNames());
+					}
+				}
 				this.end();
 				break;
 

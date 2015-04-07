@@ -259,11 +259,12 @@ public class Game {
 			scoreDivideExaminerAndIncrementer1(scored_purple, 6);
 			
 			
-	/*		for(Player p : player)
-			{
-				p.incrementScore(getLongestOutsideWallByPlayer(p));
+			for(Player p : player){
+				if(!p.getName().equals("ro-bot")){
+					p.incrementScore(p.getBuildingArea().wallCounter());
+				}
 			}
-	*/		
+			
 			if(specialRulesForTwoPlayer){
 				giveBuildingCardToBot(6);
 				room.getPlayerList().remove(bot);
@@ -379,11 +380,12 @@ public class Game {
 			scoreDivideExaminerAndIncrementer2(scored_green_first, scored_green_second, 12, 5);
 			scoreDivideExaminerAndIncrementer2(scored_purple_first, scored_purple_second, 13, 6);
 			
-	/*		for(Player p : player)
-			{
-				p.incrementScore(getLongestOutsideWallByPlayer(p));
+			for(Player p : player){
+				if(!p.getName().equals("ro-bot")){
+					p.incrementScore(p.getBuildingArea().wallCounter());
+				}
 			}
-	*/
+	
 			if(specialRulesForTwoPlayer){
 				int numberOfCardsForGive = buildingDeck.getDeck().size()/3;
 				giveBuildingCardToBot(numberOfCardsForGive);
@@ -552,11 +554,12 @@ public class Game {
 			
 			
 			
-	/*		for(Player p : player)
-			{
-				p.incrementScore(getLongestOutsideWallByPlayer(p));
+			for(Player p : player){
+				if(!p.getName().equals("ro-bot")){
+					p.incrementScore(p.getBuildingArea().wallCounter());
+				}
 			}
-	*/		
+			
 			if(isSpecialRulesForTwoPlayer()){
 				room.getPlayerList().remove(bot);
 			}

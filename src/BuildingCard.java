@@ -9,6 +9,10 @@ public class BuildingCard implements Cloneable {
 	private boolean left_wall;
 	private boolean right_wall;
 	private boolean bottom_wall;
+	private boolean outSideTopWall;
+	private boolean outSideLeftWall;
+	private boolean outSideRightWall;
+	private boolean outSideBottomWall;
 	private List<BuildingCard> surroundingBuildings;
 	private int price;
 	private String image;
@@ -101,6 +105,38 @@ public class BuildingCard implements Cloneable {
 
 	public void setValue(int value) {
 		this.price = value;
+	}
+
+	public boolean isOutSideTopWall() {
+		return outSideTopWall;
+	}
+
+	public void setOutSideTopWall(boolean outSideTopWall) {
+		this.outSideTopWall = outSideTopWall;
+	}
+
+	public boolean isOutSideLeftWall() {
+		return outSideLeftWall;
+	}
+
+	public void setOutSideLeftWall(boolean outSideLeftWall) {
+		this.outSideLeftWall = outSideLeftWall;
+	}
+
+	public boolean isOutSideRightWall() {
+		return outSideRightWall;
+	}
+
+	public void setOutSideRightWall(boolean outSideRightWall) {
+		this.outSideRightWall = outSideRightWall;
+	}
+
+	public boolean isOutSideBottomWall() {
+		return outSideBottomWall;
+	}
+
+	public void setOutSideBottomWall(boolean outSideBottomWall) {
+		this.outSideBottomWall = outSideBottomWall;
 	}
 
 	@Override

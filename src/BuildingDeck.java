@@ -97,7 +97,7 @@ public class BuildingDeck {
 		
 		BuildingCard bc_27 = new BuildingCard("green", false, false, false, true, 12, "./resource/buildingCards/green_12_b");
 		deck.add(bc_27);
-		
+	
 		//PURPLE
 		
 		BuildingCard bc_28 = new BuildingCard("purple", true, true, true, false, 7, "./resource/buildingCards/purple_7_tlr");
