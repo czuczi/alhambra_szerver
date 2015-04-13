@@ -294,20 +294,20 @@ public class BuildingArea {
 			}
 			if (vizsgalandoLapX == 0) { 										// ha a legfelső sor
 				if (vizsgalandoLapY == 0) { 									// bal felső sarok
-					fillMoveToRight(tmp, vizsgalandoLapX, vizsgalandoLapY);
-					fillMoveToBottom(tmp, vizsgalandoLapX, vizsgalandoLapY);
+					fillMoveToRight(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+					fillMoveToBottom(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
 					bejart.add(tmp.getId());
 					vizsgalando.remove(tmp);
 				} else {
 					if (vizsgalandoLapY == buildingArea[0].length - 1) { 			// jobb felső sarok
-						fillMoveToBottom(tmp, vizsgalandoLapX, vizsgalandoLapY);
-						fillMoveToLeft(tmp, vizsgalandoLapX, vizsgalandoLapY);
+						fillMoveToBottom(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+						fillMoveToLeft(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
 						bejart.add(tmp.getId());
 						vizsgalando.remove(tmp);
 					} else { 												// simán csak felső sor
-						fillMoveToRight(tmp, vizsgalandoLapX, vizsgalandoLapY);
-						fillMoveToBottom(tmp, vizsgalandoLapX, vizsgalandoLapY);
-						fillMoveToLeft(tmp, vizsgalandoLapX, vizsgalandoLapY);
+						fillMoveToRight(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+						fillMoveToBottom(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+						fillMoveToLeft(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
 						bejart.add(tmp.getId());
 						vizsgalando.remove(tmp);
 					}
@@ -315,43 +315,43 @@ public class BuildingArea {
 			} else {
 				if (vizsgalandoLapY == buildingArea[0].length - 1) { 			// ha jobb szélső sor
 					if (vizsgalandoLapX == buildingArea.length - 1) { 			// jobb alsósarok
-						fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY);
-						fillMoveToLeft(tmp, vizsgalandoLapX, vizsgalandoLapY);
+						fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+						fillMoveToLeft(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
 						bejart.add(tmp.getId());
 						vizsgalando.remove(tmp);
 					} else { 												// simán jobb szélső sor
-						fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY);
-						fillMoveToBottom(tmp, vizsgalandoLapX, vizsgalandoLapY);
-						fillMoveToLeft(tmp, vizsgalandoLapX, vizsgalandoLapY);
+						fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+						fillMoveToBottom(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+						fillMoveToLeft(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
 						bejart.add(tmp.getId());
 						vizsgalando.remove(tmp);
 					}
 				} else {
 					if (vizsgalandoLapX == buildingArea.length - 1) { 					// ha legalsó sor
 						if (vizsgalandoLapY == 0) { 								// bal alsó sarok
-							fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY);
-							fillMoveToRight(tmp, vizsgalandoLapX,vizsgalandoLapY);
+							fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+							fillMoveToRight(tmp, vizsgalandoLapX,vizsgalandoLapY, bejart);
 							bejart.add(tmp.getId());
 							vizsgalando.remove(tmp);
 						} else { 													// simán alsó sor
-							fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY);
-							fillMoveToRight(tmp, vizsgalandoLapX,vizsgalandoLapY);
-							fillMoveToLeft(tmp, vizsgalandoLapX,vizsgalandoLapY);
+							fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+							fillMoveToRight(tmp, vizsgalandoLapX,vizsgalandoLapY, bejart);
+							fillMoveToLeft(tmp, vizsgalandoLapX,vizsgalandoLapY, bejart);
 							bejart.add(tmp.getId());
 							vizsgalando.remove(tmp);
 						}
 					} else {
 						if (vizsgalandoLapY == 0) { 								// simán bal szélső sor
-							fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY);
-							fillMoveToRight(tmp, vizsgalandoLapX,vizsgalandoLapY);
-							fillMoveToBottom(tmp, vizsgalandoLapX,vizsgalandoLapY);
+							fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+							fillMoveToRight(tmp, vizsgalandoLapX,vizsgalandoLapY, bejart);
+							fillMoveToBottom(tmp, vizsgalandoLapX,vizsgalandoLapY, bejart);
 							bejart.add(tmp.getId());
 							vizsgalando.remove(tmp);
 						} else { 													// ha nem szélső lap
-							fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY);
-							fillMoveToRight(tmp, vizsgalandoLapX,vizsgalandoLapY);
-							fillMoveToBottom(tmp, vizsgalandoLapX,vizsgalandoLapY);
-							fillMoveToLeft(tmp, vizsgalandoLapX,vizsgalandoLapY);
+							fillMoveToTop(tmp, vizsgalandoLapX, vizsgalandoLapY, bejart);
+							fillMoveToRight(tmp, vizsgalandoLapX,vizsgalandoLapY, bejart);
+							fillMoveToBottom(tmp, vizsgalandoLapX,vizsgalandoLapY, bejart);
+							fillMoveToLeft(tmp, vizsgalandoLapX,vizsgalandoLapY, bejart);
 							bejart.add(tmp.getId());
 							vizsgalando.remove(tmp);
 						}
@@ -438,41 +438,41 @@ public class BuildingArea {
 		}
 	}
 	
-	public void fillMoveToTop(BuildingCard tmp, int vizsgalandoLapX, int vizsgalandoLapY){
+	public void fillMoveToTop(BuildingCard tmp, int vizsgalandoLapX, int vizsgalandoLapY, List<String> bejart){
 		if(!tmp.isTop_wall()){		//ha fent nincs fal
 			if(buildingArea[vizsgalandoLapX - 1][vizsgalandoLapY] != null){		//van felső szomszéd
-				if(!vizsgalando.contains(buildingArea[vizsgalandoLapX - 1][vizsgalandoLapY])){
+				if(!vizsgalando.contains(buildingArea[vizsgalandoLapX - 1][vizsgalandoLapY]) && !bejart.contains(buildingArea[vizsgalandoLapX - 1][vizsgalandoLapY].getId())){
 					vizsgalando.add(buildingArea[vizsgalandoLapX - 1][vizsgalandoLapY]);
 				} else ;
 			} else ;
 		}else ;
 	}
 	
-	public void fillMoveToLeft(BuildingCard tmp, int vizsgalandoLapX, int vizsgalandoLapY){
+	public void fillMoveToLeft(BuildingCard tmp, int vizsgalandoLapX, int vizsgalandoLapY, List<String> bejart){
 		if(!tmp.isLeft_wall()){		//ha baloldalt nincs fal
-			if(buildingArea[vizsgalandoLapX][vizsgalandoLapY + 1] != null){		//ha van baloldali szomszéd
-				if(!vizsgalando.contains(buildingArea[vizsgalandoLapX][vizsgalandoLapY + 1])){
-					vizsgalando.add(buildingArea[vizsgalandoLapX][vizsgalandoLapY + 1]);
+			if(buildingArea[vizsgalandoLapX][vizsgalandoLapY - 1] != null){		//ha van baloldali szomszéd
+				if(!vizsgalando.contains(buildingArea[vizsgalandoLapX][vizsgalandoLapY - 1]) && !bejart.contains(buildingArea[vizsgalandoLapX][vizsgalandoLapY - 1].getId())){
+					vizsgalando.add(buildingArea[vizsgalandoLapX][vizsgalandoLapY - 1]);
 				} else ;
 			} else ;
 		} else ;
 	}
 	
-	public void fillMoveToBottom(BuildingCard tmp, int vizsgalandoLapX, int vizsgalandoLapY){
+	public void fillMoveToBottom(BuildingCard tmp, int vizsgalandoLapX, int vizsgalandoLapY, List<String> bejart){
 		if(!tmp.isBottom_wall()){		//ha lent nincs fal
 			if(buildingArea[vizsgalandoLapX + 1][vizsgalandoLapY] != null){		//ha van alsó szomszéd
-				if(!vizsgalando.contains(buildingArea[vizsgalandoLapX + 1][vizsgalandoLapY])){
+				if(!vizsgalando.contains(buildingArea[vizsgalandoLapX + 1][vizsgalandoLapY]) && !bejart.contains(buildingArea[vizsgalandoLapX + 1][vizsgalandoLapY].getId())){
 					vizsgalando.add(buildingArea[vizsgalandoLapX + 1][vizsgalandoLapY]);
 				} else ;
 			} else ;
 		} else ;
 	}
 	
-	public void fillMoveToRight(BuildingCard tmp, int vizsgalandoLapX, int vizsgalandoLapY){
+	public void fillMoveToRight(BuildingCard tmp, int vizsgalandoLapX, int vizsgalandoLapY, List<String> bejart){
 		if(!tmp.isRight_wall()){		//ha jobb oldalt nincs fal
-			if(buildingArea[vizsgalandoLapX][vizsgalandoLapY - 1] != null){		//ha van jobb oldali szomszéd
-				if(!vizsgalando.contains(buildingArea[vizsgalandoLapX][vizsgalandoLapY - 1])){
-					vizsgalando.add(buildingArea[vizsgalandoLapX][vizsgalandoLapY - 1]);
+			if(buildingArea[vizsgalandoLapX][vizsgalandoLapY + 1] != null){		//ha van jobb oldali szomszéd
+				if(!vizsgalando.contains(buildingArea[vizsgalandoLapX][vizsgalandoLapY + 1]) && !bejart.contains(buildingArea[vizsgalandoLapX][vizsgalandoLapY + 1].getId())){
+					vizsgalando.add(buildingArea[vizsgalandoLapX][vizsgalandoLapY + 1]);
 				} else ;
 			} else ;
 		} else ;

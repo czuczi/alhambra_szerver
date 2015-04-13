@@ -292,8 +292,7 @@ public class ClientThread extends Thread {
 				}
 				break;
 				
-			case "pickMoneyCards":
-				//pickMoneyCards
+			case "pickMoneyCards":								//pickMoneyCards
 				List<MoneyCard> pickerView = player.getGame().getMoneyPickerView().getMoneyCards();
 				int szum = 0;
 				for(int i=1; i<elements.length; i++){
@@ -524,7 +523,7 @@ public class ClientThread extends Thread {
 				}
 				
 				break;
-				
+			
 			default:
 				break;
 			}
@@ -581,7 +580,7 @@ public class ClientThread extends Thread {
 			if(aktBuildingCard != null){
 				buildingMarketCards += ";"+aktBuildingCard.getImage();
 			}else{
-				buildingMarketCards += ";./resource/buildingCards/back";
+				buildingMarketCards += ";/buildingCards/back";
 			}
 		}
 		return buildingMarketCards;
