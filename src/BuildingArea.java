@@ -613,7 +613,6 @@ public class BuildingArea {
 						while(it2.hasNext()){
 							tmp.add(it2.next());
 						}
-						System.out.println("FAAAAAAAAASZKIVAN EZZEL A GECIVEL!!!!!!!!");
 						vizsgalando.clear();
 						osszefuggoFalKartyak.add(tmp);
 						
@@ -643,13 +642,6 @@ public class BuildingArea {
 			if(maxWall < aktFalHossz){
 				maxWall = aktFalHossz;
 			}
-		}
-		
-		for(int k=0; k < osszefuggoFalKartyak.size(); k++){
-			for(BuildingCard akt : osszefuggoFalKartyak.get(k)){
-				System.out.println(akt.getImage());
-			}
-			System.out.println();
 		}
 		
 		
